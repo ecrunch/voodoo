@@ -1,3 +1,4 @@
+
 import math
 import datetime
 import statistics
@@ -104,7 +105,7 @@ class Scheduler(object):
         self.score_total = 0
         self.score_list = []
         self.task_list = self._populate_task_list()
-        self.nom_dists = self._get_nom_dists()
+        self.placement_list = self._get_placement()
 
         self.current_task = None
         
@@ -135,15 +136,48 @@ class Scheduler(object):
     def get_standard_dev(self):
         return statistics.stdev(self.score_list)
 
-    def _get_nom_dists(self):
+
+    def _get_placement(self):
+        
+        placement_list = []
+        for task in self.task_list:
+            placement_list.append(self.get_placement(task))
+
+        return placement_list
+
+    def get_placement(self, task):
+
+       x = task.get_score()
+       task_name = task.name
+       mean = self.get_mean()
+       sd = self.get_standard_dev()
+       
+       zscore =(x-mean)/sd
+
+       print ("task name : %s" % task_name)
+       print ("z score : %s" % zscore)
+
+       if zscore >=.8416:
+           placement='I'
+       elif zscore >=.2533:
+           placement='G'
+       elif zscore >=-.2533:
+           placement='R'
+       else:
+           placement='N'
+           
+       print ("placement: %s" % placement)
+       
+       return placement
+
+    """def _get_nom_dists(self):
         
         nom_dist = []
         for task in self.task_list:
             nom_dist.append(self.get_nom_dist(task))
 
-        return nom_dist
-
-    def get_nom_dist(self, task):
+        return nom_dist"""
+    """def get_nom_dist(self, task):
 
         x = task.get_score()
         task_name = task.name
@@ -165,9 +199,13 @@ class Scheduler(object):
         result = num/denom
         #print("percent : %s" % result)
         #print ("------------------")
-        return result
+        return result"""
 
         
+
+
+
+
 ## wrapper for DB
 # will have actual DB connection code here
 class MockDB(object):
@@ -180,6 +218,5 @@ class MockDB(object):
 
 
 
+
     
-
-

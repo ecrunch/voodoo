@@ -1,13 +1,13 @@
-
 import unittest
 import datetime
 
-from src.classes import (
+from first_script import (
     Task,
     Exam, Project, Paper, Homework,
     MockDB,
     Scheduler,
     )
+
 
 
 class TestMockDb(unittest.TestCase):
@@ -152,14 +152,10 @@ class TestSchedulerClass(unittest.TestCase):
         expected_standard_dev = 2
         self.assertEqual(actual_standard_dev, expected_standard_dev)
 
-    def test_nom_dists(self):
-        #print (self.scheduler.nom_dists)
-        pass
-
-    def get_percentile(score):
+    def test_placement(self):
+        print (self.scheduler.placement_list)
         pass
 
 if __name__ == '__main__':
     unittest.main()
-
 
