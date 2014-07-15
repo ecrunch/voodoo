@@ -5,8 +5,9 @@ from src.classes import (
     Task,
     Exam, Project, Paper, Homework,
     MockDB,
-    Scheduler,
     )
+
+from src.scorer import Scorer
 
 
 
@@ -111,29 +112,29 @@ class TestSchedulerClass(unittest.TestCase):
         self.db.save(self.paper)
         self.db.save(self.homework)
         
-        self.scheduler = Scheduler(self.db)
+        self.scorer = Scorer(self.db)
         
 
     def tearDown(self):
-        self.scheduler = None
+        self.scorer = None
         
 
     def test_task_list(self):
 
-        self.assertTrue(self.exam in self.scheduler.task_list)
-        self.assertTrue(self.project in self.scheduler.task_list)
-        self.assertTrue(self.paper in self.scheduler.task_list)
-        self.assertTrue(self.homework in self.scheduler.task_list)
+        self.assertTrue(self.exam in self.scorer.task_list)
+        self.assertTrue(self.project in self.scorer.task_list)
+        self.assertTrue(self.paper in self.scorer.task_list)
+        self.assertTrue(self.homework in self.scorer.task_list)
 
-        self.assertEqual(self.scheduler.score_total, 34)
+        self.assertEqual(self.scorer.score_total, 34)
 
 
     def test_print_all_scores(self):
-        #self.scheduler.print_all_scores()
+        #self.scorer.print_all_scores()
         pass
 
     def test_get_mean(self):
-        actual_mean = self.scheduler.get_mean()
+        actual_mean = self.scorer.get_mean()
         expected_mean = 8.5
         self.assertEqual(actual_mean, expected_mean)
 
@@ -141,19 +142,19 @@ class TestSchedulerClass(unittest.TestCase):
     # MAY : come back and fix the test so that the decimal goes
     # out to like 5 or so digits, rather than just flooring it
     def test_variance(self):
-        actual_variance = int(self.scheduler.get_variance())
+        actual_variance = int(self.scorer.get_variance())
         expected_variance = 4
         self.assertEqual(actual_variance, expected_variance)
 
     # MAY : same
     def test_standard_dev(self):
 
-        actual_standard_dev = int(self.scheduler.get_standard_dev())
+        actual_standard_dev = int(self.scorer.get_standard_dev())
         expected_standard_dev = 2
         self.assertEqual(actual_standard_dev, expected_standard_dev)
 
     def test_placement(self):
-        print (self.scheduler.placement_list)
+        print (self.scorer.placement_list)
         pass
 
 if __name__ == '__main__':
