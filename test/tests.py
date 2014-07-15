@@ -1,7 +1,7 @@
 import unittest
 import datetime
 
-from first_script import (
+from src.classes import (
     Task,
     Exam, Project, Paper, Homework,
     MockDB,
