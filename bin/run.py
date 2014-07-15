@@ -1,15 +1,13 @@
 
+from src.input import DbAdapter
 
-import sqlite3
 
-conn = sqlite3.connect('db/example.db')
 
-c = conn.cursor()
 
 ### TODO stuff in here
 
 
-conn.close()
+# db = DbAdapter("db/example.db")
 
 
 print("Look at this tutorial : https://docs.python.org/2/library/sqlite3.html#sqlite3.Connection")

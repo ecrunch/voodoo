@@ -11,12 +11,35 @@
 import json
 import sys
 import datetime
+import sqlite3
+
 
 from src.classes import (
     Task, Exam, Project, Paper, Homework,
 )
 
-class Extractor(object):
+
+
+class DbAdapter(object):
+
+    def __init__(self, db_name):
+        self.conn = sqlite3.connect(db_name)
+
+    # TODO : 
+    # Write a sqlite db adapter 
+    
+    def read_task(self, task_id):
+        pass
+
+    def write_task(self, task):
+        pass
+
+    def print_all_tasks(self):
+        pass 
+
+
+
+class JsonAdapter(object):
 
     def __init__(self, file_name):
         
