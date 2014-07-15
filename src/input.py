@@ -16,7 +16,7 @@ from src.classes import (
     Task, Exam, Project, Paper, Homework,
 )
 
-class Extracter(object):
+class Extractor(object):
 
     def __init__(self, file_name):
         
