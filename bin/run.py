@@ -1,5 +1,5 @@
 
-from src.input import DbAdapter
+from src.adapters import DbAdapter
 
 
 
