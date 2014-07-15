@@ -1,7 +1,7 @@
 
 import math
 import datetime
-import statistics
+from lib import statistics
 
 
 class Scorer(object):
