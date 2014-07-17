@@ -66,10 +66,10 @@ class Scheduler(object):
             
             print("|--------------------------------->")
             
-            print("|Time Slot : %s\nItem : %s" % (item["timeslot"], item["item"]))
+            print("|Time Slot : %s\n|Item : %s" % (item["timeslot"], item["item"]))
  
-            print("|--------------------------------->")
 
+        print("|--------------------------------->")
 
 scheduler = Scheduler(4)
 scheduler.print_schedule()
