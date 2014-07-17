@@ -19,26 +19,6 @@ from src.classes import (
 )
 
 
-
-class DbAdapter(object):
-
-    def __init__(self, db_name):
-        self.conn = sqlite3.connect(db_name)
-
-    # TODO : 
-    # Write a sqlite db adapter 
-    
-    def read_task(self, task_id):
-        pass
-
-    def write_task(self, task):
-        pass
-
-    def print_all_tasks(self):
-        pass 
-
-
-
 class JsonAdapter(object):
 
     def __init__(self, file_name):
@@ -49,12 +29,6 @@ class JsonAdapter(object):
         except:
             self.data = []
 
-        if self.data:
-            self.tasks = self._make_tasks()
-        else:
-            self.tasks = []
-
-
     def _load_json_data(self, file_name):
 
         with open(file_name) as f:
@@ -62,13 +36,22 @@ class JsonAdapter(object):
             return d
 
 
+
+
+
+class TaskJsonAdapter(JsonAdapter):
+
+    def __init__(self, file_name):
+        JsonAdapter.__init__(self, file_name)
+        self.items = self._make_tasks()
+
     def _make_tasks(self):
 
         tasks = []
-        
+      
         for item in self.data:
             
-            name = item["name"]
+            name = item["description"]
 
             # MUST : convert from string to datetime
             d_datestr = item["due_date"]
@@ -91,19 +74,78 @@ class JsonAdapter(object):
 
     def _make_datetime(self, datestr):
         return datetime.datetime.strptime(datestr, "%Y%m%d")
-        
-        
-        
+         
     def print_data(self):
         for item in self.data:
             print(item)
 
-    def print_tasks(self):
-        for task in self.tasks:
+
+    def print_items(self):
+        for task in self.items:
 
             print("|--------------------------->")
             print("| Name : %s\n| Due Date : %s\n| Score : %s" % (
                 task.name, task.due_date.strftime("%Y%m%d"),
                 task.get_score()))
             print("|--------------------------->")
+
+
+
+class WantJsonAdapter(JsonAdapter):
+ 
+    def __init__(self, file_name):
+        JsonAdapter.__init__(self, file_name)
+        self.items = self._make_wants()
+
+
+    def _make_wants(self):
+
+        wants = []
+        for item in self.data:
+            description = item["description"]
+            category = item["category"]
+            wants.append({"description" : description, "category" : category}) 
+        return wants 
+        
+    def print_data(self):
+        for item in self.data:
+            print(item)
+
+    def print_items(self):
+        for want in self.items:
+            print("|--------------------------->")
+            print("| Desciption : %s\n| Category : %s" % (want["description"], want["category"]))
+            print("|--------------------------->")
+
+
+
+class BreakJsonAdapter(JsonAdapter):
+
+
+    def __init__(self, file_name):
+        JsonAdapter.__init__(self, file_name)
+        self.items = self._make_breaks()
+    
+    
+    def _make_breaks(self):
+
+        breaks = []
+        for item in self.data:
+            description = item["description"]
+            breaks.append({"description" : description}) 
+        return breaks
+        
+    def print_data(self):
+        for item in self.data:
+            print(item)
+        return
+
+    def print_items(self):
+        
+        for _break in self.items:
+            print("|--------------------------->")
+            print("| Description : %s" % _break["description"])
+            print("|--------------------------->")
+
+
 

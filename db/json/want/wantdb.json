@@ -1,0 +1,14 @@
+[
+    {
+        "description" : "Go to the gym",
+        "category" : "Health"
+    }, 
+    {
+        "description" : "Go to class",
+        "category" : "Education"
+    }, 
+    {
+        "description" : "Learn a language",
+        "category" : "Self betterment, knowledge"
+    } 
+]

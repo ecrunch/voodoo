@@ -12,6 +12,7 @@ class TimeSlotGenerator(object):
             3 : 45,
             4 : 60,
         }
+        self.time_slots = self._get_time_slots(self.hours)
 
 
     def _get_time_slots(self, hours):
@@ -32,17 +33,17 @@ class TimeSlotGenerator(object):
             to_add = random.randint(1,4)
             minute_section = self.number_gen[to_add]
             total = total + minute_section
-            print ("adding %s : left to go %s" % (minute_section, in_minutes - total))
+            #print ("adding %s : left to go %s" % (minute_section, in_minutes - total))
             slots.append(minute_section)
 
         
         if total > in_minutes:
 
-            print ("oops. went over. total is %s" % total)            
+            #print ("oops. went over. total is %s" % total)            
             #get the last item in the list
             last_item = slots[-1]
 
-            print ("removing %s minutes" % last_item)
+            #print ("removing %s minutes" % last_item)
 
             #subtract it from the total
             total = total - last_item
@@ -52,7 +53,7 @@ class TimeSlotGenerator(object):
 
             # MAY : further subdivide later
             to_add = in_minutes - total
-            print ("adding %s minutes" % to_add)
+            #print ("adding %s minutes" % to_add)
 
             #add it to the list
             if to_add != 0:
@@ -61,9 +62,6 @@ class TimeSlotGenerator(object):
                 slots = slots[:-1] 
             
 
-        print (slots)
         return slots
 
 
-gen = TimeSlotGenerator(4)
-gen._get_time_slots(4)

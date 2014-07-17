@@ -8,7 +8,7 @@ from src.classes import (
 
 
 
-TEST_DATA_1 = "db/json/test_data_one.json"
+TEST_DATA_1 = "db/json/task/taskdb.json"
 adapter = JsonAdapter(file_name=TEST_DATA_1)
 
 #FAKE_DATA_1 = "test/test_data/not_real"

@@ -1,0 +1,17 @@
+[
+    {
+        "type" : "Exam",
+        "description" : "Science Exam",
+        "due_date" : "20140731"
+    }, 
+    {
+        "type" : "Paper",
+        "description" : "History Paper",
+        "due_date" : "20140731"
+    }, 
+    {
+        "type" : "Project",
+        "description" : "Science Exam",
+        "due_date" : "20140731"
+    } 
+]
