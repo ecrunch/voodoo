@@ -1,20 +1,11 @@
 
 import unittest
 
-from src.adapters import JsonAdapter, DbAdapter
+from src.adapters import JsonAdapter
 from src.classes import (
     Task, Exam, Project, Paper, Homework,
 )
 
-
-
-TEST_DATA_1 = "db/json/task/taskdb.json"
-adapter = JsonAdapter(file_name=TEST_DATA_1)
-
-#FAKE_DATA_1 = "test/test_data/not_real"
-#adapter = JsonAdapter(file_name=FAKE_DATA_1)
-
-adapter.print_tasks()
 
 
 class TestAdapter(unittest.TestCase):

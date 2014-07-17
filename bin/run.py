@@ -1,13 +1,28 @@
 
-from src.adapters import DbAdapter
+
+from src.scheduler import Scheduler
+from optparse import OptionParser
+
+opt_parser = OptionParser()
+opt_parser.add_option("--hours", dest="num_hours")
+(options, args) = opt_parser.parse_args() 
 
 
 
 
-### TODO stuff in here
+def main():
+
+    if options.num_hours:
+        try:
+            hours = int(options.num_hours)
+        except:
+            print("Must enter a valid number of hours")
+            return
+    else:
+        hours = 4
+
+    scheduler = Scheduler(hours)
+    scheduler.print_schedule()
 
 
-# db = DbAdapter("db/example.db")
-
-
-print("Look at this tutorial : https://docs.python.org/2/library/sqlite3.html#sqlite3.Connection")
+main()

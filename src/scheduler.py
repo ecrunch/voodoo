@@ -17,14 +17,17 @@ BREAK_DB = "db/json/break/breakdb.json"
 
 class Scheduler(object):
 
-    def __init__(self, hours):
+    def __init__(self, hours, 
+            taskdb=TASK_DB, wantdb=WANT_DB, breakdb=BREAK_DB):
+        
+        
         self.hours = hours
         self.generator = TimeSlotGenerator(hours)
         self.minutes_array = self.generator
        
-        self.task_adapter = TaskJsonAdapter(TASK_DB)
-        self.want_adapter = WantJsonAdapter(WANT_DB)
-        self.break_adapter = BreakJsonAdapter(BREAK_DB)
+        self.task_adapter = TaskJsonAdapter(taskdb)
+        self.want_adapter = WantJsonAdapter(wantdb)
+        self.break_adapter = BreakJsonAdapter(breakdb)
 
         self.schedule = self.make_schedule()
     
@@ -61,15 +64,22 @@ class Scheduler(object):
         
 
     def print_schedule(self):
-        
+
+        in_minutes = self.hours*60
+        total = 0
+
+
         for item in self.schedule:
-            
+           
+
+            total = total + item["timeslot"]
+            time_remaining = in_minutes - total
+
             print("|--------------------------------->")
             
-            print("|Time Slot : %s\n|Item : %s" % (item["timeslot"], item["item"]))
+            print("|Activity length : %s minutes\n|Activity : %s\n|Time Spent : %s minutes\n|Time Remaining : %s minutes" % (
+                item["timeslot"], item["item"], total, time_remaining))
  
 
         print("|--------------------------------->")
 
-scheduler = Scheduler(4)
-scheduler.print_schedule()

@@ -11,7 +11,6 @@
 import json
 import sys
 import datetime
-import sqlite3
 
 
 from src.classes import (
