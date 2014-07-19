@@ -1,0 +1,27 @@
+<html ng-app="myApp">
+
+    <head>
+        <!-- angular JS -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+        
+        <!-- javascript files-->
+        <script type="text/javascript" src= "static/controllers.js"></script>
+
+    </head>
+
+
+    <div ng-controller= "Main">
+        <body>
+            <h3> Schedule </h3>
+
+            <div ng-controller= "SchedulerCtrl">
+                
+                    <div ng-repeat = "item in schedule"> 
+                            Time Slot : {{ "{{ item.time_slot }}" }}
+                            Description : {{ "{{ item.description }}" }}
+                    </div>
+            </div>
+
+        </body>
+    </div>
+</html>
