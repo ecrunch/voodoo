@@ -12,8 +12,6 @@ TASK_DB = "db/json/task/taskdb.json"
 BREAK_DB = "db/json/break/breakdb.json"
 
 
-#generator = TimeSlotGenerator(4)
-#print (generator.time_slots)
 
 class Scheduler(object):
 

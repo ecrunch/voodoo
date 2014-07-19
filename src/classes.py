@@ -1,7 +1,6 @@
 
 import math
 import datetime
-from lib import statistics
 
 EXAM_INITIAL_SCORE = 5 
 PROJECT_INITIAL_SCORE = 4

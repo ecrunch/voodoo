@@ -4,31 +4,28 @@ import datetime
 from lib import statistics
 
 
+
 class Scorer(object):
 
     # needs a db to look at
-    def __init__(self, db):
+    def __init__(self, db, tasks):
         self.db = db
         self.score_total = 0
         self.score_list = []
-        self.task_list = self._populate_task_list()
+        self.task_list = tasks
+        
+        for task in self.task_list:
+            self.score_list.append(task.get_score())
+       
+
+        for score in self.score_list:
+            self.score_total = self.score_total + score       
+ 
         self.placement_list = self._get_placement()
 
         self.current_task = None
+       
         
-
-    def _populate_task_list(self):
-        task_list = []
-        for task in self.db.contents:
-
-            task_list.append(task)
-
-            score = task.get_score()
-            self.score_total = self.score_total + score
-            self.score_list.append(score)
-            
-        return task_list
-
 
     def print_all_scores(self):
         for task in self.task_list:
@@ -108,22 +105,3 @@ class Scorer(object):
         #print ("------------------")
         return result"""
 
-        
-
-
-
-
-## wrapper for DB
-# will have actual DB connection code here
-class MockDB(object):
-
-    def __init__(self):
-        self.contents = []
-
-    def save(self, task):
-        self.contents.append(task)
-
-
-
-
-    

@@ -112,7 +112,7 @@ class TestSchedulerClass(unittest.TestCase):
         self.db.save(self.paper)
         self.db.save(self.homework)
         
-        self.scorer = Scorer(self.db)
+        self.scorer = Scorer(self.db, [self.exam, self.project, self.paper, self.homework])
         
 
     def tearDown(self):
