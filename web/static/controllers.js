@@ -11,7 +11,18 @@ myApp.controller("Main", function($scope){
 
 myApp.controller("SchedulerCtrl", function($scope, $http){
 
-    $scope.schedule = [{"time_slot" : "15", "description" : "reddit"}];
+    $scope.schedule = [{"timeslot" : "15", "item" : "reddit"}];
+
+    //$scope.schedule = []
+
+
+    //var scheduler = "/make_schedule";
+    //$http.get(scheduler).success(function(data){
+    //    alert(data[1]); 
+    //    $scope.schedule = data;
+    //});
+
+
 
 });
 
