@@ -1,12 +1,13 @@
 
 
 import logging
-
+import json
 
 
 
 from lib._flask.flask import (
-    Flask, render_template, url_for, jsonify
+    Flask, render_template, url_for, 
+    jsonify, Response, request
 )
 
 
@@ -28,18 +29,24 @@ def hello_world():
 
 
 
-@app.route('/make_schedule')
-def make_schedule():
+@app.route('/get_schedule/<hours>')
+def get_schedule(hours=4):
+   
+   
+   
+    hours = int(hours)
+    scheduler = Scheduler(int(hours))
     
-    scheduler = Scheduler(4)
     
+    for spot in scheduler.schedule:
+  
+        # SHOULD : soon come up with a better way to force json
+        
+        if not type(spot["item"]) == dict:
+            spot["item"] = {"description" : str(type(spot["item"]))} 
 
-    scheduler.print_schedule()
+    return json.dumps(scheduler.schedule)
     
-    print scheduler.schedule
-
-
-    return jsonify(scheduler.schedule)
 
 
 

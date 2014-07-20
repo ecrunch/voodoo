@@ -1,6 +1,15 @@
 <html ng-app="myApp">
 
     <head>
+       
+        <!-- jquery-->
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        
+        <!-- twitter boot strap -->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        
+        
         <!-- angular JS -->
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
         
@@ -10,17 +19,80 @@
     </head>
 
 
+
+    
+
     <div ng-controller= "Main">
         <body>
-            <h3> Schedule </h3>
-
-            <div ng-controller= "SchedulerCtrl">
-                
-                    <div ng-repeat = "item in schedule"> 
-                            Time Slot : {{ "{{ item.timeslot }}" }}
-                            Description : {{ "{{ item.item }}" }}
-                    </div>
+            
+           
+          
+            <!-- header --> 
+            <div class= "container"> 
+            <h1> Voodoo-rific </h1>
             </div>
+            
+            
+            <!-- first row -->
+            <div class= "container">
+
+            <div class= "row">   
+                <div ng-controller= "SchedulerCtrl">
+                <div class= "col-sm-6">
+               
+                    <h3> {{ "{{header_hour}}" }} hour Schedule </h3>
+                    <input type= "text" ng-model="hours"> </input> : hours
+                    <input type= "button" ng-click= "update_schedule()" value= "New Schedule"> </input>
+                    </br></br>
+                
+                    <!-- schedule table--> 
+                    <div class= "container">  
+                        <table>
+                
+                            <tr>
+                                <td> <b> Description </b> </td>
+                                <td> <b> Minutes </b> </td>
+                            </tr>
+
+                            <tr ng-repeat = "slot in schedule">
+                                <td>
+                                    <a href= "#" ng-click= "display_item(slot.item)"</a>
+                                        {{ "{{slot.item.description}}" }}
+                                    </a> 
+                                </td>
+                                <td>
+                                    {{ "{{ slot.timeslot }}" }}
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                </div> <!-- end of column -->
+                <div class= "col-sm-6">
+                  
+                    <div ng-controller= "InfoCtrl">
+                   
+                  
+                        <div ng-show= "show_item"> 
+                            <h3> {{ "{{selected_item.description}}" }} </h3>
+                    
+                            <!-- the item info-->
+                            <div class= "container">
+                         
+                            </div>
+                        </div> <!-- end of ngshow-->
+
+                    </div> <!-- end of info ctrl -->
+                
+                </div> <!-- end of column -->
+
+                </div> <!-- end of schedule controller -->
+
+
+            </div> <!-- end of row -->
+
+            </div> <!-- end of container -->
 
         </body>
     </div>

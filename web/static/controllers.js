@@ -11,17 +11,51 @@ myApp.controller("Main", function($scope){
 
 myApp.controller("SchedulerCtrl", function($scope, $http){
 
-    $scope.schedule = [{"timeslot" : "15", "item" : "reddit"}];
 
-    //$scope.schedule = []
+    $scope.schedule = [];
+    $scope.hours = 4;
+
+    $scope.selected_item = null;
+    $scope.show_item = false;
 
 
-    //var scheduler = "/make_schedule";
-    //$http.get(scheduler).success(function(data){
-    //    alert(data[1]); 
-    //    $scope.schedule = data;
-    //});
 
+
+    var scheduler = "/get_schedule/" + $scope.hours;
+    $http.get(scheduler).success(function(data){ 
+        $scope.schedule = data;
+        $scope.header_hour = $scope.hours;
+    });
+
+    $scope.update_schedule = function update_schedule(){
+        //alert("New schedule covering " + $scope.hours + " hours");
+
+        var scheduler = "/get_schedule/" + $scope.hours;
+         
+        $http.get(scheduler).success(function(data){ 
+            $scope.schedule = data;
+            $scope.header_hour = $scope.hours;
+            $scope.show_item = false;
+        });
+
+    }
+
+
+    $scope.display_item = function display_item(item){
+
+        $scope.selected_item = item;
+        $scope.show_item = true;
+
+    }
+
+
+
+
+});
+
+
+
+myApp.controller("InfoCtrl", function($scope, $http){
 
 
 });
