@@ -1,3 +1,8 @@
 
 # gets rid of .pyc files
 *.pyc
+
+
+#gets rid of .swp files
+*.swp
+
