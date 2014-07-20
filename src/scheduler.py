@@ -7,6 +7,7 @@ from src.adapters import (
     )
 
 
+# defaults
 WANT_DB = "db/json/want/wantdb.json"
 TASK_DB = "db/json/task/taskdb.json"
 BREAK_DB = "db/json/break/breakdb.json"
@@ -23,9 +24,9 @@ class Scheduler(object):
         self.generator = TimeSlotGenerator(hours)
         self.minutes_array = self.generator
        
-        self.task_adapter = TaskJsonAdapter(taskdb)
-        self.want_adapter = WantJsonAdapter(wantdb)
-        self.break_adapter = BreakJsonAdapter(breakdb)
+        self.task_adapter = TaskJsonAdapter(file_name = taskdb)
+        self.want_adapter = WantJsonAdapter(file_name = wantdb)
+        self.break_adapter = BreakJsonAdapter(file_name = breakdb)
 
         self.schedule = self.make_schedule()
     

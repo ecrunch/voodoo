@@ -18,17 +18,38 @@ from src.classes import (
 )
 
 
+
+
+# Multi purpose adapter class that can accept a json struct
+# or a json file
+
 class JsonAdapter(object):
 
-    def __init__(self, file_name):
+    def __init__(self, data=None, file_name=None):
         
-        self.file_name = file_name
-        try:
-            self.data = self._load_json_data(file_name)
-        except:
-            self.data = []
+        # we don't have a json struct
+        if data is None:
+            
+            # we have a file name
+            if file_name:
+                
+                try:
+                    self.data = self._load_json_from_file(file_name)
+                except:
+                    self.data = []
 
-    def _load_json_data(self, file_name):
+
+            # data is []
+            else:
+                self.data = []
+
+        # use the default data
+        else:
+            self.data = data
+
+
+
+    def _load_json_from_file(self, file_name):
 
         with open(file_name) as f:
             d = json.load(f)
@@ -40,8 +61,8 @@ class JsonAdapter(object):
 
 class TaskJsonAdapter(JsonAdapter):
 
-    def __init__(self, file_name):
-        JsonAdapter.__init__(self, file_name)
+    def __init__(self, data = None, file_name = None):
+        JsonAdapter.__init__(self, data = data, file_name = file_name)
         self.items = self._make_tasks()
 
     def _make_tasks(self):
@@ -92,8 +113,8 @@ class TaskJsonAdapter(JsonAdapter):
 
 class WantJsonAdapter(JsonAdapter):
  
-    def __init__(self, file_name):
-        JsonAdapter.__init__(self, file_name)
+    def __init__(self, data = None, file_name = None):
+        JsonAdapter.__init__(self, data = data, file_name = file_name)
         self.items = self._make_wants()
 
 
@@ -121,8 +142,8 @@ class WantJsonAdapter(JsonAdapter):
 class BreakJsonAdapter(JsonAdapter):
 
 
-    def __init__(self, file_name):
-        JsonAdapter.__init__(self, file_name)
+    def __init__(self, data = None, file_name = None):
+        JsonAdapter.__init__(self, data = data, file_name = file_name)
         self.items = self._make_breaks()
     
     

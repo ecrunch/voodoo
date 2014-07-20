@@ -34,7 +34,7 @@ def make_schedule():
     scheduler = Scheduler(4)
     
 
-    #scheduler.print_schedule()
+    scheduler.print_schedule()
     
     print scheduler.schedule
 

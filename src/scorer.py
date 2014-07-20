@@ -58,8 +58,8 @@ class Scorer(object):
        
        zscore =(x-mean)/sd
 
-       print ("task name : %s" % task_name)
-       print ("z score : %s" % zscore)
+       #print ("task name : %s" % task_name)
+       #print ("z score : %s" % zscore)
 
        if zscore >=.8416:
            placement='I'
@@ -70,7 +70,7 @@ class Scorer(object):
        else:
            placement='N'
            
-       print ("placement: %s" % placement)
+       #print ("placement: %s" % placement)
        
        return placement
 
