@@ -100,6 +100,23 @@ class TaskJsonAdapter(JsonAdapter):
             print(item)
 
 
+    # gets a randomized json form for the index
+    # passed in
+    def get_ith_json(self, index):
+        
+        task = self.items[index]
+        
+        task_struct = {
+            "class" : "Task",
+            "type" : str(type(task)),
+            "description" : task.name,
+            "due_date" : str(task.due_date),
+            "score" : task.get_score()
+        } 
+
+        return task_struct             
+
+
     def print_items(self):
         for task in self.items:
 
@@ -131,6 +148,20 @@ class WantJsonAdapter(JsonAdapter):
         for item in self.data:
             print(item)
 
+    # gets a randomized json form for the index
+    # passed in
+    def get_ith_json(self, index):
+        
+        want = self.items[index]
+        
+        want_struct = {
+            "class" : "Want",
+            "description" : want["description"],
+            "category" : want["category"]
+        } 
+
+        return want_struct             
+    
     def print_items(self):
         for want in self.items:
             print("|--------------------------->")
@@ -160,6 +191,19 @@ class BreakJsonAdapter(JsonAdapter):
             print(item)
         return
 
+    # gets a randomized json form for the index
+    # passed in
+    def get_ith_json(self, index):
+        
+        _break = self.items[index]
+        
+        break_struct = {
+            "class" : "Break",
+            "description" : _break["description"]
+        } 
+
+        return break_struct             
+    
     def print_items(self):
         
         for _break in self.items:

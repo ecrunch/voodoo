@@ -16,9 +16,10 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     $scope.hours = 4;
 
     $scope.selected_item = null;
+    
+    $scope.item_display = [];
     $scope.show_item = false;
-
-
+    
 
 
     var scheduler = "/get_schedule/" + $scope.hours;
@@ -44,6 +45,35 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     $scope.display_item = function display_item(item){
 
         $scope.selected_item = item;
+        
+        //is a task
+        if($scope.selected_item["class"] == "Task"){
+         
+            $scope.item_display = [
+                {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
+                {"field_name" : "Score", "field_value" : $scope.selected_item["score"]},
+                {"field_name" : "Due Date", "field_value" : $scope.selected_item["due_date"]}
+            ];
+        }
+        
+        else{
+
+            //is a want
+            if($scope.selected_item["class"] == "Want"){ 
+                $scope.item_display = [
+                    {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
+                    {"field_name" : "Category", "field_value" : $scope.selected_item["category"]}
+                ];
+            }  
+
+            //is a break
+            else{
+                $scope.item_display = [
+                    {"field_name" : "Type", "field_value" : $scope.selected_item["class"]}
+                ];
+            }
+        }
+
         $scope.show_item = true;
 
     }

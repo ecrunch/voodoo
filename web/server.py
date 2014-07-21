@@ -36,14 +36,8 @@ def get_schedule(hours=4):
    
     hours = int(hours)
     scheduler = Scheduler(int(hours))
+     
     
-    
-    for spot in scheduler.schedule:
-  
-        # SHOULD : soon come up with a better way to force json
-        
-        if not type(spot["item"]) == dict:
-            spot["item"] = {"description" : str(type(spot["item"]))} 
 
     return json.dumps(scheduler.schedule)
     

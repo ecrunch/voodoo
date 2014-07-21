@@ -11,7 +11,17 @@
     }, 
     {
         "type" : "Project",
-        "description" : "Science Exam",
+        "description" : "Science Project",
+        "due_date" : "20140731"
+    },
+    {
+        "type" : "Homework",
+        "description" : "Math Homework",
+        "due_date" : "20140731"
+    }, 
+    {
+        "type" : "Homework",
+        "description" : "Reading Homework",
         "due_date" : "20140731"
     } 
 ]

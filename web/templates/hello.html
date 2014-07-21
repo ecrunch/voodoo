@@ -24,9 +24,7 @@
 
     <div ng-controller= "Main">
         <body>
-            
-           
-          
+                      
             <!-- header --> 
             <div class= "container"> 
             <h1> Voodoo-rific </h1>
@@ -47,7 +45,7 @@
                 
                     <!-- schedule table--> 
                     <div class= "container">  
-                        <table>
+                        <table border="1">
                 
                             <tr>
                                 <td> <b> Description </b> </td>
@@ -79,7 +77,19 @@
                     
                             <!-- the item info-->
                             <div class= "container">
-                         
+                                
+                                <table border="1">
+                                    <tr>
+                                        <td ng-repeat = "field in item_display"> 
+                                            <b> {{ "{{field.field_name}}" }} </b>
+                                        </td>
+                                    </tr>
+                                    <tr> 
+                                        <td ng-repeat = "field in item_display">
+                                            {{ "{{field.field_value}}" }}
+                                        </td>
+                                    </tr>
+                                </table>                                 
                             </div>
                         </div> <!-- end of ngshow-->
 

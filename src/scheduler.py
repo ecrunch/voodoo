@@ -40,7 +40,7 @@ class Scheduler(object):
             if slot == 15:
                 number_items = len(self.break_adapter.items)
                 random_int = random.randint(0, number_items-1)
-                schedule.append({"timeslot" : slot, "item" : self.break_adapter.items[random_int]})
+                schedule.append({"timeslot" : slot, "item" : self.break_adapter.get_ith_json(random_int)})
 
             #a want or task
             else:
@@ -50,13 +50,13 @@ class Scheduler(object):
                 if random_int == 1:
                     number_items = len(self.want_adapter.items)
                     random_int = random.randint(0, number_items-1)
-                    schedule.append({"timeslot" : slot, "item" : self.want_adapter.items[random_int]})
+                    schedule.append({"timeslot" : slot, "item" : self.want_adapter.get_ith_json(random_int)})
 
                 # a task
                 else:
                     number_items = len(self.task_adapter.items)
                     random_int = random.randint(0, number_items-1)
-                    schedule.append({"timeslot" : slot, "item" : self.task_adapter.items[random_int]})
+                    schedule.append({"timeslot" : slot, "item" : self.task_adapter.get_ith_json(random_int)})
 
 
         return schedule
