@@ -22,7 +22,6 @@ class Scheduler(object):
         
         self.hours = hours
         self.generator = TimeSlotGenerator(hours)
-        self.minutes_array = self.generator
        
         self.task_adapter = TaskJsonAdapter(file_name = taskdb)
         self.want_adapter = WantJsonAdapter(file_name = wantdb)
