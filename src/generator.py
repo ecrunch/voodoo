@@ -27,14 +27,49 @@ class TimeSlotGenerator(object):
         total = 0
         slots = []
 
+
+        # was the last slot a 15 or not
+        coming_off_break = False
+       
+        # once we get to 90, default to break 
+        time_without_break = 0
+
+
+
         while total <= in_minutes:
             if total == in_minutes:
                 break
 
-            to_add = random.randint(1, 4)
+
+            # we have worked to hard and deserve a break
+            if time_without_break >= 90:
+                to_add = 1
+                time_without_break = 0
+
+            # we are coming off a 15 min break
+            elif coming_off_break:            
+                to_add = random.randint(2, 4)
+
+            # not coming off a break
+            else:
+                to_add = random.randint(1, 4)
+                
+            
             minute_section = self.number_gen[to_add]
+            
+            if minute_section == 15:
+                coming_off_break = True
+            else:
+                coming_off_break = False
+            
+            
             total = total + minute_section
+            time_without_break = time_without_break + minute_section
+
+
             slots.append(minute_section)
+
+        
 
         # we have gone over our total
         if total > in_minutes:
@@ -48,8 +83,14 @@ class TimeSlotGenerator(object):
 
             #figure out the correct segment to add
             #to get us to the total
+
+
             # MAY : further subdivide later
             to_add = in_minutes - total
+
+
+            ## Need to do some logic in here that will deal
+            # with ending 2 breaks in a row 
 
             # replace the last number if we
             # need to add a final slot
