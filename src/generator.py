@@ -39,11 +39,9 @@ class TimeSlotGenerator(object):
         
         if total > in_minutes:
 
-            #print ("oops. went over. total is %s" % total)            
             #get the last item in the list
             last_item = slots[-1]
 
-            #print ("removing %s minutes" % last_item)
 
             #subtract it from the total
             total = total - last_item
@@ -53,7 +51,6 @@ class TimeSlotGenerator(object):
 
             # MAY : further subdivide later
             to_add = in_minutes - total
-            #print ("adding %s minutes" % to_add)
 
             #add it to the list
             if to_add != 0:
