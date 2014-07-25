@@ -4,7 +4,7 @@ import random
 
 class TimeSlotGenerator(object):
 
-    def __init__(self, hours):
+    def __init__(self, hours, slots= None):
         self.hours = hours
         self.number_gen = {
             1 : 15,
@@ -12,31 +12,31 @@ class TimeSlotGenerator(object):
             3 : 45,
             4 : 60,
         }
-        self.time_slots = self._get_time_slots(self.hours)
+
+        # we pass in a list of times for easier testing
+        # SHOULD : assert that the total equals self.hours
+        if slots:
+            self.time_slots = slots
+        else:
+            self.time_slots = self._get_time_slots(self.hours)
 
 
     def _get_time_slots(self, hours):
-        
-
 
         in_minutes = hours*60
-        quadrants = in_minutes/15
         total = 0
         slots = []
-        
+
         while total <= in_minutes:
-            
             if total == in_minutes:
                 break
 
-            
-            to_add = random.randint(1,4)
+            to_add = random.randint(1, 4)
             minute_section = self.number_gen[to_add]
             total = total + minute_section
-            #print ("adding %s : left to go %s" % (minute_section, in_minutes - total))
             slots.append(minute_section)
 
-        
+        # we have gone over our total
         if total > in_minutes:
 
             #get the last item in the list
@@ -48,16 +48,18 @@ class TimeSlotGenerator(object):
 
             #figure out the correct segment to add
             #to get us to the total
-
             # MAY : further subdivide later
             to_add = in_minutes - total
 
-            #add it to the list
+            # replace the last number if we
+            # need to add a final slot
             if to_add != 0:
                 slots[-1] = to_add
+
+            # remove the last number if already
+            # all slots filled
             else:
-                slots = slots[:-1] 
-            
+                slots = slots[:-1]
 
         return slots
 
