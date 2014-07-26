@@ -48,11 +48,15 @@
                         <table border="1">
                 
                             <tr>
+                                <td> <b> Item Number </b> </td>
                                 <td> <b> Description </b> </td>
                                 <td> <b> Minutes </b> </td>
                             </tr>
 
                             <tr ng-repeat = "slot in schedule">
+                                <td>
+                                    {{ "{{slot.number}}" }} )
+                                </td>
                                 <td>
                                     <a href= "#" ng-click= "display_item(slot.item)"</a>
                                         {{ "{{slot.item.description}}" }}

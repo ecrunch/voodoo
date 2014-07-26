@@ -1,7 +1,10 @@
 
 import random
 
+import logging
+
 from src.generator import TimeSlotGenerator
+from src.scorer import Scorer
 from src.adapters import (
     JsonAdapter, TaskJsonAdapter, WantJsonAdapter, BreakJsonAdapter
     )
@@ -27,19 +30,74 @@ class Scheduler(object):
         self.want_adapter = WantJsonAdapter(file_name = wantdb)
         self.break_adapter = BreakJsonAdapter(file_name = breakdb)
 
+
+        self.scorer = Scorer(db= None, tasks= self.task_adapter.items)
+
+        self.i_index = 0
+        self.g_index = 0
+        self.n_index = 0
+
+        self.i_items = []
+        self.g_items = []
+        self.n_items = []
+
+        # fill the items in
+        self._fill_items() 
+
+
         self.schedule = self.make_schedule()
+   
+ 
+ 
+    def _fill_items(self):
+ 
+        for task in self.task_adapter.items:
+            
+            placement = self.scorer.get_placement(task)
     
-    def make_schedule(self):
+            if placement == 'I':
+                self.i_items.append(task)
+            
+            elif placement == 'G':
+                self.g_items.append(task)
+
+            elif placement == 'R':
+                self.n_items.append(task)
+ 
+            elif placement == 'N':
+                self.n_items.append(task)
+            else:
+                pass
+
+ 
+  
+    def _reset_index(self): 
+        self.i_index = 0
+        self.g_index = 0
+        self.n_index = 0
+        return
+   
+    
+    def make_schedule(self, repeat_items=True):
         
         schedule = []
         time_slots = self.generator.time_slots
+        
+        chosen_item_list = self.i_items
+        chosen_index = self.i_index
+
+        number = 1
+
+
         for slot in time_slots:
            
             #breaks get 15 min slots
             if slot == 15:
+
+                print("A break")
                 number_items = len(self.break_adapter.items)
                 random_int = random.randint(0, number_items-1)
-                schedule.append({"timeslot" : slot, "item" : self.break_adapter.get_ith_json(random_int)})
+                schedule.append({"number" : number, "timeslot" : slot, "item" : self.break_adapter.get_ith_json(random_int)})
 
             #a want or task
             else:
@@ -47,16 +105,61 @@ class Scheduler(object):
                 
                 # a want
                 if random_int == 1:
+
+                    print("A want")
                     number_items = len(self.want_adapter.items)
                     random_int = random.randint(0, number_items-1)
-                    schedule.append({"timeslot" : slot, "item" : self.want_adapter.get_ith_json(random_int)})
+                    schedule.append({"number" : number, "timeslot" : slot, "item" : self.want_adapter.get_ith_json(random_int)})
 
                 # a task
                 else:
-                    number_items = len(self.task_adapter.items)
-                    random_int = random.randint(0, number_items-1)
-                    schedule.append({"timeslot" : slot, "item" : self.task_adapter.get_ith_json(random_int)})
-
+          
+                    print("A task")          
+                    
+                    if self.i_index < len(self.i_items):
+                        print("Item in I bucket")
+                        chosen_item_list = self.i_items
+                        chosen_index = self.i_index
+                        self.i_index = self.i_index + 1
+                    else:
+                        if self.g_index < len(self.g_items): 
+                            print("Item in G bucket")
+                            chosen_item_list = self.g_items
+                            chosen_index = self.g_index
+                            self.g_index = self.g_index + 1
+                        else:
+                            if self.n_index < len(self.n_items):
+                                print("Item in N bucket")                
+                                chosen_item_list = self.n_items
+                                chosen_index = self.n_index
+                                self.n_index = self.n_index + 1
+                            else:
+                                # we will need to reset or quit
+                                if repeat_items:                 
+                                    print("Resetting buckets")
+                                    self._reset_index()
+                                    #starts off with the first thing of the most recent list
+                                    chosen_index = 0
+                                else:
+                                    #return schedule
+                                    pass
+                    
+                    
+                    task = chosen_item_list[chosen_index]
+                    placement = self.scorer.get_placement(task)
+                   
+                    task_struct = {
+                        "class" : "Task",
+                        "type" : str(type(task)),
+                        "description" : task.name,
+                        "due_date" : str(task.due_date),
+                        "score" : task.get_score(),
+                        "placement" : placement      
+                    } 
+                    schedule.append({"number" : number, "timeslot" : slot, "item" : task_struct}) 
+                   
+        
+            number = number + 1
 
         return schedule
         

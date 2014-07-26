@@ -2,26 +2,26 @@
     {
         "type" : "Exam",
         "description" : "Science Exam",
-        "due_date" : "20140731"
+        "due_date" : "20140727"
     }, 
     {
         "type" : "Paper",
         "description" : "History Paper",
-        "due_date" : "20140731"
+        "due_date" : "20140727"
     }, 
     {
         "type" : "Project",
         "description" : "Science Project",
-        "due_date" : "20140731"
+        "due_date" : "20140727"
     },
     {
         "type" : "Homework",
         "description" : "Math Homework",
-        "due_date" : "20140731"
+        "due_date" : "20140727"
     }, 
     {
         "type" : "Homework",
         "description" : "Reading Homework",
-        "due_date" : "20140731"
+        "due_date" : "20140727"
     } 
 ]

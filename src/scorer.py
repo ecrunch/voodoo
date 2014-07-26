@@ -74,6 +74,23 @@ class Scorer(object):
        
        return placement
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################## What is this stuff? Do we need it?
+
     """def _get_nom_dists(self):
         
         nom_dist = []

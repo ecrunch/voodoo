@@ -52,6 +52,7 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
             $scope.item_display = [
                 {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
                 {"field_name" : "Score", "field_value" : $scope.selected_item["score"]},
+                {"field_name" : "Placement", "field_value" : $scope.selected_item["placement"]},
                 {"field_name" : "Due Date", "field_value" : $scope.selected_item["due_date"]}
             ];
         }
