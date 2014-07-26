@@ -11,11 +11,26 @@
 import json
 import sys
 import datetime
+import sqlite3
+
 
 
 from src.classes import (
     Task, Exam, Project, Paper, Homework,
 )
+
+
+
+
+class DbAdapter(object):
+
+    def __init__(self, db_loc):
+
+        self.db_loc = db_loc
+
+
+
+
 
 
 

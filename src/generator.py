@@ -41,14 +41,14 @@ class TimeSlotGenerator(object):
                 break
 
 
+            # we are coming off a 15 min break
+            if coming_off_break:            
+                to_add = random.randint(2, 4)
+            
             # we have worked to hard and deserve a break
-            if time_without_break >= 90:
+            elif time_without_break >= 90:
                 to_add = 1
                 time_without_break = 0
-
-            # we are coming off a 15 min break
-            elif coming_off_break:            
-                to_add = random.randint(2, 4)
 
             # not coming off a break
             else:
