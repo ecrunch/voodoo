@@ -12,7 +12,7 @@ import json
 import sys
 import datetime
 import sqlite3
-
+import logging
 
 
 from src.classes import (
@@ -24,14 +24,69 @@ from src.classes import (
 
 class DbAdapter(object):
 
-    def __init__(self, db_loc):
-
-        self.db_loc = db_loc
-
-
-
+    def __init__(self, path):
+        self.path = path
+        
+        
 
 
+    
+    def _connect_to_db(self, path):
+       
+        # dont know if I have to catch this or not
+        try:
+            return sqlite3.connect(path)
+        except:
+            
+            # SHOULD : raise specific exception
+            raise 
+
+
+
+    def _execute_qry(self, qry):
+       
+       
+        conn = self._connect_to_db(self.path) 
+        c = conn.cursor()
+        c.execute(qry)
+
+        #saves
+        conn.commit()
+
+        conn.close()
+
+
+
+    def _table_qry(self, table_name, names, types):
+
+        qry_str = "CREATE TABLE %s (" % table_name
+        
+        index = 0
+        for i in range(0, len(names)):
+            qry_str = qry_str + "%s %s, " % (names[index], types[index])
+            index = index + 1
+
+        return qry_str[:-2] + ")"
+        
+         
+    def _insert_qry(self, table_name, values):
+
+        qry_str = "INSERT INTO " + table_name + " VALUES ("
+        
+        index = 0
+        for i in range(0, len(values)):
+            qry_str = qry_str + "'%s', " % values[index]
+            index = index + 1
+
+        return qry_str[:-2] + ")"
+
+
+    def _all_qry(self, table_name):
+        pass
+
+
+    def _drop_qry(self, table_name):
+        return "DROP TABLE %s" % table_name
 
 
 
@@ -198,7 +253,12 @@ class BreakJsonAdapter(JsonAdapter):
         breaks = []
         for item in self.data:
             description = item["description"]
-            breaks.append({"description" : description}) 
+            
+            if item["url"]:
+                url = item["url"]
+            else:
+                url = "N/A"
+            breaks.append({"description" : description, "url" : url}) 
         return breaks
         
     def print_data(self):
@@ -214,7 +274,8 @@ class BreakJsonAdapter(JsonAdapter):
         
         break_struct = {
             "class" : "Break",
-            "description" : _break["description"]
+            "description" : _break["description"],
+            "url" : _break["url"]
         } 
 
         return break_struct             

@@ -1,11 +1,14 @@
 [
     {
-        "description" : "Go on YouTube"
+        "description" : "Go on YouTube",
+        "url" : "https://www.youtube.com/"
     }, 
     {
-        "description" : "Go on Imgur"
+        "description" : "Go on Imgur",
+        "url" : "http://imgur.com/"
     }, 
     {
-        "description" : "Go on Reddit"
+        "description" : "Go on Reddit",
+        "url" : "http://www.reddit.com/"
     } 
 ]

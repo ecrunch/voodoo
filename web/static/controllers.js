@@ -70,7 +70,8 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
             //is a break
             else{
                 $scope.item_display = [
-                    {"field_name" : "Type", "field_value" : $scope.selected_item["class"]}
+                    {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
+                    {"field_name" : "URL", "field_value" : $scope.selected_item["url"]}
                 ];
             }
         }
@@ -80,7 +81,11 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     }
 
 
-
+    $scope.finish_item = function finish_item(item){
+   
+        //alert(item.number);
+         
+    }
 
 });
 
