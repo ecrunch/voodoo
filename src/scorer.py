@@ -55,18 +55,8 @@ class Scorer(object):
        task_name = task.name
        mean = self.get_mean()
        sd = self.get_standard_dev()
-      
+       sd= sd+.000000000001
 
-       # HACK AS FUCK FIX TO MAKE IT WORK FIX SOON
-       if sd == 0:
-           sd = sd + 0.001
-
-
-       if sd == 0:
-            raise Exception(
-                "divide by zero!!! name : %s, score : %s, mean : %s, sd : %s" % (task_name, x, mean, sd))
-      
-       
        zscore =(x-mean)/sd
 
        #print ("task name : %s" % task_name)
