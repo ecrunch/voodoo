@@ -201,7 +201,7 @@ def insert_dialog(DB_CONN):
         print("want?")
         want = raw_input()
 
-        print("wtype)
+        print("wtype")
         wtype = raw_input()
 
         insert_user(DB_CONN, want, wtype)
