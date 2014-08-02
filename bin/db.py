@@ -21,11 +21,57 @@ def create_users_db(DB_CONN):
         ['text', 'text']
     )
 
+def create_tasks_db(DB_CONN):
+
+    db_adapter = DbAdapter(DB_CONN)
+
+    db_adapter.make_table(
+        'tasks',
+        ['task', 'due_date', 'ttype'],
+        ['text', 'text', 'text']
+    )
+    
+def create_wants_db(DB_CONN):
+
+    db_adapter = DbAdapter(DB_CONN)
+
+    db_adapter.make_table(
+        'wants',
+        ['want', 'wtype'],
+        ['text', 'text']
+    )
+
+def create_breaks_db(DB_CONN):
+
+    db_adapter = DbAdapter(DB_CONN)
+
+    db_adapter.make_table(
+        'breaks',
+        ['dbreak', 'link'],
+        ['text', 'text']
+    )
+
+
 
 def insert_user(DB_CONN, username, password):
 
     db_adapter = DbAdapter(DB_CONN) 
     db_adapter.insert_row('users', [username, password])
+    
+def insert_task(DB_CONN, task, due_date, ttype):
+
+    db_adapter = DbAdapter(DB_CONN) 
+    db_adapter.insert_row('tasks', [task, due_date, ttype])
+
+def insert_want(DB_CONN, want, wtype):
+
+    db_adapter = DbAdapter(DB_CONN) 
+    db_adapter.insert_row('wants', [want, wtype])
+
+def insert_break(DB_CONN, dbreak, link):
+
+    db_adapter = DbAdapter(DB_CONN) 
+    db_adapter.insert_row('breaks', [dbreak, link])
 
 
 def list_users(DB_CONN):
@@ -34,7 +80,23 @@ def list_users(DB_CONN):
     for result in results:
         print(result)
 
+def list_tasks(DB_CONN):
+    db_adapter = DbAdapter(DB_CONN)
+    results = db_adapter.get_all('tasks')
+    for result in results:
+        print(result)
 
+def list_wants(DB_CONN):
+    db_adapter = DbAdapter(DB_CONN)
+    results = db_adapter.get_all('wants')
+    for result in results:
+        print(result)
+        
+def list_breaks(DB_CONN):
+    db_adapter = DbAdapter(DB_CONN)
+    results = db_adapter.get_all('breaks')
+    for result in results:
+        print(result)
 
 # SHOULD 
 def delete_user(DB_CONN):
@@ -45,6 +107,29 @@ def delete_users_db(DB_CONN):
     db_adapter = DbAdapter(DB_CONN)
     db_adapter.delete_table('users')
 
+def delete_task(DB_CONN):
+    pass
+
+def delete_tasks_db(DB_CONN):
+    
+    db_adapter = DbAdapter(DB_CONN)
+    db_adapter.delete_table('tasks')
+    
+def delete_want(DB_CONN):
+    pass
+
+def delete_wants_db(DB_CONN):
+    
+    db_adapter = DbAdapter(DB_CONN)
+    db_adapter.delete_table('wants')
+    
+def delete_break(DB_CONN):
+    pass
+
+def delete_breaks_db(DB_CONN):
+    
+    db_adapter = DbAdapter(DB_CONN)
+    db_adapter.delete_table('breaks')    
 
 
 def create_dialog(DB_CONN):
@@ -58,6 +143,25 @@ def create_dialog(DB_CONN):
             create_users_db(DB_CONN)
         except:
             print('Error. Users db probably already exists')
+    
+    elif input == str(2) or input == 'tasks':
+        try:
+            create_tasks_db(DB_CONN)
+        except:
+            print('Error. Users db probably already exists')
+    
+    elif input == str(3) or input == 'wants':
+        try:
+            create_wants_db(DB_CONN)
+        except:
+            print('Error. Users db probably already exists')
+    
+    elif input == str(4) or input == 'breaks':
+        try:
+            create_breaks_db(DB_CONN)
+        except:
+            print('Error. Users db probably already exists')
+    
     else:
         print("Not implemented yet")
 
@@ -78,6 +182,39 @@ def insert_dialog(DB_CONN):
         password = raw_input()
 
         insert_user(DB_CONN, username, password)
+        
+    if input == str(2) or input == 'tasks':
+
+        print("Task?")
+        task = raw_input()
+
+        print("Due Date mmddyyy?")
+        due_date = raw_input()
+        
+        print("Genre?")
+        ttype = raw_input()
+
+        insert_tasks(DB_CONN, task, due_date, ttype)
+        
+    if input == str(3) or input == 'wants':
+
+        print("want?")
+        want = raw_input()
+
+        print("wtype)
+        wtype = raw_input()
+
+        insert_user(DB_CONN, want, wtype)
+        
+    if input == str(4) or input == 'breaks':
+
+        print("break?")
+        dbreak = raw_input()
+
+        print("link")
+        link = raw_input()
+
+        insert_user(DB_CONN, dbreak, link)
     else:
         print("not implemented yet")
 
@@ -90,6 +227,16 @@ def list_dialog(DB_CONN):
 
     if input == str(1) or input == 'users':
         list_users(DB_CONN)
+    
+    elif input == str(2) or input == 'tasks':
+        list_tasks(DB_CONN)
+    
+    elif input == str(3) or input == 'wants':
+        list_wants(DB_CONN)
+    
+    elif input == str(4) or input == 'breaks':
+        list_breaks(DB_CONN)    
+    
     else:
         print("not implemented yet")
 
@@ -104,6 +251,24 @@ def delete_dialog(DB_CONN):
     if input == str(1) or input == 'users':
         try:
             delete_users_db(DB_CONN)
+        except:
+            print('Error. Users db probably does not exist')
+    
+    if input == str(2) or input == 'tasks':
+        try:
+            delete_tasks_db(DB_CONN)
+        except:
+            print('Error. Users db probably does not exist')
+    
+    if input == str(3) or input == 'wants':
+        try:
+            delete_wants_db(DB_CONN)
+        except:
+            print('Error. Users db probably does not exist')
+    
+    if input == str(4) or input == 'breaks':
+        try:
+            delete_breaks_db(DB_CONN)
         except:
             print('Error. Users db probably does not exist')
     else:
