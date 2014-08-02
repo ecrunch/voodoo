@@ -73,13 +73,11 @@ class Scorer(object):
        #print ("z score : %s" % zscore)
 
        if zscore >=.8416:
-           placement='I'
-       elif zscore >=.2533:
-           placement='G'
+           placement='E'
        elif zscore >=-.2533:
-           placement='R'
-       else:
            placement='N'
+       else:
+           placement='NT'
            
        #print ("placement: %s" % placement)
        
