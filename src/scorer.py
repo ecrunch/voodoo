@@ -55,7 +55,9 @@ class Scorer(object):
        task_name = task.name
        mean = self.get_mean()
        sd = self.get_standard_dev()
-       sd= sd+.000000000001
+       if sd == 0:
+           sd==0.00000000001
+       else:
 
        zscore =(x-mean)/sd
 
