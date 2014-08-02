@@ -25,7 +25,31 @@ class DbAdapter(object):
 
     def __init__(self, dbconn):
         self.dbconn = dbconn
+    
+     
+    def make_table(self, table_name, fields, types):
+
+        qry = self._table_qry(table_name, fields, types)
+        self._execute_qry(qry)
+   
+   
+    def insert_row(self, table_name, values):
         
+        qry = self._insert_qry(table_name, values)
+        self._execute_qry(qry)
+    
+   
+    def get_all(self, table_name):
+
+        qry = self._all_qry(table_name)
+        return self._execute_qry(qry)
+
+        
+    def delete_table(self, table_name):
+        
+        qry = self._drop_qry(table_name)
+        self._execute_qry(qry)
+
 
     def _execute_qry(self, qry):
        
@@ -39,7 +63,6 @@ class DbAdapter(object):
 
         return res
     
-
 
     def _table_qry(self, table_name, names, types):
 
