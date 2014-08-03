@@ -56,13 +56,13 @@ class Scheduler(object):
             placement = self.scorer.get_placement(task)
     
             if placement == 'E':
-                self.i_items.append(task)
+                self.e_items.append(task)
             
             elif placement == 'N':
-                self.g_items.append(task)
+                self.n_items.append(task)
 
             elif placement == 'NT':
-                self.n_items.append(task)
+                self.nt_items.append(task)
  
             else:
                 pass
