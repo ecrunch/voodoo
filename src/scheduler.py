@@ -33,13 +33,13 @@ class Scheduler(object):
 
         self.scorer = Scorer(db= None, tasks= self.task_adapter.items)
 
-        self.i_index = 0
-        self.g_index = 0
+        self.e_index = 0
         self.n_index = 0
+        self.nt_index = 0
 
-        self.i_items = []
-        self.g_items = []
+        self.e_items = []
         self.n_items = []
+        self.nt_items = []
 
         # fill the items in
         self._fill_items() 
@@ -55,26 +55,24 @@ class Scheduler(object):
             
             placement = self.scorer.get_placement(task)
     
-            if placement == 'I':
+            if placement == 'E':
                 self.i_items.append(task)
             
-            elif placement == 'G':
+            elif placement == 'N':
                 self.g_items.append(task)
 
-            elif placement == 'R':
+            elif placement == 'NT':
                 self.n_items.append(task)
  
-            elif placement == 'N':
-                self.n_items.append(task)
             else:
                 pass
 
  
   
     def _reset_index(self): 
-        self.i_index = 0
-        self.g_index = 0
+        self.e_index = 0
         self.n_index = 0
+        self.nt_index = 0
         return
    
     
@@ -83,8 +81,8 @@ class Scheduler(object):
         schedule = []
         time_slots = self.generator.time_slots
         
-        chosen_item_list = self.i_items
-        chosen_index = self.i_index
+        chosen_item_list = self.e_items
+        chosen_index = self.e_index
 
         number = 1
 
@@ -116,33 +114,27 @@ class Scheduler(object):
           
                     print("A task")          
                     
-                    if self.i_index < len(self.i_items):
+                    if self.e_index < len(self.e_items):
                         print("Item in I bucket")
-                        chosen_item_list = self.i_items
-                        chosen_index = self.i_index
-                        self.i_index = self.i_index + 1
+                        chosen_item_list = self.e_items
+                        chosen_index = self.e_index
+                        self.e_index = self.e_index + 1
                     else:
-                        if self.g_index < len(self.g_items): 
+                        if self.n_index < len(self.n_items): 
                             print("Item in G bucket")
-                            chosen_item_list = self.g_items
-                            chosen_index = self.g_index
-                            self.g_index = self.g_index + 1
+                            chosen_item_list = self.n_items
+                            chosen_index = self.n_index
+                            self.n_index = self.n_index + 1
                         else:
-                            if self.n_index < len(self.n_items):
-                                print("Item in N bucket")                
-                                chosen_item_list = self.n_items
-                                chosen_index = self.n_index
-                                self.n_index = self.n_index + 1
+                            # we will need to reset or quit
+                            if repeat_items:                 
+                                print("Resetting buckets")
+                                self._reset_index()
+                                #starts off with the first thing of the most recent list
+                                chosen_index = 0
                             else:
-                                # we will need to reset or quit
-                                if repeat_items:                 
-                                    print("Resetting buckets")
-                                    self._reset_index()
-                                    #starts off with the first thing of the most recent list
-                                    chosen_index = 0
-                                else:
-                                    #return schedule
-                                    pass
+                                #return schedule
+                                pass
                     
                     
                     task = chosen_item_list[chosen_index]
