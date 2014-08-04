@@ -11,7 +11,6 @@
 import json
 import sys
 import datetime
-import sqlite3
 import logging
 
 
@@ -24,38 +23,46 @@ from src.classes import (
 
 class DbAdapter(object):
 
-    def __init__(self, path):
-        self.path = path
-        
-        
-
-
+    def __init__(self, dbconn):
+        self.dbconn = dbconn
     
-    def _connect_to_db(self, path):
-       
-        # dont know if I have to catch this or not
-        try:
-            return sqlite3.connect(path)
-        except:
-            
-            # SHOULD : raise specific exception
-            raise 
+     
+    def make_table(self, table_name, fields, types):
 
+        qry = self._table_qry(table_name, fields, types)
+        self._execute_qry(qry)
+   
+   
+    def insert_row(self, table_name, values):
+        
+        qry = self._insert_qry(table_name, values)
+        self._execute_qry(qry)
+    
+   
+    def get_all(self, table_name):
+
+        qry = self._all_qry(table_name)
+        return self._execute_qry(qry)
+
+        
+    def delete_table(self, table_name):
+        
+        qry = self._drop_qry(table_name)
+        self._execute_qry(qry)
 
 
     def _execute_qry(self, qry):
        
        
-        conn = self._connect_to_db(self.path) 
-        c = conn.cursor()
+        c = self.dbconn.cursor()
         c.execute(qry)
+        res = c.fetchall()
 
         #saves
-        conn.commit()
+        self.dbconn.commit()
 
-        conn.close()
-
-
+        return res
+    
 
     def _table_qry(self, table_name, names, types):
 
@@ -82,7 +89,8 @@ class DbAdapter(object):
 
 
     def _all_qry(self, table_name):
-        pass
+        
+        return "SELECT * FROM %s" % table_name
 
 
     def _drop_qry(self, table_name):
