@@ -15,7 +15,7 @@ TASK_DB = "db/json/task/taskdb.json"
 WANT_DB = "db/json/want/wantdb.json"
 BREAK_DB = "db/json/break/breakdb.json"
 
-SQLITE_DB = "db/example.db"
+SQLITE_DB = "db/test/example.db"
 
 class TestAdapters(unittest.TestCase):
 
