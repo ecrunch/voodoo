@@ -22,8 +22,8 @@ def create_tasks_db(DB_CONN):
 
     db_adapter.make_table(
         'tasks',
-        ['task', 'due_date', 'ttype'],
-        ['text', 'text', 'text']
+        ['user', 'description', 'due_date', 'type'],
+        ['text', 'text', 'text', 'text']
     )
 
 
@@ -33,8 +33,8 @@ def create_wants_db(DB_CONN):
 
     db_adapter.make_table(
         'wants',
-        ['want', 'wtype'],
-        ['text', 'text']
+        ['user', 'description', 'category'],
+        ['text', 'text', 'text']
     )
 
 def create_breaks_db(DB_CONN):
@@ -43,8 +43,8 @@ def create_breaks_db(DB_CONN):
 
     db_adapter.make_table(
         'breaks',
-        ['dbreak', 'link'],
-        ['text', 'text']
+        ['user', 'description', 'link'],
+        ['text', 'text', 'text']
     )
 
 def insert_user(DB_CONN, username, password):
@@ -53,20 +53,20 @@ def insert_user(DB_CONN, username, password):
     db_adapter.insert_row('users', [username, password])
 
 
-def insert_task(DB_CONN, task, due_date, ttype):
+def insert_task(DB_CONN, user, description, due_date, type):
 
     db_adapter = DbAdapter(DB_CONN)
-    db_adapter.insert_row('tasks', [task, due_date, ttype])
+    db_adapter.insert_row('tasks', [user, description, due_date, type])
 
-def insert_want(DB_CONN, want, wtype):
-
-    db_adapter = DbAdapter(DB_CONN)
-    db_adapter.insert_row('wants', [want, wtype])
-
-def insert_break(DB_CONN, dbreak, link):
+def insert_want(DB_CONN, user, want, category):
 
     db_adapter = DbAdapter(DB_CONN)
-    db_adapter.insert_row('breaks', [dbreak, link])
+    db_adapter.insert_row('wants', [user, want, category])
+
+def insert_break(DB_CONN, user, description, link):
+
+    db_adapter = DbAdapter(DB_CONN)
+    db_adapter.insert_row('breaks', [user, description, link])
 
 
 def list_users(DB_CONN):
@@ -170,46 +170,55 @@ def insert_dialog(DB_CONN):
 
     if input == str(1) or input == 'users':
 
-        print("username?")
+        print("Username?")
         username = raw_input()
 
-        print("password")
+        print("Password?")
         password = raw_input()
 
         insert_user(DB_CONN, username, password)
 
     elif input == str(2) or input == 'tasks':
 
-        print("Task?")
-        task = raw_input()
+        print("User?")
+        user = raw_input()
 
-        print("Due Date (YYYYMMDD)?")
+        print("Task description?")
+        description = raw_input()
+
+        print("Task Due Date? (YYYYMMDD)")
         due_date = raw_input()
 
-        print("Genre?")
-        ttype = raw_input()
+        print("Task Type? (Exam, Homework, Paper, Project, Task)")
+        type = raw_input()
 
-        insert_task(DB_CONN, task, due_date, ttype)
+        insert_task(DB_CONN, user, description, due_date, type)
 
     elif input == str(3) or input == 'wants':
 
-        print("want?")
-        want = raw_input()
+        print("User?")
+        user = raw_input()
 
-        print("wtype")
-        wtype = raw_input()
+        print("Want Description?")
+        description = raw_input()
 
-        insert_want(DB_CONN, want, wtype)
+        print("Want Category?")
+        category = raw_input()
+
+        insert_want(DB_CONN, user, description, category)
 
     elif input == str(4) or input == 'breaks':
 
-        print("break?")
-        dbreak = raw_input()
+        print("User?")
+        user = raw_input()
 
-        print("link")
-        link = raw_input()
+        print("Break description?")
+        description = raw_input()
 
-        insert_break(DB_CONN, dbreak, link)
+        print("Url?")
+        url = raw_input()
+
+        insert_break(DB_CONN, user, description, url)
     else:
         print("Not a valid choice")
 

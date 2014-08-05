@@ -61,16 +61,26 @@ def get_all_users():
 
     return json.dumps(users)
 
+
+# might want to forgo constructing the object here
+# if we don't care about displaying the score
 @app.route('/all_tasks')
 def get_all_tasks():
 
-    dbconn = sqlite3.connect(DB_PATH)    
+    dbconn = sqlite3.connect(DB_PATH)
     task_adapter = TaskDbAdapter(dbconn)
-    results = task_adapter.get_all_tasks()
-    
+
+
     tasks = []
-    for result in results:
-        tasks.append({"name" : result[0], "due_date" : result[1], "category" : result[2]})
+
+    #print (task_adapter.items)
+    for item in task_adapter.items:
+        tasks.append({
+            "description" : item.name, 
+            "due_date" : str(item.due_date), 
+            "category" : str(type(item)),
+            "score" : item.get_score()
+        })
 
 
     return json.dumps(tasks)
@@ -79,39 +89,17 @@ def get_all_tasks():
 @app.route('/all_wants')
 def get_all_wants():
 
-
-    print("Getting wants")
-
     dbconn = sqlite3.connect(DB_PATH)    
     want_adapter = WantDbAdapter(dbconn)
-    results = want_adapter.get_all_wants()
-    
-    wants = []
-    for result in results:
-        wants.append({"name" : result[0], "category" : result[1]})
-
-
-    return json.dumps(wants)
+    return json.dumps(want_adapter.items)
 
 
 @app.route('/all_breaks')
 def get_all_breaks():
 
-
-    print("Getting Breaks")
-    
     dbconn = sqlite3.connect(DB_PATH)    
     break_adapter = BreakDbAdapter(dbconn)
-    
-    print("before results")
-    results = break_adapter.get_all_breaks()
- 
-    breaks = []
-    for result in results:
-        breaks.append({"name" : result[0], "url" : result[1]})
-
-
-    return json.dumps(breaks)
+    return json.dumps(break_adapter.items)
 
 
 if __name__ == '__main__':

@@ -88,7 +88,7 @@ class Scheduler(object):
             #breaks get 15 min slots
             if slot == 15:
 
-                print("A break")
+                #print("A break")
                 number_items = len(self.break_adapter.items)
                 random_int = random.randint(0, number_items-1)
                 schedule.append({"number" : number, "timeslot" : slot, "item" : self.break_adapter.get_ith_json(random_int)})
@@ -100,7 +100,7 @@ class Scheduler(object):
                 # a want
                 if random_int == 1:
 
-                    print("A want")
+                    #print("A want")
                     number_items = len(self.want_adapter.items)
                     random_int = random.randint(0, number_items-1)
                     schedule.append({"number" : number, "timeslot" : slot, "item" : self.want_adapter.get_ith_json(random_int)})
@@ -108,17 +108,17 @@ class Scheduler(object):
                 # a task
                 else:
 
-                    print("A task")
+                    #print("A task")
 
                     if self.e_index < len(self.e_items):
-                        print("Item in Essential bucket")
+                        #print("Item in Essential bucket")
                         chosen_item_list = self.e_items
                         chosen_index = self.e_index
                         self.e_index = self.e_index + 1
 
                     else:
                         if self.n_index < len(self.n_items): 
-                            print("Item in Non-Essential bucket")
+                            #print("Item in Non-Essential bucket")
                             chosen_item_list = self.n_items
                             chosen_index = self.n_index
                             self.n_index = self.n_index + 1
@@ -127,7 +127,7 @@ class Scheduler(object):
                         else:
                             # we will need to reset or quit
                             if repeat_items:
-                                print("Resetting buckets")
+                                #print("Resetting buckets")
                                 self._reset_index()
                                 #starts off with the first thing of the most recent list
                                 chosen_index=0

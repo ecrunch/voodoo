@@ -144,12 +144,14 @@
                                     <tr>
                                         <th> Name </th>
                                         <th> Due Date </th>
-                                        <th> Category </th>
+                                        <th> Class </th>
+                                        <th> Score </th>
                                     </tr>
                                     <tr ng-repeat = "task in all_tasks">
-                                        <td>{{ "{{task.name}}" }}</td>
+                                        <td>{{ "{{task.description}}" }}</td>
                                         <td>{{ "{{task.due_date}}" }}</td> 
                                         <td>{{ "{{task.category}}" }}</td>
+                                        <td>{{ "{{task.score}}" }}</td>
                                     </tr>
                                 </table>                                 
                             </div>
@@ -166,7 +168,7 @@
                                         <th> Category </th>
                                     </tr>
                                     <tr ng-repeat = "want in all_wants">
-                                        <td>{{ "{{want.name}}" }}</td>
+                                        <td>{{ "{{want.description}}" }}</td>
                                         <td>{{ "{{want.category}}" }}</td>    
                                     </tr>
                                 </table>                                 
@@ -183,7 +185,7 @@
                                         <th> Url </th>
                                     </tr>
                                     <tr ng-repeat = "break in all_breaks">
-                                        <td>{{ "{{break.name}}" }}</td>
+                                        <td>{{ "{{break.description}}" }}</td>
                                         <td>{{ "{{break.url}}" }}</td>
                                     </tr>
                                 </table>                                 

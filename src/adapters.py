@@ -19,8 +19,6 @@ from src.classes import (
 )
 
 
-
-
 class DbAdapter(object):
 
     def __init__(self, dbconn):
@@ -44,16 +42,15 @@ class DbAdapter(object):
         qry = self._all_qry(table_name)
         return self._execute_qry(qry)
 
-        
     def delete_table(self, table_name):
-        
+
         qry = self._drop_qry(table_name)
         self._execute_qry(qry)
 
 
     def _execute_qry(self, qry):
-       
-       
+
+
         c = self.dbconn.cursor()
         c.execute(qry)
         res = c.fetchall()
@@ -62,24 +59,23 @@ class DbAdapter(object):
         self.dbconn.commit()
 
         return res
-    
+
 
     def _table_qry(self, table_name, names, types):
 
         qry_str = "CREATE TABLE %s (" % table_name
-        
         index = 0
         for i in range(0, len(names)):
             qry_str = qry_str + "%s %s, " % (names[index], types[index])
             index = index + 1
 
         return qry_str[:-2] + ")"
-        
-         
+
+
     def _insert_qry(self, table_name, values):
 
         qry_str = "INSERT INTO " + table_name + " VALUES ("
-        
+
         index = 0
         for i in range(0, len(values)):
             qry_str = qry_str + "'%s', " % values[index]
@@ -89,7 +85,6 @@ class DbAdapter(object):
 
 
     def _all_qry(self, table_name):
-        
         return "SELECT * FROM %s" % table_name
 
 
@@ -102,23 +97,65 @@ class TaskDbAdapter(DbAdapter):
 
     def __init__(self, dbconn):
         DbAdapter.__init__(self, dbconn)
+        self.items = self._get_all_tasks()
 
 
-    # COULD : later add users as a param
+    # private method that builds the objects
+    def _get_all_tasks(self):
+        results = self.get_all('tasks')
+
+        tasks = []
+
+        for result in results:
+
+            user = str(result[0])
+            description = str(result[1])
+            date_string = str(result[2])
+            due_date = self._make_datetime(date_string)
+            t_type = str(result[3])
+
+            if t_type == 'Exam':
+                tasks.append(Exam(description, due_date))
+            elif t_type == 'Paper':
+                tasks.append(Paper(description, due_date))
+            elif t_type == 'Project':
+                tasks.append(Project(description, due_date))
+            elif t_type == 'Homework':
+                tasks.append(Homework(description, due_date))
+            else:
+                tasks.append(Task(description, due_date))
+
+        return tasks
+
+    # public method
     def get_all_tasks(self):
         results = self.get_all('tasks')
         return results
 
+    def _make_datetime(self, datestr):
+        return datetime.datetime.strptime(datestr, "%Y%m%d")
 
 
 class WantDbAdapter(DbAdapter):
 
     def __init__(self, dbconn):
         DbAdapter.__init__(self, dbconn)
+        self.items = self._get_all_wants()
 
+    #private method that builds the objects
+    def _get_all_wants(self):
 
+        results = self.get_all('wants')
+        wants = []
+        for result in results:
+            user = result[0]
+            description = result[1]
+            category = result[2]
+            wants.append({"description" : description, "category" : category}) 
+        return wants 
+
+    # public method
     def get_all_wants(self):
-    
         results = self.get_all('wants')
         return results
 
@@ -127,10 +164,22 @@ class BreakDbAdapter(DbAdapter):
 
     def __init__(self, dbconn):
         DbAdapter.__init__(self, dbconn)
+        self.items = self._get_all_breaks()
 
+    #private method that builds the objects
+    def _get_all_breaks(self):
+
+        results = self.get_all('breaks')
+        breaks = []
+        for result in results:
+            user = result[0]
+            description = result[1]
+            url = result[2]
+            breaks.append({"description" : description, "url" : url}) 
+        return breaks 
 
     def get_all_breaks(self):
-        
+
         results = self.get_all('breaks')
         return results
 
