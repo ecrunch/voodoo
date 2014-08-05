@@ -101,39 +101,38 @@ class DbAdapter(object):
 class TaskDbAdapter(DbAdapter):
 
     def __init__(self, dbconn):
-        DbAdapter.__init__(dbconn)
+        DbAdapter.__init__(self, dbconn)
 
 
     # COULD : later add users as a param
     def get_all_tasks(self):
-
         results = self.get_all('tasks')
-        return
+        return results
 
 
 
 class WantDbAdapter(DbAdapter):
 
     def __init__(self, dbconn):
-        DbAdapter.__init__(dbconn)
+        DbAdapter.__init__(self, dbconn)
 
 
     def get_all_wants(self):
     
         results = self.get_all('wants')
-        return 
+        return results
 
 
 class BreakDbAdapter(DbAdapter):
 
     def __init__(self, dbconn):
-        DbAdapter.__init__(dbconn)
+        DbAdapter.__init__(self, dbconn)
 
 
     def get_all_breaks(self):
         
         result = self.get_all('breaks')
-        return
+        return results
 
 
 

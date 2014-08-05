@@ -3,8 +3,11 @@ import unittest
 import sqlite3
 
 from src.adapters import (
-    JsonAdapter, TaskJsonAdapter, DbAdapter
-    )
+    JsonAdapter, 
+    TaskJsonAdapter, 
+    DbAdapter,
+    TaskDbAdapter
+)
 from src.classes import (
     Task, Exam, Project, Paper, Homework,
 )
@@ -23,11 +26,13 @@ class TestAdapters(unittest.TestCase):
 
         self.dbconn = sqlite3.connect(SQLITE_DB)
         self.db_adapter = DbAdapter(self.dbconn)
+        self.task_adapter = TaskDbAdapter(self.dbconn)
 
 
     def tearDown(self):
         self.dbconn.close()
         self.db_adapter = None
+        self.task_adapter = None
 
 
 
@@ -59,6 +64,8 @@ class TestAdapters(unittest.TestCase):
         self.db_adapter._execute_qry(drop)
 
 
+
+        
 
 
 if __name__ == '__main__':

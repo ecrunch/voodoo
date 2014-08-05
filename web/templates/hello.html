@@ -37,7 +37,11 @@
             <div class= "row">   
                 <div ng-controller= "SchedulerCtrl">
                 <div class= "col-sm-6">
-               
+              
+              
+                    <input type= "button" ng-click= "display_all_tasks()" value= "All tasks"> </input> 
+                    
+                    
                     <h3> {{ "{{header_hour}}" }} hour Schedule </h3>
                     <input type= "text" ng-model="hours"> </input> : hours 
                     <input type= "button" ng-click= "update_schedule()" value= "New Schedule"> </input>
@@ -77,6 +81,26 @@
                   
                     <div ng-controller= "InfoCtrl">
                    
+                        <div ng-show= "show_all_tasks">
+                            
+                            <h3> All tasks from db </h3>
+                            <!-- all tasks-->
+                            <div class= "container">
+                                 
+                                <table border="1">
+                                    <tr>
+                                        <th> Name </th>
+                                        <th> Due Date </th>
+                                        <th> Category </th>
+                                    </tr>
+                                    <tr ng-repeat = "task in all_tasks">
+                                        <td>{{ "{{task.name}}" }}</td>
+                                        <td>{{ "{{task.due_date}}" }}</td> 
+                                        <td>{{ "{{task.category}}" }}</td>
+                                    </tr>
+                                </table>                                 
+                            </div>
+                        </div>
                   
                         <div ng-show= "show_item"> 
                             <h3> {{ "{{selected_item.description}}" }} </h3>

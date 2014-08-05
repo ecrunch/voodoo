@@ -13,11 +13,14 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
 
 
     $scope.schedule = [];
+    $scope.all_tasks = [];
+    
     $scope.hours = 4;
 
     $scope.selected_item = null;
     
     $scope.item_display = [];
+    $scope.show_all_tasks = false;
     $scope.show_item = false;
     
 
@@ -36,9 +39,21 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         $http.get(scheduler).success(function(data){ 
             $scope.schedule = data;
             $scope.header_hour = $scope.hours;
+            $scope.show_all_tasks = false;
             $scope.show_item = false;
         });
 
+    }
+
+
+    $scope.display_all_tasks = function display_all_tasks(){
+        
+        var route = "/all_tasks";
+        $http.get(route).success(function(data){
+            $scope.all_tasks = data;
+            $scope.show_all_tasks = true;
+            $scope.show_item = false;
+        });
     }
 
 
@@ -77,6 +92,7 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         }
 
         $scope.show_item = true;
+        $scope.show_all_tasks = false;
 
     }
 
