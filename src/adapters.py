@@ -131,7 +131,7 @@ class BreakDbAdapter(DbAdapter):
 
     def get_all_breaks(self):
         
-        result = self.get_all('breaks')
+        results = self.get_all('breaks')
         return results
 
 
