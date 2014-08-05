@@ -17,7 +17,8 @@ from lib._flask.flask import (
 
 from src.scheduler import(
     Scheduler,
-    JSONScheduler
+    JSONScheduler,
+    DBScheduler
 )
 
 from src.adapters import(
@@ -43,7 +44,8 @@ def hello_world():
 def get_schedule(hours=4):
       
     hours = int(hours)
-    scheduler = JSONScheduler(int(hours)) 
+    #scheduler = JSONScheduler(int(hours)) 
+    scheduler = DBScheduler(int(hours)) 
     return json.dumps(scheduler.schedule)
 
 

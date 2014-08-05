@@ -11,10 +11,9 @@ HW_INITIAL_SCORE = 3
 class Task(object):
 
     # t stands for 'task'
-    def __init__(self, t_name=None, due_date=None):
+    def __init__(self, t_name=None, due_date=None, total_minutes=None):
 
         self.start_date = self._set_start_date()
-
         self.name = t_name
         self.due_date = due_date
 

@@ -91,7 +91,7 @@ class Scheduler(object):
                 #print("A break")
                 number_items = len(self.break_adapter.items)
                 random_int = random.randint(0, number_items-1)
-                schedule.append({"number" : number, "timeslot" : slot, "item" : self.break_adapter.get_ith_json(random_int)})
+                schedule.append({"number" : number, "timeslot" : slot, "item" : self.break_adapter.get_ith_item(random_int)})
 
             #a want or task
             else:
@@ -103,7 +103,7 @@ class Scheduler(object):
                     #print("A want")
                     number_items = len(self.want_adapter.items)
                     random_int = random.randint(0, number_items-1)
-                    schedule.append({"number" : number, "timeslot" : slot, "item" : self.want_adapter.get_ith_json(random_int)})
+                    schedule.append({"number" : number, "timeslot" : slot, "item" : self.want_adapter.get_ith_item(random_int)})
 
                 # a task
                 else:
@@ -182,9 +182,10 @@ class DBScheduler(Scheduler):
         Scheduler.__init__(self, hours)
          
         #sql connection
-        self.task_adapter = None
-        self.want_adapter = None
-        self.break_adapter = None
+        dbconn = sqlite3.connect(DB_PATH)
+        self.task_adapter = TaskDbAdapter(dbconn)
+        self.want_adapter = WantDbAdapter(dbconn)
+        self.break_adapter = BreakDbAdapter(dbconn)
 
         self.scorer = Scorer(db= None, tasks= self.task_adapter.items)
         

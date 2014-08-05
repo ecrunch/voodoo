@@ -135,6 +135,20 @@ class TaskDbAdapter(DbAdapter):
     def _make_datetime(self, datestr):
         return datetime.datetime.strptime(datestr, "%Y%m%d")
 
+    def get_ith_item(self, index):
+        
+        task = self.items[index]
+        
+        task_struct = {
+            "class" : "Task",
+            "type" : str(type(task)),
+            "description" : task.name,
+            "due_date" : str(task.due_date),
+            "score" : task.get_score()
+        } 
+
+        return task_struct             
+
 
 class WantDbAdapter(DbAdapter):
 
@@ -158,6 +172,18 @@ class WantDbAdapter(DbAdapter):
     def get_all_wants(self):
         results = self.get_all('wants')
         return results
+
+    def get_ith_item(self, index):
+        
+        want = self.items[index]
+        
+        want_struct = {
+            "class" : "Want",
+            "description" : want["description"],
+            "category" : want["category"]
+        } 
+
+        return want_struct             
 
 
 class BreakDbAdapter(DbAdapter):
@@ -183,7 +209,19 @@ class BreakDbAdapter(DbAdapter):
         results = self.get_all('breaks')
         return results
 
+    # gets a randomized json form for the index
+    # passed in
+    def get_ith_item(self, index):
+        
+        _break = self.items[index]
+        
+        break_struct = {
+            "class" : "Break",
+            "description" : _break["description"],
+            "url" : _break["url"]
+        } 
 
+        return break_struct             
 
 # Multi purpose adapter class that can accept a json struct
 # or a json file
@@ -191,19 +229,14 @@ class BreakDbAdapter(DbAdapter):
 class JsonAdapter(object):
 
     def __init__(self, data=None, file_name=None):
-        
         # we don't have a json struct
         if data is None:
-            
             # we have a file name
-            if file_name:
-                
+            if file_name:                
                 try:
                     self.data = self._load_json_from_file(file_name)
                 except:
                     self.data = []
-
-
             # data is []
             else:
                 self.data = []
@@ -267,7 +300,7 @@ class TaskJsonAdapter(JsonAdapter):
 
     # gets a randomized json form for the index
     # passed in
-    def get_ith_json(self, index):
+    def get_ith_item(self, index):
         
         task = self.items[index]
         
@@ -315,7 +348,7 @@ class WantJsonAdapter(JsonAdapter):
 
     # gets a randomized json form for the index
     # passed in
-    def get_ith_json(self, index):
+    def get_ith_item(self, index):
         
         want = self.items[index]
         
@@ -363,7 +396,7 @@ class BreakJsonAdapter(JsonAdapter):
 
     # gets a randomized json form for the index
     # passed in
-    def get_ith_json(self, index):
+    def get_ith_item(self, index):
         
         _break = self.items[index]
         
