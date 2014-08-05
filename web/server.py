@@ -6,17 +6,21 @@ import json
 
 
 from lib._flask.flask import (
-    Flask, render_template, url_for, 
-    jsonify, Response, request
+    Flask, 
+    render_template, 
+    url_for, 
+    jsonify, 
+    Response, 
+    request
 )
 
 
 
-#from src.scorer import Scorer
-#from src.classes import Task
-#from src.generator import TimeSlotGenerator
 
-from src.scheduler import Scheduler
+from src.scheduler import(
+    Scheduler,
+    JSONScheduler
+)
 
 
 
@@ -35,8 +39,7 @@ def get_schedule(hours=4):
    
    
     hours = int(hours)
-    scheduler = Scheduler(int(hours))
-     
+    scheduler = JSONScheduler(int(hours)) 
     
 
     return json.dumps(scheduler.schedule)

@@ -2,15 +2,18 @@
 import unittest
 
 
-from src.scheduler import Scheduler
+from src.scheduler import(
+    Scheduler, 
+    JSONScheduler,
+)
 
 
 class TestScheduler(unittest.TestCase):
 
     def setUp(self): 
-        self.three_hours = Scheduler(3)
-        self.four_hours = Scheduler(4)
-        self.five_hours = Scheduler(5)
+        self.three_hours = JSONScheduler(3)
+        self.four_hours = JSONScheduler(4)
+        self.five_hours = JSONScheduler(5)
 
     def tearDown(self):
         self.three_hours = None

@@ -98,6 +98,45 @@ class DbAdapter(object):
 
 
 
+class TaskDbAdapter(DbAdapter):
+
+    def __init__(self, dbconn):
+        DbAdapter.__init__(dbconn)
+
+
+    # COULD : later add users as a param
+    def get_all_tasks(self):
+
+        results = self.get_all('tasks')
+        return
+
+
+
+class WantDbAdapter(DbAdapter):
+
+    def __init__(self, dbconn):
+        DbAdapter.__init__(dbconn)
+
+
+    def get_all_wants(self):
+    
+        results = self.get_all('wants')
+        return 
+
+
+class BreakDbAdapter(DbAdapter):
+
+    def __init__(self, dbconn):
+        DbAdapter.__init__(dbconn)
+
+
+    def get_all_breaks(self):
+        
+        result = self.get_all('breaks')
+        return
+
+
+
 # Multi purpose adapter class that can accept a json struct
 # or a json file
 

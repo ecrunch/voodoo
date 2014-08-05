@@ -2,11 +2,20 @@
 import random
 
 import logging
+import sqlite3
+
 
 from src.generator import TimeSlotGenerator
 from src.scorer import Scorer
 from src.adapters import (
-    JsonAdapter, TaskJsonAdapter, WantJsonAdapter, BreakJsonAdapter
+    JsonAdapter, 
+    TaskJsonAdapter, 
+    WantJsonAdapter, 
+    BreakJsonAdapter,
+    DbAdapter,
+    TaskDbAdapter,
+    WantDbAdapter,
+    BreakDbAdapter
     )
 
 
@@ -15,22 +24,16 @@ WANT_DB = "db/json/want/wantdb.json"
 TASK_DB = "db/json/task/taskdb.json"
 BREAK_DB = "db/json/break/breakdb.json"
 
+DB_PATH = "db/data/data.db"
 
 
 class Scheduler(object):
 
-    def __init__(self, hours,
-            taskdb=TASK_DB, wantdb=WANT_DB, breakdb=BREAK_DB):
 
+    def __init__(self, hours):
+        
         self.hours = hours
         self.generator = TimeSlotGenerator(hours)
-
-        self.task_adapter = TaskJsonAdapter(file_name = taskdb)
-        self.want_adapter = WantJsonAdapter(file_name = wantdb)
-        self.break_adapter = BreakJsonAdapter(file_name = breakdb)
-
-
-        self.scorer = Scorer(db= None, tasks= self.task_adapter.items)
 
         self.e_index = 0
         self.n_index = 0
@@ -39,12 +42,6 @@ class Scheduler(object):
         self.e_items = []
         self.n_items = []
         self.nt_items = []
-
-        # fill the items in
-        self._fill_items()
-
-
-        self.schedule = self.make_schedule()
 
 
     def _fill_items(self):
@@ -66,6 +63,7 @@ class Scheduler(object):
             else:
                 pass
 
+
     def _reset_index(self):
         self.e_index = 0
         self.n_index = 0
@@ -73,6 +71,7 @@ class Scheduler(object):
         return
 
 
+    # SHOULD : refactor into smaller chunks
     def make_schedule(self, repeat_items=True):
 
         schedule = []
@@ -174,4 +173,44 @@ class Scheduler(object):
 
 
         print("|--------------------------------->")
+
+
+class DBScheduler(Scheduler):
+
+    def __init__(self, hours, path=DB_PATH):
+        
+        Scheduler.__init__(self, hours)
+         
+        #sql connection
+        self.task_adapter = None
+        self.want_adapter = None
+        self.break_adapter = None
+
+        self.scorer = Scorer(db= None, tasks= self.task_adapter.items)
+        
+        # fill the items in
+        self._fill_items()
+
+        self.schedule = self.make_schedule()
+
+
+class JSONScheduler(Scheduler):
+
+
+    # COULD : refactor this to make it 
+    # one path, or a list or something
+    def __init__(self, hours, taskdb=TASK_DB, wantdb=WANT_DB, breakdb=BREAK_DB):
+
+
+        Scheduler.__init__(self, hours)
+    
+        self.task_adapter = TaskJsonAdapter(file_name = taskdb)
+        self.want_adapter = WantJsonAdapter(file_name = wantdb)
+        self.break_adapter = BreakJsonAdapter(file_name = breakdb)
+
+
+        self.scorer = Scorer(db= None, tasks= self.task_adapter.items) 
+        self._fill_items()
+        self.schedule = self.make_schedule()
+
 
