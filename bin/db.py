@@ -183,7 +183,7 @@ def insert_dialog(DB_CONN):
         print("Task?")
         task = raw_input()
 
-        print("Due Date mmddyyy?")
+        print("Due Date (YYYYMMDD)?")
         due_date = raw_input()
 
         print("Genre?")
@@ -250,19 +250,19 @@ def delete_dialog(DB_CONN):
         except:
             print('Error. Users db probably does not exist')
 
-    if input == str(2) or input == 'tasks':
+    elif input == str(2) or input == 'tasks':
         try:
             delete_tasks_db(DB_CONN)
         except:
             print('Error. Users db probably does not exist')
 
-    if input == str(3) or input == 'wants':
+    elif input == str(3) or input == 'wants':
         try:
             delete_wants_db(DB_CONN)
         except:
             print('Error. Users db probably does not exist')
 
-    if input == str(4) or input == 'breaks':
+    elif input == str(4) or input == 'breaks':
         try:
             delete_breaks_db(DB_CONN)
         except:

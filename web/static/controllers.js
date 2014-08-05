@@ -45,7 +45,10 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         $http.get(scheduler).success(function(data){ 
             $scope.schedule = data;
             $scope.header_hour = $scope.hours;
+            $scope.show_all_users = false;
             $scope.show_all_tasks = false;
+            $scope.show_all_wants = false;
+            $scope.show_all_breaks = false;
             $scope.show_item = false;
         });
 
