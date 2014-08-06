@@ -81,7 +81,8 @@ def get_all_tasks():
             "description" : item.name, 
             "due_date" : str(item.due_date), 
             "category" : str(type(item)),
-            "score" : item.get_score()
+            "score" : item.get_score(),
+            "total_minutes" : item.total_minutes
         })
 
 
@@ -102,6 +103,17 @@ def get_all_breaks():
     dbconn = sqlite3.connect(DB_PATH)    
     break_adapter = BreakDbAdapter(dbconn)
     return json.dumps(break_adapter.items)
+
+
+# TODO : implement this function
+# 
+@app.route('/add_minutes/<id>/<minutes>')
+def add_minutes(id, minutes):
+    pass
+
+
+
+
 
 
 if __name__ == '__main__':

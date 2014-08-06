@@ -118,7 +118,8 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                 {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
                 {"field_name" : "Score", "field_value" : $scope.selected_item["score"]},
                 {"field_name" : "Placement", "field_value" : $scope.selected_item["placement"]},
-                {"field_name" : "Due Date", "field_value" : $scope.selected_item["due_date"]}
+                {"field_name" : "Due Date", "field_value" : $scope.selected_item["due_date"]},
+                {"field_name" : "TS (min)", "field_value" : $scope.selected_item["total_minutes"]}
             ];
         }
         
@@ -151,9 +152,16 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
 
 
     $scope.finish_item = function finish_item(item){
-   
-        //alert(item.number);
-         
+        
+        var description = item["item"].description;
+        var time_slot = item["timeslot"];
+        alert("adding " + time_slot + " minutes to " + description);   
+        
+              
+        var route = "/add_minutes/" + item;
+        $http.get(route).success(function(data){ 
+            alert("Success");
+        });
     }
 
 });

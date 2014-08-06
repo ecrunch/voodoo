@@ -113,17 +113,20 @@ class TaskDbAdapter(DbAdapter):
             date_string = str(result[2])
             due_date = self._make_datetime(date_string)
             t_type = str(result[3])
+            #total_minutes = int(result[4])
+            total_minutes = result[4]
+
 
             if t_type == 'Exam':
-                tasks.append(Exam(description, due_date))
+                tasks.append(Exam(description, due_date, total_minutes))
             elif t_type == 'Paper':
-                tasks.append(Paper(description, due_date))
+                tasks.append(Paper(description, due_date, total_minutes))
             elif t_type == 'Project':
-                tasks.append(Project(description, due_date))
+                tasks.append(Project(description, due_date, total_minutes))
             elif t_type == 'Homework':
-                tasks.append(Homework(description, due_date))
+                tasks.append(Homework(description, due_date, total_minutes))
             else:
-                tasks.append(Task(description, due_date))
+                tasks.append(Task(description, due_date, total_minutes))
 
         return tasks
 
@@ -138,13 +141,16 @@ class TaskDbAdapter(DbAdapter):
     def get_ith_item(self, index):
         
         task = self.items[index]
+       
+        print("total_minutes = %s" % total_minutes)
         
         task_struct = {
             "class" : "Task",
             "type" : str(type(task)),
             "description" : task.name,
             "due_date" : str(task.due_date),
-            "score" : task.get_score()
+            "score" : task.get_score(),
+            "total_minutes" : task.total_minutes
         } 
 
         return task_struct             

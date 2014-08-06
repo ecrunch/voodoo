@@ -144,7 +144,8 @@ class Scheduler(object):
                         "description" : task.name,
                         "due_date" : str(task.due_date),
                         "score" : task.get_score(),
-                        "placement" : placement
+                        "placement" : placement,
+                        "total_minutes" : task.total_minutes,
                     }
                     schedule.append({"number" : number, "timeslot" : slot, "item" : task_struct})
 

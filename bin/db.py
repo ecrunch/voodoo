@@ -22,8 +22,8 @@ def create_tasks_db(DB_CONN):
 
     db_adapter.make_table(
         'tasks',
-        ['user', 'description', 'due_date', 'type'],
-        ['text', 'text', 'text', 'text']
+        ['user', 'description', 'due_date', 'type', 'total_minutes'],
+        ['text', 'text', 'text', 'text', 'text']
     )
 
 
@@ -56,7 +56,7 @@ def insert_user(DB_CONN, username, password):
 def insert_task(DB_CONN, user, description, due_date, type):
 
     db_adapter = DbAdapter(DB_CONN)
-    db_adapter.insert_row('tasks', [user, description, due_date, type])
+    db_adapter.insert_row('tasks', [user, description, due_date, type, '0'])
 
 def insert_want(DB_CONN, user, want, category):
 

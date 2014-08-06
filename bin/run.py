@@ -1,6 +1,6 @@
 
 
-from src.scheduler import Scheduler
+from src.scheduler import Scheduler, JSONScheduler
 from optparse import OptionParser
 
 opt_parser = OptionParser()
@@ -21,7 +21,7 @@ def main():
     else:
         hours = 4
 
-    scheduler = Scheduler(hours)
+    scheduler = JSONScheduler(hours)
     scheduler.print_schedule()
 
 

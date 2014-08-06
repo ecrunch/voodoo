@@ -146,12 +146,14 @@
                                         <th> Due Date </th>
                                         <th> Class </th>
                                         <th> Score </th>
+                                        <th> TS (min) </th>
                                     </tr>
                                     <tr ng-repeat = "task in all_tasks">
                                         <td>{{ "{{task.description}}" }}</td>
                                         <td>{{ "{{task.due_date}}" }}</td> 
                                         <td>{{ "{{task.category}}" }}</td>
                                         <td>{{ "{{task.score}}" }}</td>
+                                        <td>{{ "{{task.total_minutes}}" }}</td>
                                     </tr>
                                 </table>                                 
                             </div>
