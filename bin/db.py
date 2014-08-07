@@ -12,8 +12,7 @@ def create_users_db(DB_CONN):
 
     db_adapter.make_table(
         'users',
-        ['username', 'password'],
-        ['text', 'text']
+        ['id integer primary key autoincrement', 'username', 'password']
     )
 
 def create_tasks_db(DB_CONN):
@@ -22,8 +21,7 @@ def create_tasks_db(DB_CONN):
 
     db_adapter.make_table(
         'tasks',
-        ['user', 'description', 'due_date', 'type', 'total_minutes'],
-        ['text', 'text', 'text', 'text', 'text']
+        ['id integer primary key autoincrement', 'user', 'description', 'due_date', 'type', 'total_minutes'],
     )
 
 
@@ -33,8 +31,7 @@ def create_wants_db(DB_CONN):
 
     db_adapter.make_table(
         'wants',
-        ['user', 'description', 'category'],
-        ['text', 'text', 'text']
+        ['id integer primary key autoincrement', 'user', 'description', 'category'],
     )
 
 def create_breaks_db(DB_CONN):
@@ -43,8 +40,7 @@ def create_breaks_db(DB_CONN):
 
     db_adapter.make_table(
         'breaks',
-        ['user', 'description', 'link'],
-        ['text', 'text', 'text']
+        ['id integer primary key autoincrement', 'user', 'description', 'link'],
     )
 
 def insert_user(DB_CONN, username, password):
