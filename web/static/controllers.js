@@ -156,12 +156,12 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     }
 
 
-    $scope.add_time = function add_time(item){
+    $scope.add_time = function add_time(slot){
        
-        var id = item["item"].id; 
-        var time_slot = item["timeslot"];
-        var description = item["item"].description;
-        var item_class = item["item"].class;
+        var id = slot["item"].id; 
+        var time_slot = slot["timeslot"];
+        var description = slot["item"].description;
+        var item_class = slot["item"].class;
       
                       
         var route = "/add_minutes";
@@ -175,10 +175,10 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                 }
         }).success(function(data){
 
-
-
-
-
+            slot["item"].total_minutes = data["minutes"];
+            if($scope.show_item){
+                $scope.display_item(slot["item"]);
+            }
             
             //figure out a better way than 
             //reloading the element
@@ -190,7 +190,6 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
 
     $scope.reset_minutes = function resetMinutes(item){
 
-        $scope.selected_item = item;
         var id = item.id;
         var item_class = item.class;
 
@@ -204,7 +203,17 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                 item_class : item_class
             }
         }).success(function(data){
-            $scope.selected_item.total_minutes = 0;
+            item.total_minutes = 0;
+            
+            /*
+            *   BUG 
+            *   need to properly set selected item
+            */
+            
+            $scope.selected_item["total_minutes"] = 0;
+            if($scope.show_item){
+                $scope.display_item($scope.selected_item);
+            }
         });
 
 
