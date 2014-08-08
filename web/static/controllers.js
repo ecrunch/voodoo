@@ -115,6 +115,7 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         if($scope.selected_item["class"] == "Task"){
          
             $scope.item_display = [
+                {"field_name" : "ID", "field_value" : $scope.selected_item["id"]},
                 {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
                 {"field_name" : "Score", "field_value" : $scope.selected_item["score"]},
                 {"field_name" : "Placement", "field_value" : $scope.selected_item["placement"]},
@@ -128,6 +129,7 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
             //is a want
             if($scope.selected_item["class"] == "Want"){ 
                 $scope.item_display = [
+                    {"field_name" : "ID", "field_value" : $scope.selected_item["id"]},
                     {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
                     {"field_name" : "Category", "field_value" : $scope.selected_item["category"]}
                 ];
@@ -136,6 +138,7 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
             //is a break
             else{
                 $scope.item_display = [
+                    {"field_name" : "ID", "field_value" : $scope.selected_item["id"]},
                     {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
                     {"field_name" : "URL", "field_value" : $scope.selected_item["url"]}
                 ];
@@ -151,8 +154,10 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     }
 
 
-    $scope.finish_item = function finish_item(item){
-        
+    $scope.add_time = function add_time(item){
+       
+        alert(item["item"].id);
+         
         var description = item["item"].description;
         var time_slot = item["timeslot"];
         alert("adding " + time_slot + " minutes to " + description);   

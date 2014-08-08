@@ -58,7 +58,7 @@ def get_all_users():
     
     users = []
     for result in results:
-        users.append({"name" : result[0], "password" : result[1]})
+        users.append({"id" : result[0], "name" : result[1], "password" : result[2]})
 
 
     return json.dumps(users)
@@ -78,6 +78,7 @@ def get_all_tasks():
     #print (task_adapter.items)
     for item in task_adapter.items:
         tasks.append({
+            "id" : item.id,
             "description" : item.name, 
             "due_date" : str(item.due_date), 
             "category" : str(type(item)),

@@ -19,9 +19,6 @@
     </head>
 
 
-
-    
-
     <div ng-controller= "Main">
         <body>
             
@@ -101,7 +98,7 @@
                                     {{ "{{ slot.timeslot }}" }}
                                 </td>
                                 <td>
-                                    <input type= "button" value= "completed" ng-click= "finish_item(slot)"> </input>
+                                    <input type= "button" value= "completed" ng-click= "add_time(slot)"> </input>
                                 </td>
                             </tr>
                         </table>
@@ -122,10 +119,12 @@
                                 <table border="1">
                                     <tr>
                                         <th> Name </th>
+                                        <th> ID </th>
                                         <th> Password </th>
                                     </tr>
                                     <tr ng-repeat = "user in all_users">
                                         <td>{{ "{{user.name}}" }}</td>
+                                        <td>{{ "{{user.id}}" }}</td>
                                         <td>{{ "{{user.password}}" }}</td> 
                                     </tr>
                                 </table>                                 
@@ -143,6 +142,7 @@
                                 <table border="1">
                                     <tr>
                                         <th> Name </th>
+                                        <th> ID </th>
                                         <th> Due Date </th>
                                         <th> Class </th>
                                         <th> Score </th>
@@ -150,6 +150,7 @@
                                     </tr>
                                     <tr ng-repeat = "task in all_tasks">
                                         <td>{{ "{{task.description}}" }}</td>
+                                        <td>{{ "{{task.id}}" }}</td>
                                         <td>{{ "{{task.due_date}}" }}</td> 
                                         <td>{{ "{{task.category}}" }}</td>
                                         <td>{{ "{{task.score}}" }}</td>
@@ -167,10 +168,12 @@
                                 <table border="1">
                                     <tr>
                                         <th> Name </th>
+                                        <th> ID </th>
                                         <th> Category </th>
                                     </tr>
                                     <tr ng-repeat = "want in all_wants">
                                         <td>{{ "{{want.description}}" }}</td>
+                                        <td>{{ "{{want.id}}" }}</td>
                                         <td>{{ "{{want.category}}" }}</td>    
                                     </tr>
                                 </table>                                 
@@ -184,10 +187,12 @@
                                 <table border="1">
                                     <tr>
                                         <th> Name </th>
+                                        <th> ID </th>
                                         <th> Url </th>
                                     </tr>
                                     <tr ng-repeat = "break in all_breaks">
                                         <td>{{ "{{break.description}}" }}</td>
+                                        <td>{{ "{{break.id}}" }}</td>
                                         <td>{{ "{{break.url}}" }}</td>
                                     </tr>
                                 </table>                                 

@@ -11,10 +11,11 @@ HW_INITIAL_SCORE = 3
 class Task(object):
 
     # t stands for 'task'
-    def __init__(self, t_name=None, due_date=None, total_minutes=None):
+    def __init__(self, id, t_name, due_date, total_minutes):
 
         self.start_date = self._set_start_date()
         self.name = t_name
+        self.id = id
         self.due_date = due_date
         self.total_minutes = total_minutes
 
@@ -37,8 +38,8 @@ class Task(object):
 
 class Exam(Task):
 
-    def __init__(self, t_name=None, due_date=None, total_minutes=None):
-        Task.__init__(self, t_name, due_date, total_minutes)
+    def __init__(self, id, t_name, due_date, total_minutes):
+        Task.__init__(self, id, t_name, due_date, total_minutes)
         self.base_score = EXAM_INITIAL_SCORE
 
     def get_score(self):
@@ -52,8 +53,8 @@ class Exam(Task):
 
 class Project(Task):
 
-    def __init__(self, t_name=None, due_date=None, total_minutes=None):
-        Task.__init__(self, t_name, due_date, total_minutes)
+    def __init__(self, id, t_name, due_date, total_minutes):
+        Task.__init__(self, id, t_name, due_date, total_minutes)
         self.base_score = PROJECT_INITIAL_SCORE
 
     def get_score(self):
@@ -67,8 +68,8 @@ class Project(Task):
 
 class Paper(Task):
 
-    def __init__(self, t_name=None, due_date=None, total_minutes=None):
-        Task.__init__(self, t_name, due_date, total_minutes)
+    def __init__(self, id, t_name, due_date, total_minutes):
+        Task.__init__(self, id, t_name, due_date, total_minutes)
         self.base_score = PAPER_INITIAL_SCORE
 
     def get_score(self):
@@ -82,8 +83,8 @@ class Paper(Task):
 
 class Homework(Task):
 
-    def __init__(self, t_name=None, due_date=None, total_minutes=None):
-        Task.__init__(self, t_name, due_date, total_minutes)
+    def __init__(self, id, t_name, due_date, total_minutes):
+        Task.__init__(self, id, t_name, due_date, total_minutes)
         self.base_score = HW_INITIAL_SCORE
 
     def get_score(self):

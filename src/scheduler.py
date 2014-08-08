@@ -139,6 +139,7 @@ class Scheduler(object):
                     placement = self.scorer.get_placement(task)
 
                     task_struct = {
+                        "id" : task.id, 
                         "class" : "Task",
                         "type" : str(type(task)),
                         "description" : task.name,

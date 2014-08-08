@@ -25,9 +25,10 @@ class DbAdapter(object):
         self.dbconn = dbconn
     
      
-    def make_table(self, table_name, fields, types):
+    def make_table(self, table_name, types):
 
-        qry = self._table_qry(table_name, fields, types)
+
+        qry = self._table_qry(table_name, types)
         self._execute_qry(qry)
    
    
@@ -61,20 +62,18 @@ class DbAdapter(object):
         return res
 
 
-    def _table_qry(self, table_name, names, types):
+    def _table_qry(self, table_name, types):
 
-        qry_str = "CREATE TABLE %s (" % table_name
-        index = 0
-        for i in range(0, len(names)):
-            qry_str = qry_str + "%s %s, " % (names[index], types[index])
-            index = index + 1
+        qry_str = "CREATE TABLE IF NOT EXISTS %s (" % table_name
+        for value in types:
+            qry_str = qry_str + "%s, " % value
 
         return qry_str[:-2] + ")"
 
 
     def _insert_qry(self, table_name, values):
 
-        qry_str = "INSERT INTO " + table_name + " VALUES ("
+        qry_str = "INSERT INTO " + table_name + " VALUES (NULL, "
 
         index = 0
         for i in range(0, len(values)):
@@ -108,25 +107,26 @@ class TaskDbAdapter(DbAdapter):
 
         for result in results:
 
-            user = str(result[0])
-            description = str(result[1])
-            date_string = str(result[2])
+
+            id = result[0]
+            user = str(result[1])
+            description = str(result[2])
+            date_string = str(result[3])
             due_date = self._make_datetime(date_string)
-            t_type = str(result[3])
-            #total_minutes = int(result[4])
-            total_minutes = result[4]
+            t_type = str(result[4])
+            total_minutes = result[5]
 
 
             if t_type == 'Exam':
-                tasks.append(Exam(description, due_date, total_minutes))
+                tasks.append(Exam(id, description, due_date, total_minutes))
             elif t_type == 'Paper':
-                tasks.append(Paper(description, due_date, total_minutes))
+                tasks.append(Paper(id, description, due_date, total_minutes))
             elif t_type == 'Project':
-                tasks.append(Project(description, due_date, total_minutes))
+                tasks.append(Project(id, description, due_date, total_minutes))
             elif t_type == 'Homework':
-                tasks.append(Homework(description, due_date, total_minutes))
+                tasks.append(Homework(id, description, due_date, total_minutes))
             else:
-                tasks.append(Task(description, due_date, total_minutes))
+                tasks.append(Task(id, description, due_date, total_minutes))
 
         return tasks
 
@@ -141,11 +141,10 @@ class TaskDbAdapter(DbAdapter):
     def get_ith_item(self, index):
         
         task = self.items[index]
-       
-        print("total_minutes = %s" % total_minutes)
         
         task_struct = {
             "class" : "Task",
+            "id" : task.id,
             "type" : str(type(task)),
             "description" : task.name,
             "due_date" : str(task.due_date),
@@ -168,10 +167,11 @@ class WantDbAdapter(DbAdapter):
         results = self.get_all('wants')
         wants = []
         for result in results:
-            user = result[0]
-            description = result[1]
-            category = result[2]
-            wants.append({"description" : description, "category" : category}) 
+            id = result[0]
+            user = result[1]
+            description = result[2]
+            category = result[3]
+            wants.append({"id" : id, "description" : description, "category" : category}) 
         return wants 
 
     # public method
@@ -184,6 +184,7 @@ class WantDbAdapter(DbAdapter):
         want = self.items[index]
         
         want_struct = {
+            "id" : want["id"],
             "class" : "Want",
             "description" : want["description"],
             "category" : want["category"]
@@ -204,10 +205,11 @@ class BreakDbAdapter(DbAdapter):
         results = self.get_all('breaks')
         breaks = []
         for result in results:
-            user = result[0]
-            description = result[1]
-            url = result[2]
-            breaks.append({"description" : description, "url" : url}) 
+            id = result[0]
+            user = result[1]
+            description = result[2]
+            url = result[3]
+            breaks.append({"id" : id, "description" : description, "url" : url}) 
         return breaks 
 
     def get_all_breaks(self):
@@ -222,6 +224,7 @@ class BreakDbAdapter(DbAdapter):
         _break = self.items[index]
         
         break_struct = {
+            "id" : _break["id"],
             "class" : "Break",
             "description" : _break["description"],
             "url" : _break["url"]
