@@ -51,10 +51,16 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     }
 
 
+    $scope.get_all = function get_all(route){
+        return $http.get(route);
+    }
+
+
+
     $scope.display_all_users = function display_all_users(){
         
         var route = "/all_users";
-        $http.get(route).success(function(data){
+        $scope.get_all(route).success(function(data){
             $scope.all_users = data;
             $scope.show_all_users = true;
             $scope.show_all_tasks = false;
@@ -151,9 +157,6 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
 
 
     $scope.add_time = function add_time(item){
-      
-      
-        $scope.selected_item = item;
        
         var id = item["item"].id; 
         var time_slot = item["timeslot"];
@@ -171,22 +174,25 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                     item_class : item_class   
                 }
         }).success(function(data){
-            
+
+
+
+
+
             
             //figure out a better way than 
             //reloading the element
-            $scope.display_all_tasks();
+            $scope.get_all("/all_tasks").success(function(data){
+                $scope.all_tasks = data;  
+            });
         });
     }
 
     $scope.reset_minutes = function resetMinutes(item){
 
-
         $scope.selected_item = item;
-
         var id = item.id;
         var item_class = item.class;
-        alert(item_class);
 
 
         var route = "/reset_minutes";

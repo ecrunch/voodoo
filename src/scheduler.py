@@ -125,14 +125,20 @@ class Scheduler(object):
 
                         # TODO : are we just not caring about nt?
                         else:
-                            # we will need to reset or quit
-                            if repeat_items:
-                                #print("Resetting buckets")
-                                self._reset_index()
-                                #starts off with the first thing of the most recent list
-                                chosen_index=0
+                            if self.nt_index < len(self.nt_items): 
+                                chosen_item_list = self.nt_items
+                                chosen_index = self.nt_index
+                                self.nt_index = self.nt_index + 1
+                            
                             else:
-                                pass
+                                # we will need to reset or quit
+                                if repeat_items:
+                                    #print("Resetting buckets")
+                                    self._reset_index()
+                                    #starts off with the first thing of the most recent list
+                                    chosen_index=0
+                                else:
+                                    pass
 
 
                     task = chosen_item_list[chosen_index]

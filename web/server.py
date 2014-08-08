@@ -75,7 +75,6 @@ def get_all_tasks():
 
     tasks = []
 
-    #print (task_adapter.items)
     for item in task_adapter.items:
         tasks.append({
             "class" : "Task",
@@ -114,7 +113,6 @@ def add_minutes():
     minutes = request.args.get('time_slot')
     item_class = request.args.get('item_class')
     
-    print(id, minutes, item_class)
      
     dbconn = sqlite3.connect(DB_PATH)    
     adapter = DbAdapter(dbconn)
@@ -129,16 +127,13 @@ def add_minutes():
     print (qry)
     
     results = adapter._execute_qry(qry)
-    print(results)
     
 
     total_minutes = results[0][5] 
-    print(total_minutes)
     
     total_minutes = int(total_minutes) + int(minutes)
 
     qry = "UPDATE %s SET total_minutes = %s WHERE id = '%s'" % (table_name, total_minutes, id)
-    print(qry)
     adapter._execute_qry(qry)
 
     return json.dumps({"minutes": total_minutes})

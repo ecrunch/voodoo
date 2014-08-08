@@ -98,7 +98,8 @@
                                     {{ "{{ slot.timeslot }}" }}
                                 </td>
                                 <td>
-                                    <input type= "button" value= "completed" ng-click= "add_time(slot)"> </input>
+                                    <input type= "button" value= "completed" ng-click= "add_time(slot)"> 
+                                    </input>
                                 </td>
                             </tr>
                         </table>
@@ -217,6 +218,10 @@
                                     <tr> 
                                         <td ng-repeat = "field in item_display">
                                             {{ "{{field.field_value}}" }}
+                                        </td>
+                                        <td>
+                                            <input type= "button" value= "reset minutes" 
+                                                ng-click= "reset_minutes(selected_item)"></input>
                                         </td>
                                     </tr>
                                 </table>                                 
