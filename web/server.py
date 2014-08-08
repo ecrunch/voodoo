@@ -78,6 +78,7 @@ def get_all_tasks():
     #print (task_adapter.items)
     for item in task_adapter.items:
         tasks.append({
+            "class" : "Task",
             "id" : item.id,
             "description" : item.name, 
             "due_date" : str(item.due_date), 
@@ -106,17 +107,67 @@ def get_all_breaks():
     return json.dumps(break_adapter.items)
 
 
-# TODO : implement this function
-# 
-@app.route('/add_minutes/<id>/<minutes>')
-def add_minutes(id, minutes):
-    pass
+@app.route('/add_minutes', methods = ['GET'])
+def add_minutes():
+        
+    id = request.args.get('id')
+    minutes = request.args.get('time_slot')
+    item_class = request.args.get('item_class')
+    
+    print(id, minutes, item_class)
+     
+    dbconn = sqlite3.connect(DB_PATH)    
+    adapter = DbAdapter(dbconn)
+  
+    table_name = ""
+    if item_class == "Task":
+        table_name = "tasks"
+    else:
+        return "NA" 
+   
+    qry = "SELECT * FROM %s WHERE id = '%s'" % (table_name, id)
+    print (qry)
+    
+    results = adapter._execute_qry(qry)
+    print(results)
+    
+
+    total_minutes = results[0][5] 
+    print(total_minutes)
+    
+    total_minutes = int(total_minutes) + int(minutes)
+
+    qry = "UPDATE %s SET total_minutes = %s WHERE id = '%s'" % (table_name, total_minutes, id)
+    print(qry)
+    adapter._execute_qry(qry)
+
+    return json.dumps({"minutes": total_minutes})
 
 
 
+@app.route('/reset_minutes', methods = ['GET'])
+def reset_minutes():
 
+    id = request.args.get('id')
+    item_class = request.args.get('item_class')
+    print(id, item_class)
 
+    dbconn = sqlite3.connect(DB_PATH)    
+    adapter = DbAdapter(dbconn)
 
+    table_name = ""
+    if item_class == "Task":
+        table_name = "tasks"
+    else:
+        return "NA"
+        
+    qry = "UPDATE %s SET total_minutes = %s WHERE id = '%s'" % (table_name, 0, id)
+    adapter._execute_qry(qry)
+    
+    return "ok" 
+    
+     
+         
 if __name__ == '__main__':
     app.run()
 

@@ -45,10 +45,6 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         $http.get(scheduler).success(function(data){ 
             $scope.schedule = data;
             $scope.header_hour = $scope.hours;
-            $scope.show_all_users = false;
-            $scope.show_all_tasks = false;
-            $scope.show_all_wants = false;
-            $scope.show_all_breaks = false;
             $scope.show_item = false;
         });
 
@@ -155,19 +151,60 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
 
 
     $scope.add_time = function add_time(item){
+      
+      
+        $scope.selected_item = item;
        
-        alert(item["item"].id);
-         
-        var description = item["item"].description;
+        var id = item["item"].id; 
         var time_slot = item["timeslot"];
-        alert("adding " + time_slot + " minutes to " + description);   
+        var description = item["item"].description;
+        var item_class = item["item"].class;
+      
+                      
+        var route = "/add_minutes";
         
-              
-        var route = "/add_minutes/" + item;
-        $http.get(route).success(function(data){ 
-            alert("Success");
+        $http
+        .get(route, {
+                params : {
+                    id : id,
+                    time_slot : time_slot,
+                    item_class : item_class   
+                }
+        }).success(function(data){
+            
+            
+            //figure out a better way than 
+            //reloading the element
+            $scope.display_all_tasks();
         });
     }
+
+    $scope.reset_minutes = function resetMinutes(item){
+
+
+        $scope.selected_item = item;
+
+        var id = item.id;
+        var item_class = item.class;
+        alert(item_class);
+
+
+        var route = "/reset_minutes";
+
+        $http
+        .get(route, {
+            params : {
+                id : id,
+                item_class : item_class
+            }
+        }).success(function(data){
+            $scope.selected_item.total_minutes = 0;
+        });
+
+
+
+    } 
+
 
 });
 
