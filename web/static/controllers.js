@@ -28,7 +28,8 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     $scope.show_all_wants = false;
     $scope.show_all_breaks = false;
     $scope.show_item = false;
-    
+   
+    $scope.is_task = false; 
 
 
     var scheduler = "/get_schedule/" + $scope.hours;
@@ -124,6 +125,8 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                 {"field_name" : "Due Date", "field_value" : $scope.selected_item["due_date"]},
                 {"field_name" : "TS (min)", "field_value" : $scope.selected_item["total_minutes"]}
             ];
+
+            $scope.is_task = true;
         }
         
         else{
@@ -145,6 +148,8 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                     {"field_name" : "URL", "field_value" : $scope.selected_item["url"]}
                 ];
             }
+
+            $scope.is_task = false;
         }
 
         $scope.show_item = true;
@@ -203,14 +208,19 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
                 item_class : item_class
             }
         }).success(function(data){
+            
+            //clears inside item display
             item.total_minutes = 0;
-            
-            /*
-            *   BUG 
-            *   need to properly set selected item
-            */
-            
-            $scope.selected_item["total_minutes"] = 0;
+           
+            //need to find the corresponding task in the schedule and
+            //set it to zero minutes 
+            for each(slot in $scope.schedule){
+                if(slot["item"].id == item.id && slot["item"].class == item.class){
+                    $scope.selected_item = slot["item"];
+                    $scope.selected_item["total_minutes"] = 0;
+                    break;
+                }
+            }
             if($scope.show_item){
                 $scope.display_item($scope.selected_item);
             }
