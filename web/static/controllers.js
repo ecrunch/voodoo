@@ -214,9 +214,14 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
            
             //need to find the corresponding task in the schedule and
             //set it to zero minutes 
-            for each(slot in $scope.schedule){
-                if(slot["item"].id == item.id && slot["item"].class == item.class){
-                    $scope.selected_item = slot["item"];
+            var length = $scope.schedule.length;
+            var element = null;
+            
+            //for each(slot in $scope.schedule){
+            for(var i = 0; i < length; i++){
+            
+                if($scope.schedule[i]["item"].id == item.id && $scope.schedule[i]["item"].class == item.class){
+                    $scope.selected_item = $scope.schedule[i]["item"];
                     $scope.selected_item["total_minutes"] = 0;
                     break;
                 }
