@@ -18,7 +18,11 @@ I suggest that if you want to add something, and are
 uncomfortable with merging code, follow this procedure
 
 1) git pull voodoo master
-    *gets latest changes from master
+    * gets/merges latest changes from master
+
+    * to simply grab another branch without pulling/merging
+        git fetch voodoo
+        git checkout <branch name>
 
 NOTE : if for example you fucked up your local branch beyond repair and
 just want a clean copy of what is on github without doing any merging
@@ -45,25 +49,27 @@ This will allow you to push the code onto github on a separate branch
 and I can merge it in to the master code later.
 
 
-############# Python Setup (Casey)
-
-Setting up python
-    alias py='/Users/cc/python34/python.exe"
-
-    Note : you will need to do this every time you open the terminal
-    until we figure out how to get your Linux to remember it. 
+############# Python 
 
 Running a python module
-    py -m <module name>
+    python -m <module name>
 
+
+############## Running the server/gui
+
+Assumptions : 
+    you are in the project's home directory
+
+Instructions :
+    python -m web.server
+        runs the web server
+        copy/paste the link it spits out into a browser
 
 
 ############## Running the scheduler
 
 Assumptions :
-    your python is configured correctly
     you are in the project's home directory
-
 
 Instructions :
     python -m bin.run 
@@ -78,6 +84,5 @@ Assumptions :
     your python is configured correctly
     you are in the project's home directory
 
-
 Instructions :
-    python -m test.tests 
+    python -m <test module name> 
