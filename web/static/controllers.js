@@ -1,24 +1,33 @@
 
 
-myApp = angular.module("myApp", []);
+myApp = angular.module("myApp.controllers", []);
 
 
 myApp.controller("Main", function($scope){
     $scope.message = "Angular Works";   
-})
+});
 
 
 
-myApp.controller("SchedulerCtrl", function($scope, $http){
+myApp.controller("SchedulerCtrl", 
 
+["$scope", "$http", "ScheduleManager", "SelectedItemManager", 
 
-    $scope.schedule = [];
+function($scope, $http, ScheduleManager, SelectedItemManager){
+
+    $scope.hours = 4;
+     
+    ScheduleManager.newSchedule($scope.hours)
+    .success(function(data){
+        $scope.schedule = data;
+        $scope.header_hour= $scope.hours;
+    });
+   
     $scope.all_users = [];
     $scope.all_tasks = [];
     $scope.all_wants = [];
     $scope.all_breaks =[];
     
-    $scope.hours = 4;
 
     $scope.selected_item = null;
     
@@ -32,23 +41,18 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     $scope.is_task = false; 
 
 
-    var scheduler = "/get_schedule/" + $scope.hours;
-    $http.get(scheduler).success(function(data){ 
-        $scope.schedule = data;
-        $scope.header_hour = $scope.hours;
-    });
+    $scope.test = function(){
+        SelectedItemManager.test();
+    }
+
 
     $scope.update_schedule = function update_schedule(){
-        //alert("New schedule covering " + $scope.hours + " hours");
-
-        var scheduler = "/get_schedule/" + $scope.hours;
-         
-        $http.get(scheduler).success(function(data){ 
+        ScheduleManager.newSchedule($scope.hours)
+        .success(function(data){
             $scope.schedule = data;
-            $scope.header_hour = $scope.hours;
+            $scope.header_hour= $scope.hours;
             $scope.show_item = false;
         });
-
     }
 
 
@@ -115,38 +119,20 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         $scope.selected_item = item;
         
         //is a task
-        if($scope.selected_item["class"] == "Task"){
-         
-            $scope.item_display = [
-                {"field_name" : "ID", "field_value" : $scope.selected_item["id"]},
-                {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
-                {"field_name" : "Score", "field_value" : $scope.selected_item["score"]},
-                {"field_name" : "Placement", "field_value" : $scope.selected_item["placement"]},
-                {"field_name" : "Due Date", "field_value" : $scope.selected_item["due_date"]},
-                {"field_name" : "TS (min)", "field_value" : $scope.selected_item["total_minutes"]}
-            ];
-
+        if($scope.selected_item["class"] == "Task"){ 
+            $scope.item_display = SelectedItemManager.formatTask($scope.selected_item);
             $scope.is_task = true;
         }
         
         else{
-
             //is a want
             if($scope.selected_item["class"] == "Want"){ 
-                $scope.item_display = [
-                    {"field_name" : "ID", "field_value" : $scope.selected_item["id"]},
-                    {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
-                    {"field_name" : "Category", "field_value" : $scope.selected_item["category"]}
-                ];
+                $scope.item_display = SelectedItemManager.formatWant($scope.selected_item);
             }  
 
             //is a break
             else{
-                $scope.item_display = [
-                    {"field_name" : "ID", "field_value" : $scope.selected_item["id"]},
-                    {"field_name" : "Type", "field_value" : $scope.selected_item["class"]},
-                    {"field_name" : "URL", "field_value" : $scope.selected_item["url"]}
-                ];
+                $scope.item_display = SelectedItemManager.formatBreak($scope.selected_item);
             }
 
             $scope.is_task = false;
@@ -168,17 +154,9 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         var description = slot["item"].description;
         var item_class = slot["item"].class;
       
-                      
-        var route = "/add_minutes";
-        
-        $http
-        .get(route, {
-                params : {
-                    id : id,
-                    time_slot : time_slot,
-                    item_class : item_class   
-                }
-        }).success(function(data){
+                       
+        ScheduleManager.addTime(id, time_slot, item_class)
+        .success(function(data){
 
             slot["item"].total_minutes = data["minutes"];
             if($scope.show_item){
@@ -198,16 +176,8 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
         var id = item.id;
         var item_class = item.class;
 
-
-        var route = "/reset_minutes";
-
-        $http
-        .get(route, {
-            params : {
-                id : id,
-                item_class : item_class
-            }
-        }).success(function(data){
+        ScheduleManager.resetTime(id, item_class)
+        .success(function(data){
             
             //clears inside item display
             item.total_minutes = 0;
@@ -236,7 +206,7 @@ myApp.controller("SchedulerCtrl", function($scope, $http){
     } 
 
 
-});
+}]);
 
 
 
