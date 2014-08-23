@@ -72,6 +72,8 @@ def get_all_tasks():
     task_adapter = TaskDbAdapter(dbconn)
 
 
+    print("Made it here")
+
     tasks = []
 
     for item in task_adapter.items:
@@ -123,17 +125,19 @@ def add_minutes():
         return "NA" 
    
     qry = "SELECT * FROM %s WHERE id = '%s'" % (table_name, id)
-    print (qry)
     
     results = adapter._execute_qry(qry)
     
 
-    total_minutes = results[0][5] 
+    #NEED TO FIX THIS THIS IS PRONE TO BREAKAGE
+    total_minutes = results[0][6] 
     
     total_minutes = int(total_minutes) + int(minutes)
 
     qry = "UPDATE %s SET total_minutes = %s WHERE id = '%s'" % (table_name, total_minutes, id)
     adapter._execute_qry(qry)
+
+
 
     return json.dumps({"minutes": total_minutes})
 

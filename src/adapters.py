@@ -19,6 +19,21 @@ from src.classes import (
 )
 
 
+
+
+# IDEA : make the db easier to deal
+# with by providing schemas to create
+# tables
+
+# IDEA : also checkout mongo db
+# and some other db types
+TASK_SCHEMA = {
+
+}
+
+
+
+
 class DbAdapter(object):
 
     def __init__(self, dbconn):
@@ -107,14 +122,14 @@ class TaskDbAdapter(DbAdapter):
 
         for result in results:
 
-
             id = result[0]
-            user = str(result[1])
-            description = str(result[2])
-            date_string = str(result[3])
+            user_id = str(result[1])
+            class_id = str(result[2])
+            description = str(result[3])
+            date_string = str(result[4])
             due_date = self._make_datetime(date_string)
-            t_type = str(result[4])
-            total_minutes = result[5]
+            t_type = str(result[5])
+            total_minutes = result[6]
 
 
             if t_type == 'Exam':
