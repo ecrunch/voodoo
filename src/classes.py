@@ -1,113 +1,51 @@
 
-import math
-import datetime
-
-EXAM_INITIAL_SCORE = 5 
-PROJECT_INITIAL_SCORE = 4
-PAPER_INITIAL_SCORE = 4
-HW_INITIAL_SCORE = 3
+from sqlalchemy import(
+    Table, MetaData, Column, 
+    Integer, String, create_engine,
+)
 
 
-class Task(object):
+from sqlalchemy.orm import (
+    mapper, sessionmaker
+)
 
-    # t stands for 'task'
-    def __init__(self, id, t_name, due_date, total_minutes):
-
-        self.start_date = self._set_start_date()
-        self.name = t_name
-        self.id = id
-        self.due_date = due_date
-        self.total_minutes = total_minutes
-
-        # decided by subclass
-        self.base_score = None
+from sqlalchemy.ext.declarative import declarative_base
 
 
-    # TODO : expand
-    def _set_start_date(self):
-        return datetime.datetime.today()
+# Initialize the engine and tables
 
-    def _get_days_remaining(self):
-        delta = self.due_date.day - self.start_date.day
-        return delta
+engine = create_engine('sqlite:///db/data/sqlalchemy.db')
+metadata = MetaData() 
 
-    def add_days_to_due_date(self, num_days):
-        self.due_date = self.due_date + datetime.timedelta(days= num_days)
-        return
+_class = Table('classes', metadata,
+            Column('class_id', Integer, primary_key=True, autoincrement=True),
+            Column('class_name', String(50)),
+            Column('homework_frequency', String(50))
+       ) 
+
+metadata.create_all(engine)
 
 
-class Exam(Task):
+# set the metadata to Base()
+Base = declarative_base()
 
-    def __init__(self, id, t_name, due_date, total_minutes):
-        Task.__init__(self, id, t_name, due_date, total_minutes)
-        self.base_score = EXAM_INITIAL_SCORE
 
-    def get_score(self):
-
-        days_remaining = self._get_days_remaining()
-        if days_remaining <= 10:
-            return self.base_score + (10 - days_remaining)
-        else:
-            return self.base_score
+class Class(Base):
+        
+    __tablename__ = 'classes'
+     
+    class_id = Column(Integer, primary_key=True, autoincrement=True)
+    class_name = Column(String(50))
+    homework_frequency = Column(String(50))
     
-
-class Project(Task):
-
-    def __init__(self, id, t_name, due_date, total_minutes):
-        Task.__init__(self, id, t_name, due_date, total_minutes)
-        self.base_score = PROJECT_INITIAL_SCORE
-
-    def get_score(self):
-
-        days_remaining = self._get_days_remaining()
-        if days_remaining <= 10:
-            return self.base_score + (10 - days_remaining)
-        else:
-            return self.base_score
+    def __init__(self, class_name, homework_frequency):
+        self.class_name = class_name
+        self.homework_frequency = homework_frequency
+        
+    def __repr__(self):
+        return "<Class('%s', '%s', '%s')>" % (self.class_id, self.class_name, self.homework_frequency)             
 
 
-class Paper(Task):
+    def hello(self):
+        print("hello")
 
-    def __init__(self, id, t_name, due_date, total_minutes):
-        Task.__init__(self, id, t_name, due_date, total_minutes)
-        self.base_score = PAPER_INITIAL_SCORE
-
-    def get_score(self):
-
-        days_remaining = self._get_days_remaining()
-        if days_remaining <= 10:
-            return self.base_score + (10 - days_remaining)
-        else:
-            return self.base_score
-
-
-class Homework(Task):
-
-    def __init__(self, id, t_name, due_date, total_minutes):
-        Task.__init__(self, id, t_name, due_date, total_minutes)
-        self.base_score = HW_INITIAL_SCORE
-
-    def get_score(self):
-
-        days_remaining = self._get_days_remaining()
-        if days_remaining <= 5:
-            return self.base_score + (5 - days_remaining)
-        else:
-            return self.base_score
-
-
-
-## wrapper for DB
-# will have actual DB connection code here
-class MockDB(object):
-
-    def __init__(self):
-        self.contents = []
-
-    def save(self, task):
-        self.contents.append(task)
-
-
-
-
-    

@@ -1,9 +1,6 @@
 
-import sqlite3
 import logging
 import json
-
-
 
 from lib._flask.flask import (
     Flask, 
@@ -15,24 +12,24 @@ from lib._flask.flask import (
 )
 
 
-from src.scheduler import(
-    Scheduler,
-    JSONScheduler,
-    DBScheduler
-)
+from sqlalchemy import create_engine
 
-from src.adapters import(
-    DbAdapter,
-    TaskDbAdapter,
-    WantDbAdapter,
-    BreakDbAdapter
-)
+from src.scheduler import Scheduler
+
+from src.session_manager import SessionManager
+
+from src.users import User
+from src.tasks import Task
+from src.wants import Want
+from src.breaks import Break
+from src.classes import Class
 
 
-DB_PATH = "db/data/data.db"
+#global db shit
+engine = create_engine('sqlite:///db/data/sqlalchemy.db')
+session = SessionManager(engine)
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def hello_world():
@@ -44,20 +41,26 @@ def hello_world():
 def get_schedule(hours=4):
       
     hours = int(hours)
-    scheduler = DBScheduler(int(hours)) 
+
+
+    tasks = session.get_all(Task)
+    wants = session.get_all(Want)
+    breaks = session.get_all(Break)
+
+    scheduler = Scheduler(hours, tasks, wants, breaks) 
+    
     return json.dumps(scheduler.schedule)
 
 
 @app.route('/all_users')
 def get_all_users():
 
-    dbconn = sqlite3.connect(DB_PATH)    
-    adapter = DbAdapter(dbconn)
-    results = adapter.get_all('users')
-    
+    results = session.get_all(User)
     users = []
-    for result in results:
-        users.append({"id" : result[0], "name" : result[1], "password" : result[2]})
+    for obj in results:
+
+        #come back and jsonify
+        users.append({"id" : obj.unique_id, "name" : obj.name, "password" : obj.password})
 
 
     return json.dumps(users)
@@ -68,25 +71,12 @@ def get_all_users():
 @app.route('/all_tasks')
 def get_all_tasks():
 
-    dbconn = sqlite3.connect(DB_PATH)
-    task_adapter = TaskDbAdapter(dbconn)
-
-
-    print("Made it here")
+    results = session.get_all(Task)
 
     tasks = []
 
-    for item in task_adapter.items:
-        tasks.append({
-            "class" : "Task",
-            "id" : item.id,
-            "description" : item.name, 
-            "due_date" : str(item.due_date), 
-            "category" : str(type(item)),
-            "score" : item.get_score(),
-            "total_minutes" : item.total_minutes
-        })
-
+    for obj in results:
+        tasks.append(obj.jsonify())
 
     return json.dumps(tasks)
 
@@ -94,17 +84,25 @@ def get_all_tasks():
 @app.route('/all_wants')
 def get_all_wants():
 
-    dbconn = sqlite3.connect(DB_PATH)    
-    want_adapter = WantDbAdapter(dbconn)
-    return json.dumps(want_adapter.items)
+    results = session.get_all(Want)
+
+    wants = []
+    for obj in results:
+        wants.append(obj.jsonify())
+
+    return json.dumps(wants)
 
 
 @app.route('/all_breaks')
 def get_all_breaks():
 
-    dbconn = sqlite3.connect(DB_PATH)    
-    break_adapter = BreakDbAdapter(dbconn)
-    return json.dumps(break_adapter.items)
+    results = session.get_all(Break)
+
+    breaks = []
+    for obj in results:
+        breaks.append(obj.jsonify())
+
+    return json.dumps(breaks)
 
 
 @app.route('/add_minutes', methods = ['GET'])
@@ -113,31 +111,17 @@ def add_minutes():
     id = request.args.get('id')
     minutes = request.args.get('time_slot')
     item_class = request.args.get('item_class')
-    
      
-    dbconn = sqlite3.connect(DB_PATH)    
-    adapter = DbAdapter(dbconn)
-  
-    table_name = ""
-    if item_class == "Task":
-        table_name = "tasks"
-    else:
-        return "NA" 
-   
-    qry = "SELECT * FROM %s WHERE id = '%s'" % (table_name, id)
     
-    results = adapter._execute_qry(qry)
+    obj = session.get_one(Task, id)
     
-
-    #NEED TO FIX THIS THIS IS PRONE TO BREAKAGE
-    total_minutes = results[0][6] 
+    # should only be one
+    
+    total_minutes = obj.total_minutes
     
     total_minutes = int(total_minutes) + int(minutes)
 
-    qry = "UPDATE %s SET total_minutes = %s WHERE id = '%s'" % (table_name, total_minutes, id)
-    adapter._execute_qry(qry)
-
-
+    session.update_one(Task, {'unique_id':id, 'total_minutes':total_minutes}, commit=True)
 
     return json.dumps({"minutes": total_minutes})
 
@@ -148,19 +132,8 @@ def reset_minutes():
 
     id = request.args.get('id')
     item_class = request.args.get('item_class')
-    print(id, item_class)
-
-    dbconn = sqlite3.connect(DB_PATH)    
-    adapter = DbAdapter(dbconn)
-
-    table_name = ""
-    if item_class == "Task":
-        table_name = "tasks"
-    else:
-        return "NA"
-        
-    qry = "UPDATE %s SET total_minutes = %s WHERE id = '%s'" % (table_name, 0, id)
-    adapter._execute_qry(qry)
+    
+    session.update_one(Task, {'unique_id':id, 'total_minutes':0}, commit=True)
     
     return "ok" 
     
