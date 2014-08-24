@@ -112,7 +112,7 @@ def add_minutes():
     minutes = request.args.get('time_slot')
     item_class = request.args.get('item_class')
      
-    
+
     obj = session.get_one(Task, id)
     
     # should only be one
@@ -121,7 +121,9 @@ def add_minutes():
     
     total_minutes = int(total_minutes) + int(minutes)
 
-    session.update_one(Task, {'unique_id':id, 'total_minutes':total_minutes}, commit=True)
+
+    session.update_one(Task, {'total_minutes':total_minutes}, id, commit=True)
+
 
     return json.dumps({"minutes": total_minutes})
 
@@ -133,7 +135,7 @@ def reset_minutes():
     id = request.args.get('id')
     item_class = request.args.get('item_class')
     
-    session.update_one(Task, {'unique_id':id, 'total_minutes':0}, commit=True)
+    session.update_one(Task, {'total_minutes':0}, id, commit=True)
     
     return "ok" 
     

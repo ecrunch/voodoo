@@ -36,8 +36,10 @@ class SessionManager(object):
     def get_one(self, table, unique_id):
         return self.session.query(table).filter(table.unique_id == unique_id).first() 
 
-    def update_one(self, table, values, commit=False):
-        self.session.query(table).update(values, synchronize_session=False)
+    def update_one(self, table, values, unique_id, commit=False):
+        
+        #SHOULD : figure out a better way of committing this query?
+        self.session.query(table).filter(table.unique_id == unique_id).update(values)
         if commit:
             self.session.commit()
 
@@ -46,42 +48,42 @@ class SessionManager(object):
 def _user(session):
     zack = User('Zack', 'Botkin', 24)
     session.add(zack, commit= True)
-    results = session.get_all(User)
-    for obj in results:
-        print(obj)
+    #results = session.get_all(User)
+    #for obj in results:
+    #    print(obj)
 
 
 def _task(session):
     test_task_one = Task('Study For Science Exam', '2014/09/01', 0, 1, 'Exam', 1)
     session.add(test_task_one, commit= True)
-    results = session.get_all(Task)
-    for obj in results:
-        print(obj.jsonify())
+    #results = session.get_all(Task)
+    #for obj in results:
+    #    print(obj.jsonify())
 
 def _class(session):
     test_class = Class('Bio 101', 'Weekly')
     session.add(test_class, commit= True)
-    results = session.get_all(Class)
-    for obj in results:
-        print(obj)
+    #results = session.get_all(Class)
+    #for obj in results:
+    #    print(obj)
         #print(obj.jsonify())
 
 
 def _want(session):
     test_want = Want('Go to the gym', 'Health')
     session.add(test_want, commit= True)
-    results = session.get_all(Want)
-    for obj in results:
-        print(obj.jsonify())
+    #results = session.get_all(Want)
+    #for obj in results:
+    #    print(obj.jsonify())
 
 
 def _break(session):
     test_break = Break('Go on reddit', 'http://www.reddit.com')
     session.add(test_break, commit= True)
     results = session.get_all(Break)
-    for obj in results:
+    #for obj in results:
         #print(obj)
-        print(obj.jsonify())
+    #    print(obj.jsonify())
 
 
 
@@ -90,7 +92,10 @@ def main():
     
     engine = create_engine('sqlite:///db/data/sqlalchemy.db')
     session = SessionManager(engine)
-    
+    session.update_one(Task, {'total_minutes': 60}, 700,  commit= True)
+
+
+
     play_all = False
     if(play_all):
         _user(session)
@@ -98,11 +103,11 @@ def main():
         _class(session)    
         _want(session)
         _break(session)
-    play_one = True
+    play_one = False
     if play_one:
         obj = session.get_one(Task, 1)
         print (obj.jsonify())
 
 
-#main()
+main()
 
