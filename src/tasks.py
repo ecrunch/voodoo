@@ -2,21 +2,20 @@
 from sqlalchemy import(
     Table, MetaData, Column, 
     Integer, String, create_engine,
+    ForeignKey
 )
 
 
 from sqlalchemy.orm import (
-    mapper, sessionmaker
+    mapper, sessionmaker, relationship, backref
 )
+
 
 from sqlalchemy.ext.declarative import declarative_base
 
 import datetime
 
-
-
 # Initialize the engine and tables
-
 engine = create_engine('sqlite:///db/data/sqlalchemy.db')
 metadata = MetaData() 
 
@@ -30,12 +29,14 @@ task = Table('tasks', metadata,
             Column('user_id', Integer)
        ) 
 
+
+
+
 metadata.create_all(engine)
 
 
 # set the metadata to Base()
 Base = declarative_base()
-
 
 
 BASE_SCORES = {
@@ -59,7 +60,7 @@ class Task(Base):
     task_type = Column(String(50))
     user_id = Column(Integer)
     
-    
+   
     def __init__(self, description, date_str, total_minutes, class_id, task_type, user_id):
         
         self.description = description
