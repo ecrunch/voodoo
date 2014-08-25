@@ -1,0 +1,32 @@
+<h3> {{ "{{header_hour}}" }} hour Schedule </h3>
+<input type= "text" ng-model="hours"> </input> : hours 
+<input type= "button" ng-click= "update_schedule()" value= "New Schedule"> </input>
+</br></br>
+                
+<!-- schedule table--> 
+<div class= "container">  
+    <table border="1">
+        <tr>
+            <td> <b> Item Number </b> </td>
+            <td> <b> Description </b> </td>
+            <td> <b> Minutes </b> </td>
+        </tr>
+        <tr ng-repeat = "slot in schedule">
+            <td>
+                {{ "{{slot.number}}" }} )
+            </td>
+            <td>
+                <a href= "#" ng-click= "display_item(slot.item)"</a>
+                    {{ "{{slot.item.description}}" }}
+                </a> 
+            </td>
+            <td>
+                {{ "{{ slot.timeslot }}" }}
+            </td>
+            <td>
+                <input type= "button" value= "add minutes" ng-click= "add_time(slot)"> 
+                </input>
+            </td>
+        </tr>
+    </table>
+</div>
