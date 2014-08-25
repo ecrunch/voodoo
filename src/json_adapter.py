@@ -5,12 +5,9 @@ import json
 from sqlalchemy import create_engine
 
 from src.session_manager import SessionManager
-from src.users import User
-from src.tasks import Task
-from src.wants import Want
-from src.breaks import Break
-from src.classes import Class
-
+from src.classes import(
+    User, Task, Class, Assignment, Want, Break
+)
 
 
 JSON_PATH = "db/json/user/users.json"
@@ -27,6 +24,9 @@ class JsonAdapter(object):
             return json.load(data_file)
 
 
+    def load_all(self):
+        pass
+
 
     def load(self):
 
@@ -37,12 +37,15 @@ class JsonAdapter(object):
         else:
             print("Not implemented yet")
 
-
     
     def load_users(self):
         for row in self.data["data"]:
             self.session.add(
-                User(row["name"], row["password"], row["age"]),
+                User(
+                    name= row["name"], 
+                    password= row["password"], 
+                    age= row["age"]
+                ),
                 commit= True
             )
 
@@ -69,7 +72,7 @@ def main():
 
 
 
-#main()
+main()
 
 
 

@@ -14,6 +14,8 @@ class User(Base):
     name = Column(String(50))
     password = Column(String(50))
     age = Column(Integer)
+    
+    
     classes = relationship('Class', secondary='students')
     assignments = relationship('Assignment', secondary='student_assignments')
 
@@ -28,6 +30,7 @@ class Class(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     class_name = Column(String(50))
     homework_freq = Column(String(50))
+    
     students = relationship('User', secondary='students')
 
 
@@ -40,8 +43,12 @@ class Assignment(Base):
     __tablename__ = 'assignments'
     id = Column(Integer, primary_key=True, autoincrement=True)
     class_id = Column(Integer, ForeignKey('classes.id'))
+    
+    #SHOULD : come up with a standard name for classes, or will simply
+    # keep forgettin
+    class_id  = Column(Integer, ForeignKey('classes.id'))
     uni_class = relationship(User, backref=backref('assignments', uselist= True))
-
+    
     students = relationship('User', secondary= 'student_assignments')
 
 
@@ -62,6 +69,8 @@ class Task(Base):
     date_str = Column(String(50))
     total_minutes = Column(Integer)
     task_type = Column(String(50))
+    
+    
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(User, backref=backref('tasks', uselist=True))
 
@@ -94,6 +103,45 @@ class Task(Base):
             "score" : self.get_score(),
             "total_minutes" : self.total_minutes,
         }
+
+
+class Want(Base):
+
+    __tablename__ = 'wants'
+
+    id = Column(Integer, primary_key= True, autoincrement= True)
+    description  = Column(String(50))
+    category = Column(String(50))
+
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(User, backref=backref('wants', uselist=True))
+
+    def jsonify(self):
+        return {
+            "id" : self.id,
+            "description" : self.description,
+            "category" : self.category
+        }
+
+
+class Break(Base):
+
+    __tablename__ = 'breaks'
+
+    id = Column(Integer, primary_key= True, autoincrement= True)
+    description = Column(String(50))
+    url = Column(String(50))
+
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(User, backref=backref('breaks', uselist=True))
+    
+    def jsonify(self):
+        return{
+            "id" : self.id,
+            "description" : self.description,
+            "url" : self.url   
+        } 
+
 
 
 #association tables (many many relationships)
