@@ -39,6 +39,7 @@ class Course(Base):
 	course_num = Column(Integer)
 	tasks = Column(Integer)
 	
+	
 	def jsonify(self):
 		return{
 			"course_num" : self.course_num,
