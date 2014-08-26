@@ -1,9 +1,6 @@
 
 
+myApp = angular.module('myApp.services', []);
 
 
-
-
-
-myApp
 

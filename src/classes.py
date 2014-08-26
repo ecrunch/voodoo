@@ -21,7 +21,12 @@ class User(Base):
 
 
     def jsonify(self):
-        return {}
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "password" : self.password,
+            "age" : self.age
+        }
 
 
 class Class(Base):

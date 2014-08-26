@@ -29,9 +29,26 @@ session = SessionManager(engine)
 
 app = Flask(__name__)
 
+
+
 @app.route('/')
-def hello_world():
-    return render_template('hello.html')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/home')
+def home():
+    return render_template('partials/home.html')
+
+
+@app.route('/get_user_with_id/<id>')
+def get_user_with_id(id=1):
+    
+    id = int(id)
+    user = session.get_one(User, id)
+    print(user.jsonify())
+    return json.dumps(user.jsonify())
+
 
 
 
