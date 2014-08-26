@@ -18,11 +18,9 @@ from src.scheduler import Scheduler
 
 from src.session_manager import SessionManager
 
-from src.users import User
-from src.tasks import Task
-from src.wants import Want
-from src.breaks import Break
-from src.classes import Class
+from src.classes import (
+    User, Task, Want, Break, Class, Assignment
+)
 
 
 #global db shit
@@ -48,7 +46,7 @@ def get_schedule(hours=4):
     breaks = session.get_all(Break)
 
     scheduler = Scheduler(hours, tasks, wants, breaks) 
-    
+
     return json.dumps(scheduler.schedule)
 
 
@@ -60,7 +58,7 @@ def get_all_users():
     for obj in results:
 
         #come back and jsonify
-        users.append({"id" : obj.unique_id, "name" : obj.name, "password" : obj.password})
+        users.append({"id" : obj.id, "name" : obj.name, "password" : obj.password})
 
 
     return json.dumps(users)
@@ -77,6 +75,7 @@ def get_all_tasks():
 
     for obj in results:
         tasks.append(obj.jsonify())
+
 
     return json.dumps(tasks)
 

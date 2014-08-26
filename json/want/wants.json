@@ -1,0 +1,15 @@
+{
+    "class" : "Want",
+
+    "table" : "wants",
+
+    "data" : [
+
+        {"description" :  "To go to the gym", "category" : "Health", "user_id" : 1},
+        {"description" :  "To go to the gym", "category" : "Health", "user_id" : 1},
+        {"description" :  "To go to the gym", "category" : "Health", "user_id" : 1},
+        {"description" :  "To go to the gym", "category" : "Health", "user_id" : 1},
+        {"description" :  "To go to the gym", "category" : "Health", "user_id" : 1}
+
+    ]
+}

@@ -10,7 +10,10 @@ from src.classes import(
 )
 
 
-JSON_PATH = "db/json/user/users.json"
+#JSON_PATH = "json/user/users.json"
+#JSON_PATH = "json/task/tasks.json"
+#JSON_PATH = "json/want/wants.json"
+JSON_PATH = "json/break/breaks.json"
 
 class JsonAdapter(object):
 
@@ -24,9 +27,6 @@ class JsonAdapter(object):
             return json.load(data_file)
 
 
-    def load_all(self):
-        pass
-
 
     def load(self):
 
@@ -34,6 +34,10 @@ class JsonAdapter(object):
             self.load_users()
         elif self.data["class"] == "Task":
             self.load_tasks()
+        elif self.data["class"] == "Want":
+            self.load_wants()
+        elif self.data["class"] == "Break":
+            self.load_breaks()
         else:
             print("Not implemented yet")
 
@@ -54,7 +58,35 @@ class JsonAdapter(object):
         for row in self.data["data"]:
             self.session.add(
                 Task(
-                    row["description"], row["date_str"], row["total_minutes"], row["class_id"], row["task_type"], row["user_id"]
+                    description= row["description"], 
+                    date_str= row["date_str"], 
+                    total_minutes= row["total_minutes"], 
+                    task_type= row["task_type"], 
+                    user_id= row["user_id"]
+                ),
+                commit= True
+            )
+
+
+    def load_wants(self):
+        for row in self.data["data"]:
+            self.session.add(
+                Want(
+                    description= row["description"],
+                    category= row["category"],
+                    user_id= row["user_id"]
+                ),
+                commit= True
+            )
+
+
+    def load_breaks(self):
+        for row in self.data["data"]:
+            self.session.add(
+                Break(
+                    description= row["description"],
+                    url= row["url"],
+                    user_id= row["user_id"]
                 ),
                 commit= True
             )
@@ -68,7 +100,7 @@ def main():
 
     json_adapter = JsonAdapter(JSON_PATH, session)
     
-    json_adapter.load_users()
+    json_adapter.load()
 
 
 

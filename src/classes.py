@@ -47,7 +47,7 @@ class Assignment(Base):
     #SHOULD : come up with a standard name for classes, or will simply
     # keep forgettin
     class_id  = Column(Integer, ForeignKey('classes.id'))
-    uni_class = relationship(User, backref=backref('assignments', uselist= True))
+    uni_class = relationship(Class, backref=backref('assignments', uselist= True))
     
     students = relationship('User', secondary= 'student_assignments')
 

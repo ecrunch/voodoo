@@ -35,7 +35,7 @@ class Scheduler(object):
 
 
         self._determine_task_priorities(self.scorer)
-        
+
         self.schedule = self.make_schedule()
 
 

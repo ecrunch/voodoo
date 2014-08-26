@@ -1,0 +1,16 @@
+{
+    "class" : "User",
+
+    "table" : "users",
+
+    "data" : [
+
+        {"name" : "Zack", "password" : "Botkin", "age" : 24},
+        {"name" : "Casey", "password" : "Emmons", "age" : 24},
+        {"name" : "Pre", "password" : "Mahajah", "age" : 24},
+        {"name" : "Tats", "password" : "Shigeta", "age" : 24},
+        {"name" : "Mariano", "password" : "Rivera", "age" : 23},
+        {"name" : "Ankit", "password" : "Shah", "age" : 22}
+
+    ]
+}

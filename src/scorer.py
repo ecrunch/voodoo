@@ -13,6 +13,7 @@ class Scorer(object):
         self.score_total = 0
         self.score_list = []
         self.task_list = tasks
+
  
         for task in self.task_list:
             self.score_list.append(task.get_score())
@@ -20,6 +21,7 @@ class Scorer(object):
 
         for score in self.score_list:
             self.score_total = self.score_total + score       
+
  
         self.placement_list = self._get_placement()
 

@@ -25,12 +25,12 @@ class SessionManager(object):
 
 
     def get_one(self, table, unique_id):
-        return self.session.query(table).filter(table.unique_id == unique_id).first() 
+        return self.session.query(table).filter(table.id == unique_id).first() 
 
     def update_one(self, table, values, unique_id, commit=False):
         
         #SHOULD : figure out a better way of committing this query?
-        self.session.query(table).filter(table.unique_id == unique_id).update(values)
+        self.session.query(table).filter(table.id == unique_id).update(values)
         if commit:
             self.session.commit()
 
