@@ -30,79 +30,18 @@ session = SessionManager(engine)
 app = Flask(__name__)
 
 
-### templates
+#proof of concept, to be phased out
+@app.route('/poc')
+def hello_world():
+    return render_template('hello.html')
+
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+ return render_template('index.html')
 
 
-@app.route('/home')
-def home():
-    return render_template('partials/home.html')
-
-
-@app.route('/add')
-def add():
-    return render_template('partials/add.html')
-
-
-@app.route('/add_class_template')
-def add_class():
-    return render_template('partials/add_class.html')
-
-
-
-
-### pull content from db
-
-@app.route('/get_user_classes/<id>')
-def get_user_classes(id=1):
-    
-    user_obj = session.get_one(User, id)
-    
-    classes = []
-    for _class in user_obj.classes:
-        classes.append(_class.jsonify())
-
-    return json.dumps(classes)
-
-
-
-
-### add content to db
-
-@app.route('/add_class_to_db', methods= ['GET'])
-def add_class_to_db():
- 
-    user_id = request.args.get('user_id')
-    class_name = request.args.get('class_name')
-    homework_freq = request.args.get('homework_freq')
-
-    user_obj = session.get_one(User, user_id)
-    class_obj = Class(class_name= class_name, homework_freq= homework_freq)
-
-    class_obj.students.append(user_obj)
-
-    session.add(class_obj, commit= True)
-
-    return jsonify([])
-
-
-
-
-
-
-
-
-################# old shit
-
-@app.route('/get_user_with_id/<id>')
-def get_user_with_id(id=1):
-    
-    id = int(id)
-    user = session.get_one(User, id)
-    print(user.jsonify())
-    return json.dumps(user.jsonify())
 
 
 

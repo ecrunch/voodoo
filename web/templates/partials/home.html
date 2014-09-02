@@ -1,3 +1,25 @@
 
 
-<h1> {{"{{current_user}}"}} </h1>
+<div ng-controller= "homeCtrl">
+
+    <h1> {{"{{current_user}}"}} </h1>
+
+
+    <h3> My classes </h3>
+
+    <table>
+        <th> Class Name </th>
+        <th> Homework Freq </th>
+        <tr ng-repeat= "class in classes">
+            <td> {{"{{class.class_name}}"}}</td>
+            <td> {{"{{class.homework_freq}}"}}</td>
+        </tr>
+    </table>
+
+</div>
+
+
+
+
+
+

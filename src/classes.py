@@ -40,7 +40,11 @@ class Class(Base):
 
 
     def jsonify(self):
-        return {}
+        return {
+            "id" : self.id,
+            "class_name" : self.class_name,
+            "homework_freq" : self.homework_freq    
+        }
 
 
 class Assignment(Base):

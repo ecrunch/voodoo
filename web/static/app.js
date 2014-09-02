@@ -2,6 +2,7 @@
 angular.module('myApp', [
     
     'myApp.controllers',
-    'myApp.services'
+    'myApp.services',
+    'myApp.directives'
 ]);
 
