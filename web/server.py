@@ -8,7 +8,9 @@ from lib._flask.flask import (
     url_for, 
     jsonify, 
     Response, 
-    request
+    request,
+    make_response,
+    send_file,
 )
 
 
@@ -33,27 +35,16 @@ app = Flask(__name__)
 ### templates
 @app.route('/')
 def index():
-    return render_template('index.html')
-
-
-@app.route('/home')
-def home():
-    return render_template('partials/home.html')
-
-
-@app.route('/add')
-def add():
-    return render_template('partials/add.html')
-
-
-@app.route('/add_class_template')
-def add_class():
-    return render_template('partials/add_class.html')
+    
+    #cached : 'prod'
+    return send_file('templates/index.html')
+    
+    
+    #uncached : dev
+    #return make_response(open('templates/index.html').read())
 
 
 
-
-### pull content from db
 
 @app.route('/get_user_classes/<id>')
 def get_user_classes(id=1):
@@ -68,8 +59,6 @@ def get_user_classes(id=1):
 
 
 
-
-### add content to db
 
 @app.route('/add_class_to_db', methods= ['GET'])
 def add_class_to_db():
