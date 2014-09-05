@@ -3,6 +3,7 @@ import random
 
 import logging
 
+import datetime
 
 from src.generator import TimeSlotGenerator
 from src.scorer import Scorer
@@ -10,13 +11,10 @@ from src.scorer import Scorer
 
 class Scheduler(object):
 
-
     def __init__(self, hours, tasks, wants, breaks):
-       
-        
+               
         self.hours = hours
         self.generator = TimeSlotGenerator(hours)
-
 
         self.tasks = tasks
         self.wants = wants
@@ -30,14 +28,15 @@ class Scheduler(object):
         self.n_items = []
         self.nt_items = []
 
-
         self.scorer = Scorer(db= None, tasks= self.tasks)
-
 
         self._determine_task_priorities(self.scorer)
 
-        self.schedule = self.make_schedule()
+        self.start_time = datetime.datetime.now()
+        self.current_time = self.start_time
+        self.minutes_to_add = 0
 
+        self.schedule = self.make_schedule()
 
 
     def _determine_task_priorities(self, scorer):
@@ -78,14 +77,17 @@ class Scheduler(object):
 
         number = 1
 
-
         for slot in time_slots:
+
+            self.current_time = self.current_time + datetime.timedelta(minutes=self.minutes_to_add)
+            self.minutes_to_add = slot
 
             #breaks get 15 min slots
             if slot == 15:
                 number_items = len(self.breaks)
                 random_int = random.randint(0, number_items-1)
-                schedule.append({"number" : number, "timeslot" : slot, "item" : self.breaks[random_int].jsonify()})
+                 
+                schedule.append({"number" : number, "minutes" : slot, "item" : self.breaks[random_int].jsonify(), "time": str(self.current_time.time())})
 
             #a want or task
             else:
@@ -96,11 +98,10 @@ class Scheduler(object):
 
                     number_items = len(self.wants)
                     random_int = random.randint(0, number_items-1)
-                    schedule.append({"number" : number, "timeslot" : slot, "item" : self.wants[random_int].jsonify()})
+                    schedule.append({"number" : number, "minutes" : slot, "item" : self.wants[random_int].jsonify(), "time" : str(self.current_time.time())})
 
                 # a task
                 else:
-
 
                     if self.e_index < len(self.e_items):
                         chosen_item_list = self.e_items
@@ -132,12 +133,16 @@ class Scheduler(object):
 
                     task = chosen_item_list[chosen_index]
 
-                    schedule.append({"number" : number, "timeslot" : slot, "item" : task.jsonify()})
+                    schedule.append({"number" : number, "minutes" : slot, "item" : task.jsonify(), "time" : str(self.current_time.time())})
 
 
             number = number + 1
 
         return schedule
+
+
+    def jsonify(self):
+        return self.schedule
 
 
     def print_schedule(self):

@@ -13,6 +13,10 @@ angular.module('myApp', [
         templateUrl: 'static/partials/home.html',
         controller: 'homeCtrl'
     })
+    .when('/schedule', {
+        templateUrl: 'static/partials/schedule.html',
+        controller: 'scheduleCtrl'
+    })
     .when('/add_class', {
         templateUrl: 'static/partials/add_class.html',
         controller: 'addClassCtrl'

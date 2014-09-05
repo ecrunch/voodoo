@@ -20,8 +20,25 @@ myApp.controller("homeCtrl", function($scope, $http){
 });
 
 
-myApp.controller("addClassCtrl", function($scope, $http){
+myApp.controller("scheduleCtrl", function($scope, $http){
 
+    $scope.hours = 4;
+    $scope.current_hours = $scope.hours;
+     
+    $scope.new_schedule = function(){
+        var route = "/get_schedule/" + $scope.hours;
+        $http.get(route).success(function(data){
+            $scope.schedule = data;
+            $scope.current_hours = $scope.hours;
+        });
+    };
+    
+    $scope.new_schedule();
+     
+});
+
+
+myApp.controller("addClassCtrl", function($scope, $http){
 
     $scope.validate = function(){
         if($scope.class_name == null || $scope.class_name == ""){

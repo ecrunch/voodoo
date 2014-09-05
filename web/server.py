@@ -38,12 +38,9 @@ def index():
     
     #cached : 'prod'
     return send_file('templates/index.html')
-    
-    
+        
     #uncached : dev
     #return make_response(open('templates/index.html').read())
-
-
 
 
 @app.route('/get_user_classes/<id>')
@@ -56,8 +53,6 @@ def get_user_classes(id=1):
         classes.append(_class.jsonify())
 
     return json.dumps(classes)
-
-
 
 
 @app.route('/add_class_to_db', methods= ['GET'])
@@ -77,7 +72,18 @@ def add_class_to_db():
     return jsonify([])
 
 
+@app.route('/get_schedule/<hours>')
+def get_schedule(hours=4):
+      
+    hours = int(hours)
 
+    tasks = session.get_all(Task)
+    wants = session.get_all(Want)
+    breaks = session.get_all(Break)
+
+    scheduler = Scheduler(hours, tasks, wants, breaks) 
+
+    return json.dumps(scheduler.jsonify())
 
 
 
@@ -86,29 +92,11 @@ def add_class_to_db():
 ################# old shit
 
 @app.route('/get_user_with_id/<id>')
-def get_user_with_id(id=1):
-    
+def get_user_with_id(id=1):    
     id = int(id)
     user = session.get_one(User, id)
     print(user.jsonify())
     return json.dumps(user.jsonify())
-
-
-
-
-@app.route('/get_schedule/<hours>')
-def get_schedule(hours=4):
-      
-    hours = int(hours)
-
-
-    tasks = session.get_all(Task)
-    wants = session.get_all(Want)
-    breaks = session.get_all(Break)
-
-    scheduler = Scheduler(hours, tasks, wants, breaks) 
-
-    return json.dumps(scheduler.schedule)
 
 
 @app.route('/all_users')
