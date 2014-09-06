@@ -71,6 +71,29 @@ def add_class_to_db():
 
     return jsonify([])
 
+@app.route('/add_task_to_db', methods= ['GET'])
+def add_task_to_db():
+
+    valid_task_types = ['Exam', 'Homework', 'Paper', 'Project']
+
+    user_id = request.args.get('user_id')
+    description = request.args.get('task_description')
+    date_str = request.args.get('task_due_date')
+    task_type = request.args.get('task_type')
+
+    if task_type not in valid_task_types:
+        task_type= 'Homework'
+
+
+    user_obj = session.get_one(User, user_id)
+    task_obj = Task(description= description, date_str= date_str, total_minutes= 0, task_type= task_type, user_id= user_id)
+    
+    user_obj.tasks.append(task_obj)
+
+    session.add(user_obj, commit= True)
+    return jsonify([])
+
+
 
 @app.route('/get_schedule/<hours>')
 def get_schedule(hours=4):

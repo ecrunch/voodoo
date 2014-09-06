@@ -16,7 +16,7 @@ class User(Base):
     age = Column(Integer)
     
     
-    classes = relationship('Class', secondary='students')
+    classes = relationship('Class', secondary='students') 
     assignments = relationship('Assignment', secondary='student_assignments')
 
 

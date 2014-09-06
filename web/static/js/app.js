@@ -16,6 +16,7 @@ angular.module('myApp', [
     when('/schedule', 's2').
     when('/add', 's3').
     when('/add/class', 's3.addClass').
+    when('/add/task', 's3.addTask').
 
     segment('s1', {
         templateUrl: 'static/partials/home.html',
@@ -32,6 +33,10 @@ angular.module('myApp', [
         segment('addClass', {
             templateUrl: 'static/partials/add_class.html',
             controller: 'addClassCtrl'
+        }).
+        segment('addTask', {
+            templateUrl: 'static/partials/add_task.html',
+            controller: 'addTaskCtrl'
         }).
         up();
 
