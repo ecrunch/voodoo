@@ -12,10 +12,21 @@ myApp.controller("mainCtrl", function($scope){
 
 myApp.controller("homeCtrl", function($scope, $http){
 
+    
+    //refactor this into get user info or something like that
+    //so we are only making one call
+
     var route = "/get_user_classes/" + $scope.current_user_id;
     $http.get(route).success(function(data){
         $scope.my_classes = data;  
     });  
+
+    
+    route = "/get_user_tasks/" + $scope.current_user_id;
+    $http.get(route).success(function(data){
+        $scope.my_tasks = data;  
+    });  
+
 
 });
 

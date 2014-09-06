@@ -55,6 +55,17 @@ def get_user_classes(id=1):
     return json.dumps(classes)
 
 
+@app.route('/get_user_tasks/<id>')
+def get_user_tasks(id=1):
+
+    user_obj = session.get_one(User, id)
+    tasks = []
+    for task in user_obj.tasks:
+        tasks.append(task.jsonify())
+
+    return json.dumps(tasks)
+
+
 @app.route('/add_class_to_db', methods= ['GET'])
 def add_class_to_db():
  

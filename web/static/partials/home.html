@@ -11,3 +11,23 @@
         <td> {{class.homework_freq}} </td>
     </tr>
 </table>
+
+
+
+<h3> My Tasks </h3>
+<table border= "1">
+    <tr>
+        <th> Task Description </th>
+        <th> Task Due Date </th>
+        <th> Task Type </th>
+        <th> Total Minutes </th>
+        <th> Score </th>
+    </tr>
+    <tr ng-repeat= "task in my_tasks">
+        <td> {{task.description}} </td>
+        <td> {{task.due_date}} </td>
+        <td> {{task.type}} </td>
+        <td> {{task.total_minutes}} </td>
+        <td> {{task.score}} </td>
+    </tr>
+</table>
