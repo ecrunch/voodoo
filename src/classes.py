@@ -31,29 +31,25 @@ class User(Base):
         }
 
 
+class Schedule(Base):
 
+    __tablename__ = 'schedules'
+    id = Column(Integer, primary_key= True, autoincrement=True)
+    time_started = Column(String(50))
 
-#class Schedule(Base):
-#
-#    __tablename__ = 'schedules'
-#    id = Column(Integer, primary_key= True, autoincrement=True)
-#    time_started = Column(String(50))
-#
-#    
-#    users = relationship('User', secondary= 'user_schedules')
+    
+    #users = relationship('User', secondary= 'user_schedules')
     
     
+class ScheduleItem(Base):
 
+    __tablename__ = 'schedule_items'
+    id = Column(Integer, primary_key= True, autoincrement= True)
+    
+    schedule_id = Column(Integer, ForeignKey('schedules.id'))
+    #user = relationship(User, backref=backref('schedule_items', uselist=True))
 
-#class ScheduleItem(Base):
-#
-#    __tablename__ = 'schedule_items'
-#    id = Column(Integer, primary_key= True, autoincrement= True)
-#    
-#    schedule_id = Column(Integer, ForeignKey('schedules.id'))
-#    user = relationship(User, backref=backref('schedule_items', uselist=True))
-#
-#    projected_start = Column(String(50))
+    projected_start = Column(String(50))
 
 
 class Class(Base):
