@@ -65,6 +65,16 @@ def get_user_tasks(id=1):
 
     return json.dumps(tasks)
 
+@app.route('/get_user_breaks/<id>')
+def get_user_breaks(id=1):
+
+    user_obj = session.get_one(User, id)
+    breaks = []
+    for _break in user_obj.breaks:
+        _break.append(_break.jsonify())
+
+    return json.dumps(breaks)
+
 
 @app.route('/add_class_to_db', methods= ['GET'])
 def add_class_to_db():
@@ -100,6 +110,23 @@ def add_task_to_db():
     task_obj = Task(description= description, date_str= date_str, total_minutes= 0, task_type= task_type, user_id= user_id)
     
     user_obj.tasks.append(task_obj)
+
+    session.add(user_obj, commit= True)
+    return jsonify([])
+
+
+
+@app.route('/add_break_to_db', methods= ['GET'])
+def add_break_to_db():
+
+    user_id = request.args.get('user_id')
+    description = request.args.get('break_description')
+    url = request.args.get('break_url')
+
+    user_obj = session.get_one(User, user_id)
+    break_obj = _break(description= description, url= url, user_id= user_id)
+
+    user_obj.breaks.append(break_obj)
 
     session.add(user_obj, commit= True)
     return jsonify([])
