@@ -71,7 +71,7 @@ def get_user_breaks(id=1):
     user_obj = session.get_one(User, id)
     breaks = []
     for _break in user_obj.breaks:
-        _break.append(_break.jsonify())
+        breaks.append(_break.jsonify())
 
     return json.dumps(breaks)
 
@@ -124,7 +124,7 @@ def add_break_to_db():
     url = request.args.get('break_url')
 
     user_obj = session.get_one(User, user_id)
-    break_obj = _break(description= description, url= url, user_id= user_id)
+    break_obj = Break(description= description, url= url, user_id= user_id)
 
     user_obj.breaks.append(break_obj)
 
