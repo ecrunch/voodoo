@@ -27,6 +27,10 @@ myApp.controller("homeCtrl", function($scope, $http){
         $scope.my_tasks = data;  
     });
     
+    route = "/get_user_wants/" + $scope.current_user_id;
+    $http.get(route).success(function(data){
+        $scope.my_wants = data;
+    });
       
     route = "/get_user_breaks/" + $scope.current_user_id;
     $http.get(route).success(function(data){
@@ -127,6 +131,41 @@ myApp.controller("addTaskCtrl", function($scope, $http){
     }
 
 });
+
+
+myApp.controller("addWantCtrl", function($scope, $http){
+
+    $scope.validate = function(){
+        if($scope.wantDescription == null || $scope.wantDescription == ""){
+            alert("Please enter a description");
+            return false;
+        }
+        if($scope.wantCategory == null || $scope.wantCategory == ""){
+            alert("Please enter a Category");
+            return false;
+        }
+
+        return true;
+    }
+    $scope.submit = function(){
+        if(! $scope.validate()){
+            return
+        }
+
+        var parms = {
+            "user_id" : $scope.current_user_id,
+            "want_description" : $scope.wantDescription, 
+            "want_category" : $scope.wantCategory,
+        };
+
+        $http.get("/add_want_to_db", {params : parms}).success(function(data){
+            alert("Want added!");
+        });
+
+    }
+
+});
+
 
 myApp.controller("addBreakCtrl", function($scope, $http){
 

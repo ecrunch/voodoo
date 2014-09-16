@@ -65,13 +65,25 @@ def get_user_tasks(id=1):
 
     return json.dumps(tasks)
 
+
+@app.route('/get_user_wants/<id>')
+def get_user_wants(id=1):
+
+    user_obj = session.get_one(User, id)
+    wants = []
+    for want in user_obj.wants:
+        wants.append(want.jsonify())
+    
+    return json.dumps(wants)
+
+
 @app.route('/get_user_breaks/<id>')
 def get_user_breaks(id=1):
 
     user_obj = session.get_one(User, id)
     breaks = []
     for _break in user_obj.breaks:
-        _break.append(_break.jsonify())
+        breaks.append(_break.jsonify())
 
     return json.dumps(breaks)
 
@@ -115,6 +127,21 @@ def add_task_to_db():
     return jsonify([])
 
 
+@app.route('/add_want_to_db', methods= ['GET'])
+def add_want_to_db():
+
+    user_id = request.args.get('user_id')
+    description = request.args.get('want_description')
+    category = request.args.get('want_category')   
+
+    user_obj = session.get_one(User, user_id)
+    want_obj = want(description= description, category= category, user_id= user_id)
+
+    user_obj.wants.append(want_obj)
+
+    session.add(user_obj, commit= True)
+    return jsonify([])
+
 
 @app.route('/add_break_to_db', methods= ['GET'])
 def add_break_to_db():
@@ -124,7 +151,7 @@ def add_break_to_db():
     url = request.args.get('break_url')
 
     user_obj = session.get_one(User, user_id)
-    break_obj = _break(description= description, url= url, user_id= user_id)
+    break_obj = Break(description= description, url= url, user_id= user_id)
 
     user_obj.breaks.append(break_obj)
 
