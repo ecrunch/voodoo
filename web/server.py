@@ -135,7 +135,7 @@ def add_want_to_db():
     category = request.args.get('want_category')   
 
     user_obj = session.get_one(User, user_id)
-    want_obj = want(description= description, category= category, user_id= user_id)
+    want_obj = Want(description= description, category= category, user_id= user_id)
 
     user_obj.wants.append(want_obj)
 
