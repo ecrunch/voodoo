@@ -13,14 +13,56 @@ myApp.controller("mainCtrl", function($scope){
 myApp.controller("homeCtrl", function($scope, $http){
 
     $scope.bid = 1;
+    $scope.wid = 1;
+    $scope.tid = 1;
+    $scope.cid = 1;
 
-    $scope.delete_break = function(){
+    $scope.delete_break = function(input){
+        
+        $scope.bid= input;
+        alert($scope.bid);
         var route = "/delete_break_from_db/"+ $scope.bid;
-        $http.get(route).success(function(data){alert("Success!")})};
+        $http.get(route).success(function(data){
+            alert("Success!");
+        });
+    };
+    
+    $scope.delete_want = function(input){
+        
+        $scope.wid= input;
+        alert($scope.wid);
+        var route = "/delete_want_from_db/"+ $scope.wid;
+        $http.get(route).success(function(data){
+            alert("Success!");
+        });
+
+    };
+
+    $scope.delete_task = function(input){
           
+        $scope.tid= input;
+        alert($scope.tid);   
+        var route = "/delete_task_from_db/"+ $scope.tid;
+        $http.get(route).success(function(data){
+            alert("Success!");
+        });
+    };
+    
+    
+    $scope.delete_class = function(input){
+    
+        $scope.cid= input;
+        alert($scope.cid);
+        var route = "/delete_class_from_db/"+ $scope.cid;
+        $http.get(route).success(function(data){
+            alert("Success!");
+        });
+    };
+
+        
+                                                                       
     //refactor this into get user info or something like that
     //so we are only making one call
-
     var route = "/get_user_classes/" + $scope.current_user_id;
     $http.get(route).success(function(data){
         $scope.my_classes = data;  

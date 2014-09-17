@@ -178,10 +178,47 @@ def get_schedule(hours=4):
 def delete_break(bid=1):
 
     bid=int(bid)
+    print(bid)
+    break_obj = session.get_one(Break, bid)
     
-    breaks = session.delete(bid)
-        
-    return 
+    session.delete(break_obj, commit=True)
+    
+    return "Success" 
+
+
+@app.route('/delete_class_from_db/<cid>' )
+def delete_class(cid=1):
+
+    cid=int(cid)
+    print(cid)
+    class_obj = session.get_one(Class, cid)
+
+    session.delete(class_obj, commit=True)
+    
+    return "Success"
+
+@app.route('/delete_want_from_db/<wid>' )
+def delete_want(wid=1):
+    
+    wid=int(wid)
+    print(wid)
+    want_obj = session.get_one(Want, wid)
+
+    session.delete(want_obj, commit=True)
+    
+    return "Success"
+
+
+@app.route('/delete_task_from_db/<tid>' )
+def delete_task(tid=1):
+
+    tid=int(tid)
+    print(tid)
+    task_obj = session.get_one(Task, tid)
+    
+    session.delete(task_obj, commit=True)
+    
+    return "Success"
 
 
 

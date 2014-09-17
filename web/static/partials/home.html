@@ -5,10 +5,14 @@
     <tr>
         <th> Class Name </th>
         <th> Homework Freq </th>
+        <th> id </th>
+        <th> Delete </th>
     </tr>
     <tr ng-repeat= "class in my_classes">
         <td> {{class.class_name}} </td>
         <td> {{class.homework_freq}} </td>
+        <td> {{class.id}} </td>
+        <td> <input type= "button" value="Delete" ng-click="delete_class(class.id)">  </td>
     </tr>
 </table>
 
@@ -22,6 +26,8 @@
         <th> Task Type </th>
         <th> Total Minutes </th>
         <th> Score </th>
+        <th> id </th>
+        <th> Delete </th>
     </tr>
     <tr ng-repeat= "task in my_tasks">
         <td> {{task.description}} </td>
@@ -29,6 +35,8 @@
         <td> {{task.type}} </td>
         <td> {{task.total_minutes}} </td>
         <td> {{task.score}} </td>
+        <td> {{task.id}} </td>
+        <td> <input type= "button" value="Delete" ng-click="delete_task(task.id)">  </td>
     </tr>
 </table>
 
@@ -37,10 +45,14 @@
     <tr>
         <th> Want Name </th>
         <th> Category type </th>
+        <th> id </th>
+        <th> Delete </th>
     </tr>
     <tr ng-repeat= "want in my_wants">
         <td> {{want.description}} </td>
         <td> {{want.category}} </td>
+        <td> {{want.id}} </td>
+        <td> <input type= "button" value="Delete" ng-click="delete_want(want.id)">  </td>
     </tr>
 </table>
 
@@ -58,7 +70,7 @@
         <td> {{break.description}} </td>
         <td> {{break.url}} </td>
         <td> {{break.id}} </td>
-        <td> <input type= "button" value="Delete" ng-click="delete_break(bid='{{break.id}}')">  </td>
+        <td> <input type= "button" value="Delete" ng-click="delete_break(break.id)">  </td>
     </tr>
 </table>
 
