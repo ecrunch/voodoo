@@ -15,8 +15,8 @@ myApp.controller("homeCtrl", function($scope, $http){
     $scope.bid = 1;
 
     $scope.delete_break = function(){
-        var route = "/delete_break_from_db/"+ scope.bid
-        $http.get(route).success(function(data))};
+        var route = "/delete_break_from_db/"+ $scope.bid;
+        $http.get(route).success(function(data){alert("Success!");})};
           
     //refactor this into get user info or something like that
     //so we are only making one call
