@@ -178,13 +178,12 @@ def get_schedule(hours=4):
 def delete_break(bid=0):
 
     bid=int(bid)
-
-    user_id = request.args.get('user_id')
-    user_obj = session.get_one(User, user_id)
+    print(bid)
+    break_obj = session.get_one(Break, bid)
     
-    session.delete(bid)
+    session.delete(break_obj, commit=True)
     
-    return 
+    return "Success" 
 
 
 

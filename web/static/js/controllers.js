@@ -14,13 +14,19 @@ myApp.controller("homeCtrl", function($scope, $http){
 
     $scope.bid = 1;
 
-    $scope.delete_break = function(){
+    $scope.delete_break = function(input){
+        
+        $scope.bid= input;
+        alert($scope.bid);
         var route = "/delete_break_from_db/"+ $scope.bid;
-        $http.get(route).success(function(data){alert("Success!")})};
+        $http.get(route).success(function(data){
+            alert("Success!");
+        });
+    };
+
           
     //refactor this into get user info or something like that
     //so we are only making one call
-
     var route = "/get_user_classes/" + $scope.current_user_id;
     $http.get(route).success(function(data){
         $scope.my_classes = data;  
