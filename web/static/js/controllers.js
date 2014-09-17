@@ -36,7 +36,14 @@ myApp.controller("homeCtrl", function($scope, $http){
     $http.get(route).success(function(data){
         $scope.my_breaks = data;
     });
-});
+
+    route = "/delete_break_from_db"+ $scope.current_user_id;
+    
+
+    $http.get(route).success(function(data){}); 
+
+
+}):
 
 
 myApp.controller("scheduleCtrl", function($scope, $http){
