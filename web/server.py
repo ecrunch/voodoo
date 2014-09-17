@@ -175,15 +175,12 @@ def get_schedule(hours=4):
 
 
 @app.route('/delete_break_from_db/<bid>' )
-def delete_break(bid=0):
+def delete_break(bid=1):
 
     bid=int(bid)
-
-    user_id = request.args.get('user_id')
-    user_obj = session.get_one(User, user_id)
     
-    session.delete(bid)
-    
+    breaks = session.delete(bid)
+        
     return 
 
 
