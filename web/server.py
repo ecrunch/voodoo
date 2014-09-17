@@ -174,7 +174,7 @@ def get_schedule(hours=4):
     return json.dumps(scheduler.jsonify())
 
 
-@app.route('/delete_break_from_db', methods= ['GET'])
+@app.route('/delete_break_from_db/<bid>' )
 def delete_break(bid=0):
 
     bid=int(bid)
@@ -182,11 +182,9 @@ def delete_break(bid=0):
     user_id = request.args.get('user_id')
     user_obj = session.get_one(User, user_id)
     
-    user_obj.breaks.delete(bid)
+    session.breaks.delete(bid)
     
-    session.add(user_obj, commit= True)
-
-    return alert("Break Deleted!") 
+    return 
 
 
 
