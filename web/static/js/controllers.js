@@ -42,7 +42,7 @@ myApp.controller("homeCtrl", function($scope, $http){
         $scope.my_breaks = data;
     });
 
-}):
+});
 
 
 myApp.controller("scheduleCtrl", function($scope, $http){
