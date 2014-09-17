@@ -12,7 +12,7 @@ myApp.controller("mainCtrl", function($scope){
 
 myApp.controller("homeCtrl", function($scope, $http){
 
-    scope.bid = 0;
+    $scope.bid = 1;
 
     $scope.delete_break = function(){
         var route = "/delete_break_from_db/"+ scope.bid

@@ -182,7 +182,7 @@ def delete_break(bid=0):
     user_id = request.args.get('user_id')
     user_obj = session.get_one(User, user_id)
     
-    session.breaks.delete(bid)
+    session.delete(bid)
     
     return 
 
