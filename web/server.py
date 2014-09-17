@@ -174,6 +174,18 @@ def get_schedule(hours=4):
     return json.dumps(scheduler.jsonify())
 
 
+@app.route('/delete_break_from_db/<bid>' )
+def delete_break(bid=0):
+
+    bid=int(bid)
+
+    user_id = request.args.get('user_id')
+    user_obj = session.get_one(User, user_id)
+    
+    session.breaks.delete(bid)
+    
+    return 
+
 
 
 

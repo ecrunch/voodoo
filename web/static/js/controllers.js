@@ -12,7 +12,12 @@ myApp.controller("mainCtrl", function($scope){
 
 myApp.controller("homeCtrl", function($scope, $http){
 
-    
+    scope.bid = 0;
+
+    $scope.delete_break = function(){
+        var route = "/delete_break_from_db/"+ scope.bid
+        $http.get(route).success(function(data))};
+          
     //refactor this into get user info or something like that
     //so we are only making one call
 
@@ -36,7 +41,8 @@ myApp.controller("homeCtrl", function($scope, $http){
     $http.get(route).success(function(data){
         $scope.my_breaks = data;
     });
-});
+
+}):
 
 
 myApp.controller("scheduleCtrl", function($scope, $http){

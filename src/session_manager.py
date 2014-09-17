@@ -20,6 +20,11 @@ class SessionManager(object):
         if commit:
             self.session.commit()
 
+    def delete(self, obj, commit=False):
+        self.session.delete(obj)
+        if commit:
+            self.session.commit()
+
     def get_all(self, table):
         return self.session.query(table).all()
 
