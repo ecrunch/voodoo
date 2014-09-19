@@ -129,7 +129,7 @@ class Task(Base):
     def get_score(self):
         days_remaining = self._get_days_remaining()
         if days_remaining <= 18:
-            return BASE_SCORES[self.task_type] + (BASE_DAYS_TILL[self.task_type] - days_remaining)
+            return BASE_SCORES[self.task_type] + (BASE_DAYS_TILL[self.task_type] - days_remaining) - ((self.total_minutes)/60)
         else:
             return BASE_SCORES[self.task_type]
 
