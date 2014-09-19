@@ -93,6 +93,14 @@ BASE_SCORES = {
     "Homework" : 3
 }
 
+BASE_DAYS_TILL = {
+    "Exam" : 10,
+    "Project" : 15,
+    "Paper" : 15,
+    "Homework" : 5
+}
+
+
 class Task(Base):
 
     __tablename__ = 'tasks'
@@ -120,8 +128,8 @@ class Task(Base):
 
     def get_score(self):
         days_remaining = self._get_days_remaining()
-        if days_remaining <= 10:
-            return BASE_SCORES[self.task_type] + (10 - days_remaining)
+        if days_remaining <= 18:
+            return BASE_SCORES[self.task_type] + (BASE_DAYS_TILL[self.task_type] - days_remaining)
         else:
             return BASE_SCORES[self.task_type]
 
@@ -152,7 +160,7 @@ class Want(Base):
         return {
             "id" : self.id,
             "description" : self.description,
-            "category" : self.category
+            "category" : self.category,
         }
 
 
@@ -171,7 +179,7 @@ class Break(Base):
         return{
             "id" : self.id,
             "description" : self.description,
-            "url" : self.url   
+            "url" : self.url,
         } 
 
 
