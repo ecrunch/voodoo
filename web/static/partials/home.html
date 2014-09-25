@@ -27,6 +27,7 @@
         <th> Total Minutes </th>
         <th> Score </th>
         <th> id </th>
+        <th> Reset Minutes </th>
         <th> Delete </th>
     </tr>
     <tr ng-repeat= "task in my_tasks">
@@ -36,7 +37,8 @@
         <td> {{task.total_minutes}} </td>
         <td> {{task.score}} </td>
         <td> {{task.id}} </td>
-        <td> <input type= "button" value="Delete" ng-click="delete_task(task.id)">  </td>
+        <td> <input type= "button" value="Reset Minutes" ng-click="resetMinutes(task)"></input></td>
+        <td> <input type= "button" value="Delete" ng-click="delete_task(task.id)">  </input></td>
     </tr>
 </table>
 

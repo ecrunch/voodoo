@@ -60,6 +60,22 @@ myApp.controller("homeCtrl", function($scope, $http){
     };
 
         
+    $scope.resetMinutes = function(task){
+   
+    
+        var id = task.id;
+       
+        var parms = {
+            "id": id
+        };
+       
+        
+        $http.get("/reset_minutes", {params: parms}).success(function(data){
+            task.total_minutes = 0;
+        });
+         
+    };
+
                                                                        
     //refactor this into get user info or something like that
     //so we are only making one call

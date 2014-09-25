@@ -233,8 +233,6 @@ def add_minutes():
     print(minutes)
      
     obj = session.get_one(Task, id)
-    
-    print(obj)
      
     total_minutes = obj.total_minutes 
     total_minutes = int(total_minutes) + int(minutes)
@@ -244,6 +242,14 @@ def add_minutes():
     return json.dumps({"minutes": total_minutes})
 
 
+@app.route('/reset_minutes', methods = ['GET'])
+def reset_minutes():
+
+    id = request.args.get('id')
+    
+    session.update_one(Task, {'total_minutes':0}, id, commit=True)
+    
+    return "ok" 
 
 
 ################# old shit
@@ -308,19 +314,7 @@ def get_all_breaks():
         breaks.append(obj.jsonify())
 
     return json.dumps(breaks)
-
-
-
-@app.route('/reset_minutes', methods = ['GET'])
-def reset_minutes():
-
-    id = request.args.get('id')
-    item_class = request.args.get('item_class')
-    
-    session.update_one(Task, {'total_minutes':0}, id, commit=True)
-    
-    return "ok" 
-    
+ 
      
          
 if __name__ == '__main__':
