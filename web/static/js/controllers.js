@@ -99,6 +99,21 @@ myApp.controller("scheduleCtrl", function($scope, $http){
             $scope.current_hours = $scope.hours;
         });
     };
+   
+    
+    $scope.logMinutes = function(id, minutes){
+    
+        var parms = {
+            "id": id,
+            "minutes": minutes   
+        };
+        $http.get("/log_minutes", {params: parms}).success(function(data){
+            alert("New Total :  " + data["minutes"] + " minutes!");
+        });
+        
+         
+    };
+
     
     $scope.new_schedule();
      

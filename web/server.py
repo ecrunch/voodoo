@@ -104,6 +104,7 @@ def add_class_to_db():
 
     return jsonify([])
 
+
 @app.route('/add_task_to_db', methods= ['GET'])
 def add_task_to_db():
 
@@ -222,6 +223,28 @@ def delete_task(tid=1):
 
 
 
+@app.route('/log_minutes', methods = ['GET'])
+def add_minutes():
+        
+    id = request.args.get('id')
+    minutes = request.args.get('minutes')
+    
+    print(id)
+    print(minutes)
+     
+    obj = session.get_one(Task, id)
+    
+    print(obj)
+     
+    total_minutes = obj.total_minutes 
+    total_minutes = int(total_minutes) + int(minutes)
+
+    session.update_one(Task, {'total_minutes':total_minutes}, id, commit=True)
+    
+    return json.dumps({"minutes": total_minutes})
+
+
+
 
 ################# old shit
 
@@ -285,29 +308,6 @@ def get_all_breaks():
         breaks.append(obj.jsonify())
 
     return json.dumps(breaks)
-
-
-@app.route('/add_minutes', methods = ['GET'])
-def add_minutes():
-        
-    id = request.args.get('id')
-    minutes = request.args.get('time_slot')
-    item_class = request.args.get('item_class')
-     
-
-    obj = session.get_one(Task, id)
-    
-    # should only be one
-    
-    total_minutes = obj.total_minutes
-    
-    total_minutes = int(total_minutes) + int(minutes)
-
-
-    session.update_one(Task, {'total_minutes':total_minutes}, id, commit=True)
-
-
-    return json.dumps({"minutes": total_minutes})
 
 
 

@@ -20,6 +20,7 @@
         <td> {{slot.item.description}} </td>
         <td> {{slot.minutes}} </td>
         <td> {{slot.time}} </td>
+        <td> <input type= "button" value= "Done!" ng-click= "logMinutes(slot.item.id, slot.minutes)"></input></td>
     </tr>
 </table>
 
