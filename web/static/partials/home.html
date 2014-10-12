@@ -1,79 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><title>Voodoo_2</title>
 
+<link href="static/css/app.css"> </link>
 
-<h3> My Classes </h3>
-<table border= "1">
-    <tr>
-        <th> Class Name </th>
-        <th> Homework Freq </th>
-        <th> id </th>
-        <th> Delete </th>
-    </tr>
-    <tr ng-repeat= "class in my_classes">
-        <td> {{class.class_name}} </td>
-        <td> {{class.homework_freq}} </td>
-        <td> {{class.id}} </td>
-        <td> <input type= "button" value="Delete" ng-click="delete_class(class.id)">  </td>
-    </tr>
-</table>
+</head>
+<body id="body">
 
+ 
+<h3 style="height: 30px;"><br> </h3><h1 style="text-align: center;"><big><big style="color: rgb(0, 102, 0);"><big><big><span style="font-weight: bold;"><small>Voodoo</small></span></big></big></big></big></h1><hr style="width: 100%; height: 2px;"><h3><br></h3><h3><font style="color: rgb(62, 188, 100); text-align: left;">My Tasks</font> </h3>
 
-
-<h3> My Tasks </h3>
-<table border= "1">
-    <tr>
+<div id="reduce">
+<table style="width: 802px; height: 72px;" class="table" border="1">
+    <thead class="tableHeader">
+	<tr>
         <th> Task Description </th>
         <th> Task Due Date </th>
         <th> Task Type </th>
         <th> Total Minutes </th>
         <th> Score </th>
         <th> id </th>
-        <th> Reset Minutes </th>
         <th> Delete </th>
     </tr>
-    <tr ng-repeat= "task in my_tasks">
-        <td> {{task.description}} </td>
-        <td> {{task.due_date}} </td>
-        <td> {{task.type}} </td>
-        <td> {{task.total_minutes}} </td>
-        <td> {{task.score}} </td>
-        <td> {{task.id}} </td>
-        <td> <input type= "button" value="Reset Minutes" ng-click="resetMinutes(task)"></input></td>
-        <td> <input type= "button" value="Delete" ng-click="delete_task(task.id)">  </input></td>
+	</thead>
+	<tbody class="tableBody">
+    <tr ng-repeat="task in my_tasks">
+        <td width="25"> {{task.description}} </td>
+        <td width="25"> {{task.due_date}} </td>
+        <td width="25"> {{task.type}} </td>
+        <td width="25"> {{task.total_minutes}} </td>
+        <td width="25"> {{task.score}} </td>
+        <td width="25"> {{task.id}} </td>
+        <td width="25"> <input value="Delete" ng-click="delete_task(task.id)" type="button"> </td>
     </tr>
+	</tbody>
+	
+</table>
+</div>
+<br>
+<br><br>
+
+<h3> <font style="color: rgb(62, 188, 100); text-align: left;">My Classes</font>
+</h3>
+
+
+<table style="width: 804px; height: 73px;" class="table" border="1">
+    <thead class="tableHeader">
+		<tr>
+			<th> Class Name </th>
+			<th> Homework Freq </th>
+			<th> id </th>
+			<th> Delete </th>
+		</tr>
+	</thead>
+	<tbody class="tableBody">
+		<tr ng-repeat="class in my_classes">
+			<td> {{class.class_name}} </td>
+			<td> {{class.homework_freq}} </td>
+			<td> {{class.id}} </td>
+			<td> <input value="Delete" ng-click="delete_class(class.id)" type="button">  </td>
+		</tr>
+	</tbody>
 </table>
 
-<h3> My Wants </h3>
-<table border= "1">
-    <tr>
+<br>
+<br>
+<h3> <font style="color: rgb(62, 188, 100); text-align: left;">My Wants</font> </h3>
+<table style="width: 805px; height: 73px;" class="table" border="1">
+    <thead class="tableHeader">
+	<tr>
         <th> Want Name </th>
         <th> Category type </th>
         <th> id </th>
         <th> Delete </th>
     </tr>
-    <tr ng-repeat= "want in my_wants">
+	</thead>
+	<tbody class="tableBody">
+    <tr ng-repeat="want in my_wants">
         <td> {{want.description}} </td>
         <td> {{want.category}} </td>
         <td> {{want.id}} </td>
-        <td> <input type= "button" value="Delete" ng-click="delete_want(want.id)">  </td>
+        <td> <input value="Delete" ng-click="delete_want(want.id)" type="button">  </td>
     </tr>
+	</tbody>
 </table>
-
-
-
-<h3> My Breaks </h3>
-<table border= "1">
-    <tr>
+<br>
+<br>
+<h3><font style="color: rgb(62, 188, 100); text-align: left;">My Breaks</font></h3>
+<table style="width: 806px; height: 75px;" class="table" border="1">
+    <thead class="tableHeader">
+	<tr>
         <th> Break Name</th>
         <th> Url </th>
         <th> id </th>
         <th> Delete </th>
-    <tr>
-    <tr ng-repeat= "break in my_breaks">
+    </tr><tr>
+	</tr></thead>
+	<tbody class="tableBody">
+    <tr ng-repeat="break in my_breaks">
         <td> {{break.description}} </td>
         <td> {{break.url}} </td>
         <td> {{break.id}} </td>
-        <td> <input type= "button" value="Delete" ng-click="delete_break(break.id)">  </td>
+        <td> <input value="Delete" ng-click="delete_break(break.id)" type="button">  </td>
     </tr>
+	</tbody>
 </table>
 
-
+</body></html>

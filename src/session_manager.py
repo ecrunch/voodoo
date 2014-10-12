@@ -25,6 +25,9 @@ class SessionManager(object):
         if commit:
             self.session.commit()
 
+    def get_all_with_user_id(self, table, user_id):
+        return self.session.query(table).filter(table.user_id == user_id).all() 
+
     def get_all(self, table):
         return self.session.query(table).all()
 

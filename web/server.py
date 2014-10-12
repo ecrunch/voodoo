@@ -43,49 +43,48 @@ def index():
     #return make_response(open('templates/index.html').read())
 
 
-@app.route('/get_user_classes/<id>')
-def get_user_classes(id=1):
+@app.route('/confirm_login', methods= ['GET'])
+def confirm_login():
+    
+    user_name = request.args.get('userName')
+    password = request.args.get('password')
+ 
+    users = session.get_all(User)
+    
+    for user in users:
+        if user.name == user_name and user.password == password:
+            print(user.id)
+            return json.dumps(user.id)
+    return json.dumps(0)
+
+
+@app.route('/get_user_data/<id>')
+def get_user_data(id=1):
     
     user_obj = session.get_one(User, id)
-    
-    classes = []
+
+    user_data = {}
+    user_data["classes"] = []
+    user_data["tasks"] = []
+    user_data["wants"] = []
+    user_data["breaks"] = []
+
+    user_data["name"] = user_obj.name
+
     for _class in user_obj.classes:
-        classes.append(_class.jsonify())
+        user_data["classes"].append(_class.jsonify())
 
-    return json.dumps(classes)
-
-
-@app.route('/get_user_tasks/<id>')
-def get_user_tasks(id=1):
-
-    user_obj = session.get_one(User, id)
-    tasks = []
     for task in user_obj.tasks:
-        tasks.append(task.jsonify())
+        user_data["tasks"].append(task.jsonify())
 
-    return json.dumps(tasks)
-
-
-@app.route('/get_user_wants/<id>')
-def get_user_wants(id=1):
-
-    user_obj = session.get_one(User, id)
-    wants = []
     for want in user_obj.wants:
-        wants.append(want.jsonify())
-    
-    return json.dumps(wants)
+        user_data["wants"].append(want.jsonify())
 
-
-@app.route('/get_user_breaks/<id>')
-def get_user_breaks(id=1):
-
-    user_obj = session.get_one(User, id)
-    breaks = []
     for _break in user_obj.breaks:
-        breaks.append(_break.jsonify())
+        user_data["breaks"].append(_break.jsonify())
 
-    return json.dumps(breaks)
+    return json.dumps(user_data)
+
 
 
 @app.route('/add_class_to_db', methods= ['GET'])
@@ -161,14 +160,18 @@ def add_break_to_db():
 
 
 
-@app.route('/get_schedule/<hours>')
-def get_schedule(hours=4):
+@app.route('/get_schedule', methods= ['GET'])
+def get_schedule():
       
-    hours = int(hours)
+    hours = int(request.args.get('hours'))
+    user_id = request.args.get('user_id')
 
-    tasks = session.get_all(Task)
-    wants = session.get_all(Want)
-    breaks = session.get_all(Break)
+    tasks = session.get_all_with_user_id(Task, user_id)
+    wants = session.get_all_with_user_id(Want, user_id)
+    breaks = session.get_all_with_user_id(Break, user_id)
+
+    print(tasks)
+
 
     scheduler = Scheduler(hours, tasks, wants, breaks) 
 

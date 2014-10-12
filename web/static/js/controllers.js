@@ -4,9 +4,76 @@ myApp = angular.module("myApp.controllers", []);
 
 
 
-myApp.controller("mainCtrl", function($scope){
+myApp.controller("mainCtrl", function($scope, $http, $location){
+    
+    
+    /*
+    *   TODO : get the user info from the db
+    *   when logging in
+    */
+    
     $scope.current_user = "Zack";
     $scope.current_user_id = 1;
+    $scope.userData = [];
+    
+    $scope.doneLoadingProfileData = false;
+
+
+    $scope.userName = "";
+    $scope.password = "";
+
+    $scope.loggedIn = false;
+
+
+    $scope.logIn = function(userName, password){
+        
+        var route = "/confirm_login";
+        parms = {
+            "userName": userName,
+            "password": password
+        }
+
+        $http.get(route, {params: parms}).success(function(data){
+            
+            // We want to register the session with cookies or something
+            // at this point
+            
+            if(data == 0){
+                alert("Not a valid username/password");    
+            } 
+            else{
+                $scope.loggedIn = true;
+                $scope.loadProfile(data);
+                $location.path("/home");
+            }
+        });
+        
+    };
+
+    $scope.loadProfile = function(id){
+
+        //run some validation checking on the id
+        $scope.getUserData(id).then(function(res){    
+            $scope.current_user_id = id;
+            $scope.current_user = res["data"]["name"];
+            $scope.userData = res["data"];
+            $scope.doneLoadingProfileData = ! $scope.doneLoadingProfileData;
+        });
+    };
+    
+    $scope.getUserData = function(id){
+        var route = "/get_user_data/" + id;
+        return $http.get(route);
+    };
+
+
+    $scope.switchUser = function(id){
+        $scope.loadProfile(id);
+    }       
+
+    $scope.loadProfile($scope.current_user_id);
+    
+
 });
 
 
@@ -76,28 +143,14 @@ myApp.controller("homeCtrl", function($scope, $http){
          
     };
 
-                                                                       
-    //refactor this into get user info or something like that
-    //so we are only making one call
-    var route = "/get_user_classes/" + $scope.current_user_id;
-    $http.get(route).success(function(data){
-        $scope.my_classes = data;  
-    });  
 
-    
-    route = "/get_user_tasks/" + $scope.current_user_id;
-    $http.get(route).success(function(data){
-        $scope.my_tasks = data;  
-    });
-    
-    route = "/get_user_wants/" + $scope.current_user_id;
-    $http.get(route).success(function(data){
-        $scope.my_wants = data;
-    });
-      
-    route = "/get_user_breaks/" + $scope.current_user_id;
-    $http.get(route).success(function(data){
-        $scope.my_breaks = data;
+    $scope.$watch('doneLoadingProfileData', function(){
+
+        $scope.my_classes = $scope.userData["classes"];
+        $scope.my_tasks = $scope.userData["tasks"];
+        $scope.my_wants = $scope.userData["wants"];
+        $scope.my_breaks = $scope.userData["breaks"];
+
     });
 
 });
@@ -109,8 +162,15 @@ myApp.controller("scheduleCtrl", function($scope, $http){
     $scope.current_hours = $scope.hours;
      
     $scope.new_schedule = function(){
-        var route = "/get_schedule/" + $scope.hours;
-        $http.get(route).success(function(data){
+        
+        var route = "/get_schedule";
+        
+        var parms = {
+            "hours": $scope.hours,
+            "user_id": $scope.current_user_id
+        };   
+        
+        $http.get(route, {params: parms}).success(function(data){
             $scope.schedule = data;
             $scope.current_hours = $scope.hours;
         });
@@ -129,7 +189,6 @@ myApp.controller("scheduleCtrl", function($scope, $http){
         
          
     };
-
     
     $scope.new_schedule();
      

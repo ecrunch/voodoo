@@ -30,7 +30,7 @@
 
     <body ng-controller= "mainCtrl">
         
-        <nav class="navbar navbar-default" role="navigation">
+        <nav ng-show= "loggedIn" class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 
                 <div class="navbar-header">
@@ -59,10 +59,17 @@
                         </li>
                     </ul>
                 </div> <!-- nav bar collapse-->
-                 
+                
             </div> <!-- container-fluid--> 
         </nav>
-        
+       
+        <!-- 
+        Switch User <br> 
+        <input type= "text" ng-model= "current_user_id"></input>
+        <input type= "button" ng-click= "switchUser(current_user_id)" value= "switch!"></input>
+
+        -->
+
         <div class= "container page">
             <div id= "contents" class= "container main" app-view-segment="0">
 

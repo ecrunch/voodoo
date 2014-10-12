@@ -19,6 +19,8 @@ angular.module('myApp', [
     when('/add/task', 's3.addTask').
     when('/add/break', 's3.addBreak').
     when('/add/want', 's3.addWant').
+    when('/login', 's4').
+
 
     segment('s1', {
         templateUrl: 'static/partials/home.html',
@@ -48,7 +50,11 @@ angular.module('myApp', [
             templateUrl: 'static/partials/add_want.html',
             controller: 'addWantCtrl'
         }).
-        up();
+        up().
+
+    segment('s4', {
+        templateUrl: 'static/partials/login.html'
+    });
 
     $routeProvider.otherwise({
         redirectTo: '/home'
