@@ -57,9 +57,9 @@ angular.module('myApp', [
         controller: 'logInCtrl'
     });
 
-    //$routeProvider.otherwise({
-    //    redirectTo: '/home'
-    //});
+    $routeProvider.otherwise({
+        redirectTo: '/home'
+    });
 
 
 });
