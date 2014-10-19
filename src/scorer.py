@@ -13,13 +13,15 @@ class Scorer(object):
         self.score_total = 0
         self.score_list = []
         self.task_list = tasks
-        
+
+ 
         for task in self.task_list:
             self.score_list.append(task.get_score())
        
 
         for score in self.score_list:
             self.score_total = self.score_total + score       
+
  
         self.placement_list = self._get_placement()
 
@@ -29,7 +31,7 @@ class Scorer(object):
 
     def print_all_scores(self):
         for task in self.task_list:
-            print ("%s : %s" % (task.name, task.get_score()))
+            print ("%s : %s" % (task.description, task.get_score()))
 
     def get_mean(self):   
         return statistics.mean(self.score_list)
@@ -50,27 +52,27 @@ class Scorer(object):
         return placement_list
 
     def get_placement(self, task):
-
+       
        x = task.get_score()
-       task_name = task.name
+       task_name = task.description
        mean = self.get_mean()
-       sd = self.get_standard_dev()
+       
+       
+       #SHOULD : come back and fix
+       try:
+            sd = self.get_standard_dev()
+       except:
+            sd = 0.001
       
+
 
        # HACK AS FUCK FIX TO MAKE IT WORK FIX SOON
        if sd == 0:
            sd = sd + 0.001
-
-
-       if sd == 0:
-            raise Exception(
-                "divide by zero!!! name : %s, score : %s, mean : %s, sd : %s" % (task_name, x, mean, sd))
-      
+ 
        
        zscore =(x-mean)/sd
 
-       #print ("task name : %s" % task_name)
-       #print ("z score : %s" % zscore)
 
        if zscore >=.8416:
            placement='E'
@@ -79,55 +81,7 @@ class Scorer(object):
        else:
            placement='NT'
            
-       #print ("placement: %s" % placement)
        
        return placement
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-######################## What is this stuff? Do we need it?
-
-    """def _get_nom_dists(self):
-        
-        nom_dist = []
-        for task in self.task_list:
-            nom_dist.append(self.get_nom_dist(task))
-
-        return nom_dist"""
-    """def get_nom_dist(self, task):
-
-        x = task.get_score()
-        task_name = task.name
-        mean = self.get_mean()
-        sd = self.get_standard_dev()
-        var = self.get_variance()
-        pi = 3.1415926
-
-        #print ("task name : %s" % task_name)
-        #print ("x score : %s" % x)
-        #print ("mean : %s" % mean)
-        #print ("var : %s" % var)
-        #print ("sd : %s" % sd)
-
-        num = math.exp(-(float(x)-float(mean))**2/(2*var))
-        denom = (sd*(2*pi)**.5)
-        #print ("num : %s" % num)
-        #print ("denom : %s" % denom) 
-        result = num/denom
-        #print("percent : %s" % result)
-        #print ("------------------")
-        return result"""
 

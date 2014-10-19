@@ -2,38 +2,23 @@
 import random
 
 import logging
-import sqlite3
 
+import datetime
 
 from src.generator import TimeSlotGenerator
 from src.scorer import Scorer
-from src.adapters import (
-    JsonAdapter, 
-    TaskJsonAdapter, 
-    WantJsonAdapter, 
-    BreakJsonAdapter,
-    DbAdapter,
-    TaskDbAdapter,
-    WantDbAdapter,
-    BreakDbAdapter
-    )
-
-
-# defaults
-WANT_DB = "db/json/want/wantdb.json"
-TASK_DB = "db/json/task/taskdb.json"
-BREAK_DB = "db/json/break/breakdb.json"
-
-DB_PATH = "db/data/data.db"
 
 
 class Scheduler(object):
 
-
-    def __init__(self, hours):
-        
+    def __init__(self, hours, tasks, wants, breaks):
+               
         self.hours = hours
         self.generator = TimeSlotGenerator(hours)
+
+        self.tasks = tasks
+        self.wants = wants
+        self.breaks = breaks
 
         self.e_index = 0
         self.n_index = 0
@@ -43,12 +28,22 @@ class Scheduler(object):
         self.n_items = []
         self.nt_items = []
 
+        self.scorer = Scorer(db= None, tasks= self.tasks)
 
-    def _fill_items(self):
+        self._determine_task_priorities(self.scorer)
 
-        for task in self.task_adapter.items:
+        self.start_time = datetime.datetime.now()
+        self.current_time = self.start_time
+        self.minutes_to_add = 0
 
-            placement = self.scorer.get_placement(task)
+        self.schedule = self.make_schedule()
+
+
+    def _determine_task_priorities(self, scorer):
+
+        for task in self.tasks:
+
+            placement = scorer.get_placement(task)
 
             if placement == 'E':
                 self.e_items.append(task)
@@ -82,16 +77,17 @@ class Scheduler(object):
 
         number = 1
 
-
         for slot in time_slots:
+
+            self.current_time = self.current_time + datetime.timedelta(minutes=self.minutes_to_add)
+            self.minutes_to_add = slot
 
             #breaks get 15 min slots
             if slot == 15:
-
-                #print("A break")
-                number_items = len(self.break_adapter.items)
+                number_items = len(self.breaks)
                 random_int = random.randint(0, number_items-1)
-                schedule.append({"number" : number, "timeslot" : slot, "item" : self.break_adapter.get_ith_item(random_int)})
+                 
+                schedule.append({"number" : number, "minutes" : slot, "item" : self.breaks[random_int].jsonify(), "time": str(self.current_time.time())})
 
             #a want or task
             else:
@@ -100,25 +96,20 @@ class Scheduler(object):
                 # a want
                 if random_int == 1:
 
-                    #print("A want")
-                    number_items = len(self.want_adapter.items)
+                    number_items = len(self.wants)
                     random_int = random.randint(0, number_items-1)
-                    schedule.append({"number" : number, "timeslot" : slot, "item" : self.want_adapter.get_ith_item(random_int)})
+                    schedule.append({"number" : number, "minutes" : slot, "item" : self.wants[random_int].jsonify(), "time" : str(self.current_time.time())})
 
                 # a task
                 else:
 
-                    #print("A task")
-
                     if self.e_index < len(self.e_items):
-                        #print("Item in Essential bucket")
                         chosen_item_list = self.e_items
                         chosen_index = self.e_index
                         self.e_index = self.e_index + 1
 
                     else:
                         if self.n_index < len(self.n_items): 
-                            #print("Item in Non-Essential bucket")
                             chosen_item_list = self.n_items
                             chosen_index = self.n_index
                             self.n_index = self.n_index + 1
@@ -133,7 +124,6 @@ class Scheduler(object):
                             else:
                                 # we will need to reset or quit
                                 if repeat_items:
-                                    #print("Resetting buckets")
                                     self._reset_index()
                                     #starts off with the first thing of the most recent list
                                     chosen_index=0
@@ -142,24 +132,17 @@ class Scheduler(object):
 
 
                     task = chosen_item_list[chosen_index]
-                    placement = self.scorer.get_placement(task)
 
-                    task_struct = {
-                        "id" : task.id, 
-                        "class" : "Task",
-                        "type" : str(type(task)),
-                        "description" : task.name,
-                        "due_date" : str(task.due_date),
-                        "score" : task.get_score(),
-                        "placement" : placement,
-                        "total_minutes" : task.total_minutes,
-                    }
-                    schedule.append({"number" : number, "timeslot" : slot, "item" : task_struct})
+                    schedule.append({"number" : number, "minutes" : slot, "item" : task.jsonify(), "time" : str(self.current_time.time())})
 
 
             number = number + 1
 
         return schedule
+
+
+    def jsonify(self):
+        return self.schedule
 
 
     def print_schedule(self):
@@ -183,43 +166,5 @@ class Scheduler(object):
         print("|--------------------------------->")
 
 
-class DBScheduler(Scheduler):
-
-    def __init__(self, hours, path=DB_PATH):
-        
-        Scheduler.__init__(self, hours)
-         
-        #sql connection
-        dbconn = sqlite3.connect(DB_PATH)
-        self.task_adapter = TaskDbAdapter(dbconn)
-        self.want_adapter = WantDbAdapter(dbconn)
-        self.break_adapter = BreakDbAdapter(dbconn)
-
-        self.scorer = Scorer(db= None, tasks= self.task_adapter.items)
-        
-        # fill the items in
-        self._fill_items()
-
-        self.schedule = self.make_schedule()
-
-
-class JSONScheduler(Scheduler):
-
-
-    # COULD : refactor this to make it 
-    # one path, or a list or something
-    def __init__(self, hours, taskdb=TASK_DB, wantdb=WANT_DB, breakdb=BREAK_DB):
-
-
-        Scheduler.__init__(self, hours)
-    
-        self.task_adapter = TaskJsonAdapter(file_name = taskdb)
-        self.want_adapter = WantJsonAdapter(file_name = wantdb)
-        self.break_adapter = BreakJsonAdapter(file_name = breakdb)
-
-
-        self.scorer = Scorer(db= None, tasks= self.task_adapter.items) 
-        self._fill_items()
-        self.schedule = self.make_schedule()
 
 

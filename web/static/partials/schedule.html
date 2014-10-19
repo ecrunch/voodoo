@@ -1,0 +1,26 @@
+
+
+</br>
+<h3> My {{current_hours}} hour schedule </h3>
+
+<input type= "text" ng-model= "hours"></input> : Hours
+<input type= "button" value= "New" ng-click= "new_schedule()"></input>
+<input type= "button" value= "Start"></input>
+</br></br>
+
+<table border="3">
+    <tr>
+        <th> Number </th>
+        <th> Description </th>
+        <th> Minutes </th>
+        <th> Time </th>
+    </tr>
+    <tr ng-repeat= "slot in schedule">
+        <td> {{slot.number}} </td>
+        <td> {{slot.item.description}} </td>
+        <td> {{slot.minutes}} </td>
+        <td> {{slot.time}} </td>
+        <td> <input type= "button" value= "Done!" ng-click= "logMinutes(slot.item.id, slot.minutes)"></input></td>
+    </tr>
+</table>
+

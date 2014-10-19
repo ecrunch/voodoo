@@ -1,0 +1,85 @@
+<html ng-app="myApp">
+
+    <head>
+
+        <!-- jquery-->
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+        <!-- twitter boot strap -->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+        <!-- angular JS -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
+
+
+        <!-- routing segments-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-route-segment/1.3.0/angular-route-segment.min.js"></script>
+
+
+        <!-- javascript files-->
+        <script type="text/javascript" src= "/static/js/app.js"></script>
+        <script type="text/javascript" src= "/static/js/services.js"></script>
+        <script type="text/javascript" src= "/static/js/controllers.js"></script>
+        <script type="text/javascript" src= "/static/js/directives.js"></script>
+        
+        <script type= "text/javascript" src= "/static/js/cookies.min.js"></script>
+
+
+    </head>
+
+    <body ng-controller= "mainCtrl">
+        
+        <nav ng-show= "loggedIn" class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span> 
+                    </button>
+                    <a class="navbar-brand" href="/">{{current_user}}</a> 
+                </div>
+                
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Profile</a></li>
+                        <li><a href="/#/schedule">Scheduler</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">Add <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">User</a></li>
+                                <li><a href="/#/add/class">Class</a></li>
+                                <li><a href="/#/add/task">Task</a></li>
+                                <li><a href="/#/add/want">Want</a></li>
+                                <li><a href="/#/add/break">Break</a></li>
+                            </ul>
+                        </li>
+                        <li><a ng-click="logOut()">Log Out</a></li>
+                    </ul>
+                </div> <!-- nav bar collapse-->
+                
+            </div> <!-- container-fluid--> 
+        </nav>
+       
+        <!-- 
+        Switch User <br> 
+        <input type= "text" ng-model= "current_user_id"></input>
+        <input type= "button" ng-click= "switchUser(current_user_id)" value= "switch!"></input>
+
+        -->
+
+        <div class= "container page">
+            <div id= "contents" class= "container main" app-view-segment="0">
+
+            </div>
+        </div>
+    </body>
+
+</html>
+
