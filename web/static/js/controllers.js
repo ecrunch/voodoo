@@ -2,79 +2,70 @@
 
 myApp = angular.module("myApp.controllers", []);
 
-
-
 myApp.controller("mainCtrl", function($scope, $http, $location){
     
-   
-          
-    $scope.current_user = "Zack";
-    $scope.current_user_id = 1;
-    $scope.userData = [];
-    
-    $scope.doneLoadingProfileData = false;
-
-    $scope.userName = "";
-    $scope.password = "";
-
     $scope.loggedIn = false;
-
-    $scope.logIn = function(userName, password){
-        
-        var route = "/confirm_login";
-        parms = {
-            "userName": userName,
-            "password": password
-        }
-
-        $http.get(route, {params: parms}).success(function(data){
-            
-            // We want to register the session with cookies or something
-            // at this point
-            
-            if(data == 0){
-                alert("Not a valid username/password");    
-            } 
-            else{
-                
-                $scope.loggedIn = true;
-                $scope.loadProfile(data);
-                $location.path("/home");
-                
-                Cookies.set('user_id', $scope.current_user_id);
-                Cookies.set('user_name', $scope.current_user);
-            }
-        });
-        
-    };
-
+    $scope.doneLoadingProfileData = false;
+    
     $scope.loadProfile = function(id){
-
-        //run some validation checking on the id
-        $scope.getUserData(id).then(function(res){    
+        $scope.getUserData(id).then(function(res){
             $scope.current_user_id = id;
             $scope.current_user = res["data"]["name"];
             $scope.userData = res["data"];
-            $scope.doneLoadingProfileData = ! $scope.doneLoadingProfileData;
+            $scope.loggedIn = true;
+            $scope.doneLoadingProfileData = !$scope.doneLoadingProfileData;
         });
-    };
-    
+    }
+
     $scope.getUserData = function(id){
         var route = "/get_user_data/" + id;
         return $http.get(route);
-    };
-
-
-    $scope.switchUser = function(id){
-        $scope.loadProfile(id);
-    }       
-
-
-    if(Cookies.get('user_id')){
-        alert(Cookies.get('user_name') + " is signed in!");
     }
-    $scope.loadProfile($scope.current_user_id);
-    
+  
+    //redirect if not logged in
+    if(Cookies.get('user_id') == "null"){
+        $location.path('/login');
+    }
+    else{
+        //make it not logged in
+        $scope.loggedIn = true;
+        $scope.loadProfile(Cookies.get("user_id"));
+        $location.path("/home");
+    }
+
+    $scope.logOut = function(){
+        Cookies.set('user_id', null);
+        $scope.loggedIn = false;
+        $location.path('/login');
+    }
+
+
+});
+
+myApp.controller("logInCtrl", function($scope, $http, $location){
+
+    $scope.logIn = function(userName, password){
+        var route = "/confirm_login";
+        parms = {
+            "userName" : userName,
+            "password" : password
+        };
+
+        $http.get(route, {params: parms}).success(function(data){
+            if(data == 0){
+                alert("Not a valid user/password combo!");
+            }
+            else{
+                Cookies.set('user_id', data);
+                $scope.loadProfile(data); 
+                $location.path("/home");
+            }
+        });
+    }
+
+    if(Cookies.get('user_id') != "null"){
+        $location.path("/home");
+    }
 
 });
 
@@ -188,7 +179,6 @@ myApp.controller("scheduleCtrl", function($scope, $http){
         $http.get("/log_minutes", {params: parms}).success(function(data){
             alert("New Total :  " + data["minutes"] + " minutes!");
         });
-        
          
     };
     

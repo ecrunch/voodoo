@@ -53,12 +53,13 @@ angular.module('myApp', [
         up().
 
     segment('s4', {
-        templateUrl: 'static/partials/login.html'
+        templateUrl: 'static/partials/login.html',
+        controller: 'logInCtrl'
     });
 
-    $routeProvider.otherwise({
-        redirectTo: '/home'
-    });
+    //$routeProvider.otherwise({
+    //    redirectTo: '/home'
+    //});
 
 
 });
