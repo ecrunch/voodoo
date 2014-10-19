@@ -13,7 +13,6 @@ from lib._flask.flask import (
     send_file,
 )
 
-
 from sqlalchemy import create_engine
 
 from src.scheduler import Scheduler
@@ -24,13 +23,11 @@ from src.classes import (
     User, Task, Want, Break, Class, Assignment
 )
 
-
 #global db shit
 engine = create_engine('sqlite:///db/data/sqlalchemy.db')
 session = SessionManager(engine)
 
 app = Flask(__name__)
-
 
 ### templates
 @app.route('/')
@@ -58,6 +55,10 @@ def confirm_login():
     return json.dumps(0)
 
 
+@app.route('/login', methods= ['POST'])
+def login():
+    pass
+
 @app.route('/get_user_data/<id>')
 def get_user_data(id=1):
     
@@ -84,7 +85,6 @@ def get_user_data(id=1):
         user_data["breaks"].append(_break.jsonify())
 
     return json.dumps(user_data)
-
 
 
 @app.route('/add_class_to_db', methods= ['GET'])

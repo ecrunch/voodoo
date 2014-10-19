@@ -6,24 +6,18 @@ myApp = angular.module("myApp.controllers", []);
 
 myApp.controller("mainCtrl", function($scope, $http, $location){
     
-    
-    /*
-    *   TODO : get the user info from the db
-    *   when logging in
-    */
-    
+   
+          
     $scope.current_user = "Zack";
     $scope.current_user_id = 1;
     $scope.userData = [];
     
     $scope.doneLoadingProfileData = false;
 
-
     $scope.userName = "";
     $scope.password = "";
 
     $scope.loggedIn = false;
-
 
     $scope.logIn = function(userName, password){
         
@@ -42,9 +36,13 @@ myApp.controller("mainCtrl", function($scope, $http, $location){
                 alert("Not a valid username/password");    
             } 
             else{
+                
                 $scope.loggedIn = true;
                 $scope.loadProfile(data);
                 $location.path("/home");
+                
+                Cookies.set('user_id', $scope.current_user_id);
+                Cookies.set('user_name', $scope.current_user);
             }
         });
         
@@ -71,6 +69,10 @@ myApp.controller("mainCtrl", function($scope, $http, $location){
         $scope.loadProfile(id);
     }       
 
+
+    if(Cookies.get('user_id')){
+        alert(Cookies.get('user_name') + " is signed in!");
+    }
     $scope.loadProfile($scope.current_user_id);
     
 
