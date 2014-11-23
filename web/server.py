@@ -67,8 +67,6 @@ def get_user_data(id=1):
     user_data = {}
     user_data["classes"] = []
     user_data["tasks"] = []
-    user_data["wants"] = []
-    user_data["breaks"] = []
 
     user_data["name"] = user_obj.name
 
@@ -78,11 +76,6 @@ def get_user_data(id=1):
     for task in user_obj.tasks:
         user_data["tasks"].append(task.jsonify())
 
-    for want in user_obj.wants:
-        user_data["wants"].append(want.jsonify())
-
-    for _break in user_obj.breaks:
-        user_data["breaks"].append(_break.jsonify())
 
     return json.dumps(user_data)
 
@@ -127,38 +120,6 @@ def add_task_to_db():
     return jsonify([])
 
 
-@app.route('/add_want_to_db', methods= ['GET'])
-def add_want_to_db():
-
-    user_id = request.args.get('user_id')
-    description = request.args.get('want_description')
-    category = request.args.get('want_category')   
-
-    user_obj = session.get_one(User, user_id)
-    want_obj = Want(description= description, category= category, user_id= user_id)
-
-    user_obj.wants.append(want_obj)
-
-    session.add(user_obj, commit= True)
-    return jsonify([])
-
-
-@app.route('/add_break_to_db', methods= ['GET'])
-def add_break_to_db():
-
-    user_id = request.args.get('user_id')
-    description = request.args.get('break_description')
-    url = request.args.get('break_url')
-
-    user_obj = session.get_one(User, user_id)
-    break_obj = Break(description= description, url= url, user_id= user_id)
-
-    user_obj.breaks.append(break_obj)
-
-    session.add(user_obj, commit= True)
-    return jsonify([])
-
-
 
 @app.route('/get_schedule', methods= ['GET'])
 def get_schedule():
@@ -178,18 +139,6 @@ def get_schedule():
     return json.dumps(scheduler.jsonify())
 
 
-@app.route('/delete_break_from_db/<bid>' )
-def delete_break(bid=1):
-
-    bid=int(bid)
-    print(bid)
-    break_obj = session.get_one(Break, bid)
-    
-    session.delete(break_obj, commit=True)
-    
-    return "Success" 
-
-
 @app.route('/delete_class_from_db/<cid>' )
 def delete_class(cid=1):
 
@@ -201,16 +150,6 @@ def delete_class(cid=1):
     
     return "Success"
 
-@app.route('/delete_want_from_db/<wid>' )
-def delete_want(wid=1):
-    
-    wid=int(wid)
-    print(wid)
-    want_obj = session.get_one(Want, wid)
-
-    session.delete(want_obj, commit=True)
-    
-    return "Success"
 
 
 @app.route('/delete_task_from_db/<tid>' )
