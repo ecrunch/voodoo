@@ -28,27 +28,11 @@ class TimeSlotGenerator(object):
         slots = []
 
 
-        # was the last slot a 15 or not
-        coming_off_break = False
-       
-        # once we get to 90, default to break 
-        time_without_break = 0
-
-
 
         while total <= in_minutes:
             if total == in_minutes:
                 break
 
-
-            # we are coming off a 15 min break
-            if coming_off_break:            
-                to_add = random.randint(2, 4)
-            
-            # we have worked to hard and deserve a break
-            elif time_without_break >= 90:
-                to_add = 1
-                time_without_break = 0
 
             # not coming off a break
             else:
@@ -56,19 +40,9 @@ class TimeSlotGenerator(object):
                 
             
             minute_section = self.number_gen[to_add]
-            
-            if minute_section == 15:
-                coming_off_break = True
-            else:
-                coming_off_break = False
-            
-            
             total = total + minute_section
-            time_without_break = time_without_break + minute_section
-
 
             slots.append(minute_section)
-
         
 
         # we have gone over our total
