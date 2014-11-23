@@ -113,7 +113,7 @@ class Scheduler(object):
             schedule.append({"number" : number, "minutes" : slot, "item" : task.jsonify(), "time" : str(self.current_time.time())})
 
 
-    number = number + 1
+            number = number + 1
 
         return schedule
 
