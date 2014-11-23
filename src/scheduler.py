@@ -104,8 +104,8 @@ class Scheduler(object):
                             self._reset_index()
                                     #starts off with the first thing of the most recent list
                             chosen_index=0
-                            else:
-                                pass
+                        else:
+                            pass
 
 
             task = chosen_item_list[chosen_index]
