@@ -145,45 +145,6 @@ class Task(Base):
         }
 
 
-class Want(Base):
-
-    __tablename__ = 'wants'
-
-    id = Column(Integer, primary_key= True, autoincrement= True)
-    description  = Column(String(50))
-    category = Column(String(50))
-
-    user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(User, backref=backref('wants', uselist=True))
-
-    def jsonify(self):
-        return {
-            "id" : self.id,
-            "description" : self.description,
-            "category" : self.category,
-        }
-
-
-class Break(Base):
-
-    __tablename__ = 'breaks'
-
-    id = Column(Integer, primary_key= True, autoincrement= True)
-    description = Column(String(50))
-    url = Column(String(50))
-
-    user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(User, backref=backref('breaks', uselist=True))
-    
-    def jsonify(self):
-        return{
-            "id" : self.id,
-            "description" : self.description,
-            "url" : self.url,
-        } 
-
-
-
 #association tables (many many relationships)
 
 # users <--> classes
