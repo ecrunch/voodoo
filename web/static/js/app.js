@@ -17,8 +17,6 @@ angular.module('myApp', [
     when('/add', 's3').
     when('/add/class', 's3.addClass').
     when('/add/task', 's3.addTask').
-    when('/add/break', 's3.addBreak').
-    when('/add/want', 's3.addWant').
     when('/login', 's4').
 
 
@@ -41,14 +39,6 @@ angular.module('myApp', [
         segment('addTask', {
             templateUrl: 'static/partials/add_task.html',
             controller: 'addTaskCtrl'
-        }).
-        segment('addBreak', {
-            templateUrl: 'static/partials/add_break.html',
-            controller: 'addBreakCtrl'
-        }).
-        segment('addWant', {
-            templateUrl: 'static/partials/add_want.html',
-            controller: 'addWantCtrl'
         }).
         up().
 
