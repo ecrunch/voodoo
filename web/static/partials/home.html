@@ -65,45 +65,5 @@
 
 <br>
 <br>
-<h3> <font style="color: rgb(62, 188, 100); text-align: left;">My Wants</font> </h3>
-<table style="width: 805px; height: 73px;" class="table" border="1">
-    <thead class="tableHeader">
-	<tr>
-        <th> Want Name </th>
-        <th> Category type </th>
-        <th> id </th>
-        <th> Delete </th>
-    </tr>
-	</thead>
-	<tbody class="tableBody">
-    <tr ng-repeat="want in my_wants">
-        <td> {{want.description}} </td>
-        <td> {{want.category}} </td>
-        <td> {{want.id}} </td>
-        <td> <input value="Delete" ng-click="delete_want(want.id)" type="button">  </td>
-    </tr>
-	</tbody>
-</table>
-<br>
-<br>
-<h3><font style="color: rgb(62, 188, 100); text-align: left;">My Breaks</font></h3>
-<table style="width: 806px; height: 75px;" class="table" border="1">
-    <thead class="tableHeader">
-	<tr>
-        <th> Break Name</th>
-        <th> Url </th>
-        <th> id </th>
-        <th> Delete </th>
-    </tr><tr>
-	</tr></thead>
-	<tbody class="tableBody">
-    <tr ng-repeat="break in my_breaks">
-        <td> {{break.description}} </td>
-        <td> {{break.url}} </td>
-        <td> {{break.id}} </td>
-        <td> <input value="Delete" ng-click="delete_break(break.id)" type="button">  </td>
-    </tr>
-	</tbody>
-</table>
 
 </body></html>
