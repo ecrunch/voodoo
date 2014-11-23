@@ -128,13 +128,10 @@ def get_schedule():
     user_id = request.args.get('user_id')
 
     tasks = session.get_all_with_user_id(Task, user_id)
-    wants = session.get_all_with_user_id(Want, user_id)
-    breaks = session.get_all_with_user_id(Break, user_id)
 
     print(tasks)
 
-
-    scheduler = Scheduler(hours, tasks, wants, breaks) 
+    scheduler = Scheduler(hours, tasks) 
 
     return json.dumps(scheduler.jsonify())
 
