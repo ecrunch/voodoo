@@ -20,7 +20,7 @@ from src.scheduler import Scheduler
 from src.session_manager import SessionManager
 
 from src.classes import (
-    User, Task, Want, Break, Class, Assignment
+    User, Task, Class, Assignment
 )
 
 #global db shit
