@@ -72,31 +72,9 @@ myApp.controller("logInCtrl", function($scope, $http, $location){
 
 myApp.controller("homeCtrl", function($scope, $http){
 
-    $scope.bid = 1;
-    $scope.wid = 1;
     $scope.tid = 1;
     $scope.cid = 1;
 
-    $scope.delete_break = function(input){
-        
-        $scope.bid= input;
-        alert($scope.bid);
-        var route = "/delete_break_from_db/"+ $scope.bid;
-        $http.get(route).success(function(data){
-            alert("Success!");
-        });
-    };
-    
-    $scope.delete_want = function(input){
-        
-        $scope.wid= input;
-        alert($scope.wid);
-        var route = "/delete_want_from_db/"+ $scope.wid;
-        $http.get(route).success(function(data){
-            alert("Success!");
-        });
-
-    };
 
     $scope.delete_task = function(input){
           
@@ -141,8 +119,6 @@ myApp.controller("homeCtrl", function($scope, $http){
 
         $scope.my_classes = $scope.userData["classes"];
         $scope.my_tasks = $scope.userData["tasks"];
-        $scope.my_wants = $scope.userData["wants"];
-        $scope.my_breaks = $scope.userData["breaks"];
 
     });
 
@@ -263,71 +239,3 @@ myApp.controller("addTaskCtrl", function($scope, $http){
 });
 
 
-myApp.controller("addWantCtrl", function($scope, $http){
-
-    $scope.validate = function(){
-        if($scope.wantDescription == null || $scope.wantDescription == ""){
-            alert("Please enter a description");
-            return false;
-        }
-        if($scope.wantCategory == null || $scope.wantCategory == ""){
-            alert("Please enter a Category");
-            return false;
-        }
-
-        return true;
-    }
-    $scope.submit = function(){
-        if(! $scope.validate()){
-            return
-        }
-
-        var parms = {
-            "user_id" : $scope.current_user_id,
-            "want_description" : $scope.wantDescription, 
-            "want_category" : $scope.wantCategory,
-        };
-
-        $http.get("/add_want_to_db", {params : parms}).success(function(data){
-            alert("Want added!");
-        });
-
-    }
-
-});
-
-
-myApp.controller("addBreakCtrl", function($scope, $http){
-
-    $scope.validate = function(){
-        if($scope.breakDescription == null || $scope.breakDescription == ""){
-            alert("Please enter a description");
-            return false;
-
-        }
-        if($scope.breakurl == null || $scope.breakurl == ""){
-            alert("Please enter url");
-            return false;
-        }
-
-        return true;
-    }
-
-    $scope.submit = function(){
-        if(! $scope.validate()){
-            return
-        }
-
-        var parms = {
-            "user_id" : $scope.current_user_id,
-            "break_description" : $scope.breakDescription,
-            "break_url" : $scope.breakurl,
-        };
-
-        $http.get("/add_break_to_db", {params : parms}).success(function(data){
-            alert("break added!");
-        });
-
-    }
-
-});
